@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Keranjang | KEN KONVEKSI</title>
+
+    <link rel="stylesheet" href="css/style.css" />
+
+    <link rel="stylesheet" href="css/cart.css" />
+  </head>
+
+  <body>
+    <!-- ================= NAVBAR ================= -->
+
+    <header class="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="logo"> KEN KONVEKSI </a>
+
+        <nav class="nav-menu">
+          <a href="index.html"> Home </a>
+
+          <a href="catalog.html"> Catalog </a>
+
+          <a href="#"> Outfit </a>
+
+          <a href="#"> About </a>
+        </nav>
+
+        <div class="nav-actions">
+          <button class="search-btn">🔍</button>
+
+          <a href="cart.html" class="cart-btn">
+            🛒
+
+            <span id="cartCount"> 0 </span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- ================= CART ================= -->
+
+    <main class="cart-page">
+      <!-- TITLE -->
+
+      <div class="cart-header">
+        <span> SHOPPING BAG </span>
+
+        <h1>Keranjang Pembelian</h1>
+
+        <p>Periksa kembali produk sebelum melanjutkan ke checkout.</p>
+      </div>
+
+      <!-- CART CONTENT -->
+
+      <div class="cart-layout">
+        <!-- ================= LEFT ================= -->
+
+        <section class="cart-items-section">
+          <div class="cart-items-header">
+            <span> Produk </span>
+
+            <span> Harga </span>
+
+            <span> Jumlah </span>
+
+            <span> Subtotal </span>
+          </div>
+
+          <!-- ITEMS AKAN DIISI JAVASCRIPT -->
+
+          <div id="cartItems"></div>
+
+          <!-- EMPTY CART -->
+
+          <div id="emptyCart" class="empty-cart">
+            <div class="empty-icon">🛒</div>
+
+            <h2>Keranjang masih kosong</h2>
+
+            <p>Yuk pilih produk yang kamu suka.</p>
+
+            <a href="catalog.html" class="continue-shopping"> Lihat Catalog </a>
+          </div>
+        </section>
+
+        <!-- ================= RIGHT ================= -->
+
+        <aside class="cart-summary">
+          <h2>Ringkasan Belanja</h2>
+
+          <div class="summary-row">
+            <span> Total Produk </span>
+
+            <strong id="totalItems"> 0 </strong>
+          </div>
+
+          <div class="summary-row">
+            <span> Subtotal </span>
+
+            <strong id="subtotal"> Rp0 </strong>
+          </div>
+
+          <div class="summary-row">
+            <span> Ongkir </span>
+
+            <strong id="shipping"> Rp0 </strong>
+          </div>
+
+          <div class="summary-divider"></div>
+
+          <div class="summary-total">
+            <span> Total </span>
+
+            <strong id="grandTotal"> Rp0 </strong>
+          </div>
+
+          <button id="checkoutBtn" class="checkout-btn">
+            Lanjut ke Checkout
+          </button>
+
+          <a href="catalog.html" class="continue-link"> ← Lanjut Belanja </a>
+        </aside>
+      </div>
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+      <div class="footer-container">
+        <div>
+          <h3>KEN KONVEKSI</h3>
+
+          <p>Wear your style.</p>
+        </div>
+
+        <div>
+          <h4>Navigation</h4>
+
+          <a href="index.html"> Home </a>
+
+          <a href="catalog.html"> Catalog </a>
+        </div>
+      </div>
+
+      <div class="copyright">© 2026 KEN KONVEKSI</div>
+    </footer>
+
+    <script src="js/cart.js"></script>
+  </body>
+</html>

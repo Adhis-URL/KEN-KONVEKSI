@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Product | KEN KONVEKSI</title>
+
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/product.css" />
+  </head>
+
+  <body>
+    <!-- =====================================================
+         NAVBAR
+         ===================================================== -->
+
+    <header class="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="logo"> KEN KONVEKSI </a>
+
+        <nav class="nav-menu">
+          <a href="index.html"> Home </a>
+
+          <a href="catalog.html"> Catalog </a>
+
+          <a href="#"> Outfit </a>
+
+          <a href="#"> About </a>
+        </nav>
+
+        <div class="nav-actions">
+          <button class="search-btn" type="button">🔍</button>
+
+          <a href="cart.html" class="cart-btn">
+            🛒
+            <span>0</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- =====================================================
+         PRODUCT PAGE
+         ===================================================== -->
+
+    <main class="product-page">
+      <!-- ===================================================
+           BREADCRUMB
+           =================================================== -->
+
+      <div class="breadcrumb">
+        <a href="index.html"> Home </a>
+
+        <span>/</span>
+
+        <a href="catalog.html"> Catalog </a>
+
+        <span>/</span>
+
+        <span id="breadcrumbProduct"> Product </span>
+      </div>
+
+      <!-- ===================================================
+           PRODUCT DETAIL
+           =================================================== -->
+
+      <section class="product-detail">
+        <!-- =================================================
+             LEFT : GALLERY
+             ================================================= -->
+
+        <div class="product-gallery">
+          <!-- MAIN IMAGE -->
+
+          <div class="main-image">
+            <div id="mainProductImage">
+              <div class="image-placeholder">PRODUCT</div>
+            </div>
+          </div>
+
+          <!-- THUMBNAILS -->
+
+          <div class="thumbnail-list" id="thumbnailList">
+            <!--
+              Thumbnail akan dibuat
+              otomatis oleh product.js
+            -->
+          </div>
+        </div>
+
+        <!-- =================================================
+             RIGHT : PRODUCT INFORMATION
+             ================================================= -->
+
+        <div class="product-info">
+          <!-- CATEGORY -->
+
+          <div class="product-category" id="productCategory">PRODUCT</div>
+
+          <!-- NAME -->
+
+          <h1 id="productName">Product</h1>
+
+          <!-- RATING -->
+
+          <div class="product-rating">
+            <span> ★★★★★ </span>
+
+            <span> 4.9 </span>
+
+            <span> • </span>
+
+            <span> 0 sold </span>
+          </div>
+
+          <!-- PRICE -->
+
+          <div class="product-price" id="productPrice">Rp0</div>
+
+          <!-- CONDITION -->
+
+          <div class="product-condition">
+            <strong> Kondisi: </strong>
+
+            <span id="productCondition"> - </span>
+          </div>
+
+          <!-- =================================================
+               SIZE
+               ================================================= -->
+
+          <div class="product-option">
+            <div class="option-title">Ukuran</div>
+
+            <div class="size-options" id="productSizes">
+              <!--
+                Ukuran akan dibuat
+                otomatis oleh product.js
+              -->
+            </div>
+          </div>
+
+          <!-- =================================================
+               STOCK
+               ================================================= -->
+
+          <div class="stock-info">
+            Stok tersedia:
+
+            <strong id="productStock"> 0 </strong>
+          </div>
+
+          <!-- =================================================
+               QUANTITY
+               ================================================= -->
+
+          <div class="quantity-section">
+            <span class="option-title"> Jumlah </span>
+
+            <div class="quantity-control">
+              <button id="minusBtn" type="button">−</button>
+
+              <span id="quantity"> 1 </span>
+
+              <button id="plusBtn" type="button">+</button>
+            </div>
+          </div>
+
+          <!-- =================================================
+               BUTTONS
+               ================================================= -->
+
+          <div class="product-buttons">
+            <button class="btn-cart" id="addCartBtn" type="button">
+              🛒 Tambah ke Keranjang
+            </button>
+
+            <button class="btn-buy" id="buyBtn" type="button">
+              Beli Sekarang
+            </button>
+          </div>
+
+          <!-- =================================================
+               DESCRIPTION
+               ================================================= -->
+
+          <div class="product-description">
+            <h3>Deskripsi Produk</h3>
+
+            <p id="productDescription">Tidak ada deskripsi produk.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           OUTFIT WEAR
+           ===================================================== -->
+
+      <section class="outfit-section">
+        <!-- HEADING -->
+
+        <div class="section-heading">
+          <span> STYLE INSPIRATION </span>
+
+          <h2>Outfit Wear</h2>
+
+          <p>
+            Lihat bagaimana produk ini digunakan dalam berbagai gaya outfit.
+          </p>
+        </div>
+
+        <!-- OUTFIT GRID -->
+
+        <div class="outfit-grid" id="outfitGrid">
+          <!--
+            Foto Outfit akan dimasukkan
+            otomatis oleh product.js
+          -->
+        </div>
+      </section>
+    </main>
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+
+    <footer>
+      <div class="footer-container">
+        <!-- BRAND -->
+
+        <div>
+          <h3>KEN KONVEKSI</h3>
+
+          <p>Wear your style.</p>
+        </div>
+
+        <!-- NAVIGATION -->
+
+        <div>
+          <h4>Navigation</h4>
+
+          <a href="index.html"> Home </a>
+
+          <a href="catalog.html"> Catalog </a>
+        </div>
+      </div>
+
+      <div class="copyright">© 2026 KEN KONVEKSI</div>
+    </footer>
+
+    <!-- =====================================================
+         JAVASCRIPT
+         ===================================================== -->
+
+    <script src="js/product.js"></script>
+  </body>
+</html>

@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Outfit Wear | KEN KONVEKSI</title>
+
+    <!-- CSS UTAMA -->
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- CSS OUTFIT -->
+    <link rel="stylesheet" href="css/outfit.css" />
+  </head>
+
+  <body>
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header class="navbar">
+      <!-- LOGO -->
+
+      <a href="index.html" class="logo"> KEN<span>KONVEKSI</span> </a>
+
+      <!-- MENU -->
+
+      <nav>
+        <a href="index.html"> Home </a>
+
+        <a href="catalog.html"> Catalog </a>
+
+        <a href="outfit.html" class="active"> Outfit </a>
+
+        <a href="#"> About </a>
+      </nav>
+
+      <!-- ACTION -->
+
+      <div class="nav-actions">
+        <button
+          class="search-btn"
+          type="button"
+          onclick="window.location.href = 'catalog.html'"
+          aria-label="Search"
+        >
+          🔍
+        </button>
+
+        <button
+          class="cart-btn"
+          type="button"
+          onclick="window.location.href = 'cart.html'"
+          aria-label="Cart"
+        >
+          🛒
+
+          <span class="cart-count"> 0 </span>
+        </button>
+      </div>
+    </header>
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main>
+      <!-- ===================================================
+           HERO
+      ==================================================== -->
+
+      <section class="outfit-hero">
+        <div class="outfit-hero-content">
+          <p class="outfit-label">KEN KONVEKSI STYLE</p>
+
+          <h1>
+            OUTFIT
+            <span>WEAR.</span>
+          </h1>
+
+          <p class="outfit-description">
+            Explore how our collection looks when worn. Find inspiration and
+            discover your own style with KEN KONVEKSI.
+          </p>
+        </div>
+      </section>
+
+      <!-- ===================================================
+           OUTFIT COLLECTION
+      ==================================================== -->
+
+      <section class="outfit-section">
+        <div class="outfit-heading">
+          <div>
+            <p>STYLE INSPIRATION</p>
+
+            <h2>OUR OUTFIT</h2>
+          </div>
+
+          <div class="outfit-total">
+            <strong id="outfitCount"> 0 </strong>
+
+            <span> OUTFITS </span>
+          </div>
+        </div>
+
+        <!-- =================================================
+             OUTFIT GRID
+        ================================================== -->
+
+        <div id="outfitGrid" class="outfit-grid"></div>
+
+        <!-- =================================================
+             EMPTY STATE
+        ================================================== -->
+
+        <div id="outfitEmpty" class="outfit-empty" hidden>
+          <div class="empty-symbol">+</div>
+
+          <h3>Belum Ada Outfit Wear</h3>
+
+          <p>
+            Foto Outfit Wear akan muncul di sini setelah admin menambahkan foto
+            outfit pada produk.
+          </p>
+
+          <a href="catalog.html" class="empty-button"> EXPLORE CATALOG </a>
+        </div>
+      </section>
+    </main>
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer>
+      <div class="footer-logo">KEN KONVEKSI</div>
+
+      <p>Personal Clothing Collection</p>
+
+      <p class="copyright">© 2026 KEN KONVEKSI. All rights reserved.</p>
+    </footer>
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script src="js/outfit.js"></script>
+  </body>
+</html>

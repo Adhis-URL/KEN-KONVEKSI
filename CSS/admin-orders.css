@@ -1,0 +1,381 @@
+/* =====================================================
+   ADMIN ORDERS
+===================================================== */
+
+/* FILTER */
+
+.admin-order-filter {
+  display: flex;
+
+  gap: 10px;
+
+  overflow-x: auto;
+
+  margin-bottom: 25px;
+}
+
+.admin-filter {
+  background: white;
+
+  border: 1px solid #ddd;
+
+  padding: 11px 18px;
+
+  cursor: pointer;
+
+  font-size: 12px;
+
+  white-space: nowrap;
+}
+
+.admin-filter:hover {
+  border-color: #111;
+}
+
+.admin-filter.active {
+  background: #111;
+
+  color: white;
+
+  border-color: #111;
+}
+
+/* =====================================================
+   ORDER CARD
+===================================================== */
+
+.admin-order-card {
+  background: white;
+
+  border: 1px solid #ddd;
+
+  margin-bottom: 20px;
+}
+
+/* HEADER */
+
+.admin-order-header {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  padding: 20px 25px;
+
+  border-bottom: 1px solid #eee;
+}
+
+.admin-order-id {
+  font-size: 14px;
+
+  font-weight: bold;
+}
+
+.admin-order-date {
+  font-size: 12px;
+
+  color: #888;
+
+  margin-top: 5px;
+}
+
+/* =====================================================
+   CONTENT
+===================================================== */
+
+.admin-order-content {
+  display: grid;
+
+  grid-template-columns: 1fr 300px;
+
+  gap: 30px;
+
+  padding: 25px;
+}
+
+/* PRODUCTS */
+
+.admin-products {
+  border-right: 1px solid #eee;
+
+  padding-right: 30px;
+}
+
+.admin-product {
+  display: flex;
+
+  gap: 15px;
+
+  padding: 15px 0;
+
+  border-bottom: 1px solid #eee;
+}
+
+.admin-product:first-child {
+  padding-top: 0;
+}
+
+.admin-product:last-child {
+  border-bottom: none;
+}
+
+.admin-product-image {
+  width: 70px;
+
+  height: 70px;
+
+  background: #f1f1f1;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  color: #999;
+
+  font-size: 9px;
+}
+
+.admin-product-info {
+  flex: 1;
+}
+
+.admin-product-info h3 {
+  margin: 0 0 6px;
+
+  font-size: 14px;
+}
+
+.admin-product-info p {
+  margin: 3px 0;
+
+  color: #888;
+
+  font-size: 12px;
+}
+
+.admin-product-price {
+  font-weight: bold;
+
+  font-size: 13px;
+}
+
+/* =====================================================
+   CUSTOMER
+===================================================== */
+
+.customer-info {
+  padding-left: 0;
+}
+
+.customer-info h3 {
+  font-size: 14px;
+
+  margin-top: 0;
+
+  margin-bottom: 18px;
+}
+
+.customer-row {
+  margin-bottom: 12px;
+}
+
+.customer-row span {
+  display: block;
+
+  font-size: 10px;
+
+  color: #999;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1px;
+
+  margin-bottom: 4px;
+}
+
+.customer-row strong {
+  font-size: 13px;
+
+  font-weight: 500;
+}
+
+.customer-address {
+  line-height: 1.5;
+}
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.admin-order-footer {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  padding: 20px 25px;
+
+  border-top: 1px solid #eee;
+}
+
+.admin-payment {
+  font-size: 12px;
+
+  color: #777;
+}
+
+.admin-payment strong {
+  color: #111;
+}
+
+.admin-total {
+  text-align: right;
+}
+
+.admin-total span {
+  display: block;
+
+  font-size: 11px;
+
+  color: #888;
+
+  margin-bottom: 5px;
+}
+
+.admin-total strong {
+  font-size: 19px;
+}
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+.admin-status {
+  display: inline-block;
+
+  padding: 7px 12px;
+
+  font-size: 11px;
+}
+
+.admin-status.waiting {
+  background: #fff5ce;
+
+  color: #806000;
+}
+
+.admin-status.process {
+  background: #e9f5ff;
+
+  color: #155c91;
+}
+
+.admin-status.shipped {
+  background: #f3ebff;
+
+  color: #5d3c8f;
+}
+
+.admin-status.complete {
+  background: #e9f8ed;
+
+  color: #276b3c;
+}
+
+.admin-status.cancel {
+  background: #ffeded;
+
+  color: #8a2d2d;
+}
+
+/* =====================================================
+   STATUS SELECT
+===================================================== */
+
+.status-control {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+}
+
+.status-control label {
+  font-size: 11px;
+
+  color: #888;
+}
+
+.status-control select {
+  padding: 8px 10px;
+
+  border: 1px solid #ccc;
+
+  background: white;
+
+  font-size: 12px;
+
+  cursor: pointer;
+}
+
+/* =====================================================
+   EMPTY
+===================================================== */
+
+.admin-orders-empty {
+  background: white;
+
+  border: 1px solid #ddd;
+
+  padding: 70px 20px;
+
+  text-align: center;
+
+  color: #888;
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 900px) {
+  .admin-order-content {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-products {
+    border-right: none;
+
+    border-bottom: 1px solid #eee;
+
+    padding-right: 0;
+
+    padding-bottom: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .admin-order-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    gap: 15px;
+  }
+
+  .admin-order-footer {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    gap: 20px;
+  }
+
+  .admin-total {
+    text-align: left;
+  }
+}
