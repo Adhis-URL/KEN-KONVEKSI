@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Checkout | KEN KONVEKSI</title>
+
+    <link rel="stylesheet" href="css/style.css" />
+
+    <link rel="stylesheet" href="css/checkout.css" />
+  </head>
+
+  <body>
+    <!-- ================= NAVBAR ================= -->
+
+    <header class="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="logo"> KEN KONVEKSI </a>
+
+        <nav class="nav-menu">
+          <a href="index.html"> Home </a>
+
+          <a href="catalog.html"> Catalog </a>
+
+          <a href="#"> Outfit </a>
+
+          <a href="#"> About </a>
+        </nav>
+
+        <div class="nav-actions">
+          <a href="cart.html" class="cart-btn">
+            🛒
+
+            <span id="cartCount"> 0 </span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- ================= CHECKOUT ================= -->
+
+    <main class="checkout-page">
+      <!-- HEADER -->
+
+      <div class="checkout-header">
+        <span> ORDER </span>
+
+        <h1>Checkout</h1>
+
+        <p>Lengkapi informasi untuk menyelesaikan pembelian kamu.</p>
+      </div>
+
+      <!-- CHECKOUT LAYOUT -->
+
+      <div class="checkout-layout">
+        <!-- ======================================
+             LEFT
+        ======================================= -->
+
+        <section class="checkout-form">
+          <!-- DATA PEMBELI -->
+
+          <div class="checkout-card">
+            <div class="card-title">
+              <span> 01 </span>
+
+              <h2>Data Pembeli</h2>
+            </div>
+
+            <div class="form-group">
+              <label for="buyerName"> Nama Lengkap </label>
+
+              <input
+                type="text"
+                id="buyerName"
+                placeholder="Masukkan nama lengkap"
+              />
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="buyerPhone"> Nomor WhatsApp </label>
+
+                <input type="tel" id="buyerPhone" placeholder="08xxxxxxxxxx" />
+              </div>
+
+              <div class="form-group">
+                <label for="buyerEmail"> Email </label>
+
+                <input
+                  type="email"
+                  id="buyerEmail"
+                  placeholder="email@example.com"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- ALAMAT -->
+
+          <div class="checkout-card">
+            <div class="card-title">
+              <span> 02 </span>
+
+              <h2>Alamat Pengiriman</h2>
+            </div>
+
+            <div class="form-group">
+              <label for="address"> Alamat Lengkap </label>
+
+              <textarea
+                id="address"
+                rows="4"
+                placeholder="Nama jalan, nomor rumah, RT/RW, kecamatan, dll."
+              ></textarea>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="city"> Kota / Kabupaten </label>
+
+                <input type="text" id="city" placeholder="Contoh: Surabaya" />
+              </div>
+
+              <div class="form-group">
+                <label for="postalCode"> Kode Pos </label>
+
+                <input type="text" id="postalCode" placeholder="601xx" />
+              </div>
+            </div>
+          </div>
+
+          <!-- PENGIRIMAN -->
+
+          <div class="checkout-card">
+            <div class="card-title">
+              <span> 03 </span>
+
+              <h2>Pengiriman</h2>
+            </div>
+
+            <div class="shipping-options">
+              <label class="shipping-option">
+                <input type="radio" name="shipping" value="15000" checked />
+
+                <div>
+                  <strong> Reguler </strong>
+
+                  <p>Estimasi 2–5 hari</p>
+                </div>
+
+                <span> Rp15.000 </span>
+              </label>
+
+              <label class="shipping-option">
+                <input type="radio" name="shipping" value="25000" />
+
+                <div>
+                  <strong> Express </strong>
+
+                  <p>Estimasi 1–2 hari</p>
+                </div>
+
+                <span> Rp25.000 </span>
+              </label>
+            </div>
+          </div>
+
+          <!-- PEMBAYARAN -->
+
+          <div class="checkout-card">
+            <div class="card-title">
+              <span> 04 </span>
+
+              <h2>Metode Pembayaran</h2>
+            </div>
+
+            <div class="payment-options">
+              <label class="payment-option">
+                <input type="radio" name="payment" value="COD" checked />
+
+                <div>
+                  <strong> COD </strong>
+
+                  <p>Bayar saat barang diterima</p>
+                </div>
+              </label>
+
+              <label class="payment-option">
+                <input type="radio" name="payment" value="Transfer" />
+
+                <div>
+                  <strong> Transfer Bank </strong>
+
+                  <p>Pembayaran melalui transfer</p>
+                </div>
+              </label>
+
+              <label class="payment-option">
+                <input type="radio" name="payment" value="E-Wallet" />
+
+                <div>
+                  <strong> E-Wallet </strong>
+
+                  <p>QRIS / E-Wallet</p>
+                </div>
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================
+             RIGHT - ORDER SUMMARY
+        ======================================= -->
+
+        <aside class="order-summary">
+          <h2>Pesanan Kamu</h2>
+
+          <!-- ITEMS -->
+
+          <div id="checkoutItems"></div>
+
+          <div class="summary-line">
+            <span> Total Produk </span>
+
+            <strong id="totalItems"> 0 </strong>
+          </div>
+
+          <div class="summary-line">
+            <span> Subtotal </span>
+
+            <strong id="subtotal"> Rp0 </strong>
+          </div>
+
+          <div class="summary-line">
+            <span> Pengiriman </span>
+
+            <strong id="shippingPrice"> Rp15.000 </strong>
+          </div>
+
+          <div class="summary-divider"></div>
+
+          <div class="summary-total">
+            <span> Total Pembayaran </span>
+
+            <strong id="grandTotal"> Rp0 </strong>
+          </div>
+
+          <button id="orderBtn" class="order-btn">Buat Pesanan</button>
+
+          <a href="cart.html" class="back-cart"> ← Kembali ke Keranjang </a>
+        </aside>
+      </div>
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+      <div class="footer-container">
+        <div>
+          <h3>KEN KONVEKSI</h3>
+
+          <p>Wear your style.</p>
+        </div>
+
+        <div>
+          <h4>Navigation</h4>
+
+          <a href="index.html"> Home </a>
+
+          <a href="catalog.html"> Catalog </a>
+        </div>
+      </div>
+
+      <div class="copyright">© 2026 KEN KONVEKSI</div>
+    </footer>
+
+    <script src="js/checkout.js"></script>
+  </body>
+</html>

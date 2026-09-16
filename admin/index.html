@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Admin Dashboard | KEN KONVEKSI</title>
+
+    <link rel="stylesheet" href="../css/admin.css" />
+  </head>
+
+  <body>
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+      <div class="admin-logo">
+        KEN
+        <span>KONVEKSI</span>
+      </div>
+
+      <nav>
+        <a href="index.html" class="active"> Dashboard </a>
+
+        <a href="orders.html"> Pesanan </a>
+
+        <a href="products.html"> Produk </a>
+
+        <a href="add-product.html"> + Tambah Produk </a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <a href="../index.html"> ← Lihat Website </a>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+
+    <main class="admin-main">
+      <!-- TOP -->
+
+      <header class="admin-header">
+        <div>
+          <span> ADMIN PANEL </span>
+
+          <h1>Dashboard</h1>
+        </div>
+
+        <div class="admin-user">Admin</div>
+      </header>
+
+      <!-- STATISTICS -->
+
+      <section class="stats-grid">
+        <div class="stat-card">
+          <span> TOTAL PESANAN </span>
+
+          <strong id="totalOrders"> 0 </strong>
+        </div>
+
+        <div class="stat-card">
+          <span> MENUNGGU PEMBAYARAN </span>
+
+          <strong id="waitingOrders"> 0 </strong>
+        </div>
+
+        <div class="stat-card">
+          <span> DIPROSES </span>
+
+          <strong id="processOrders"> 0 </strong>
+        </div>
+
+        <div class="stat-card">
+          <span> TOTAL PENJUALAN </span>
+
+          <strong id="totalSales"> Rp0 </strong>
+        </div>
+      </section>
+
+      <!-- RECENT ORDERS -->
+
+      <section class="dashboard-section">
+        <div class="section-heading">
+          <div>
+            <span> RECENT </span>
+
+            <h2>Pesanan Terbaru</h2>
+          </div>
+
+          <a href="orders.html"> Lihat Semua → </a>
+        </div>
+
+        <div id="recentOrders" class="recent-orders"></div>
+      </section>
+    </main>
+
+    <script src="../js/admin.js"></script>
+  </body>
+</html>
