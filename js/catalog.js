@@ -1,9 +1,7 @@
 // ==========================================
 // KEN KONVEKSI - CATALOG
+// SUPABASE VERSION
 // ==========================================
-
-// Ambil produk dari Admin
-let products = JSON.parse(localStorage.getItem("kenProducts")) || [];
 
 // ==========================================
 // ELEMENT
@@ -26,6 +24,12 @@ const categoryButtons = document.querySelectorAll(".category-btn");
 const sizeButtons = document.querySelectorAll(".size-btn");
 
 // ==========================================
+// DATA
+// ==========================================
+
+let products = [];
+
+// ==========================================
 // FILTER STATE
 // ==========================================
 
@@ -41,7 +45,20 @@ function formatRupiah(number) {
     style: "currency",
     currency: "IDR",
     minimumFractionDigits: 0,
-  }).format(number);
+  }).format(Number(number) || 0);
+}
+
+// ==========================================
+// ESCAPE HTML
+// ==========================================
+
+function escapeHTML(value) {
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 // ==========================================
@@ -55,35 +72,160 @@ function normalizeCategory(category) {
 }
 
 // ==========================================
+// LOAD PRODUCTS FROM SUPABASE
+// ==========================================
+
+async function loadProducts() {
+  // Cek Supabase
+
+  if (typeof supabaseClient === "undefined") {
+    console.error("supabaseClient belum tersedia.");
+
+    catalogProducts.innerHTML = `
+
+      <div class="catalog-empty">
+
+        <h3>
+          Supabase belum terhubung
+        </h3>
+
+        <p>
+          Pastikan konfigurasi Supabase
+          sudah dipasang sebelum catalog.js.
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+  }
+
+  // Loading
+
+  catalogProducts.innerHTML = `
+
+    <div class="catalog-empty">
+
+      <h3>
+        Memuat produk...
+      </h3>
+
+      <p>
+        Silakan tunggu sebentar.
+      </p>
+
+    </div>
+
+  `;
+
+  try {
+    const { data, error } = await supabaseClient
+
+      .from("products")
+
+      .select("*")
+
+      .order("created_at", {
+        ascending: false,
+      });
+
+    // Error Supabase
+
+    if (error) {
+      console.error("Supabase error:", error);
+
+      catalogProducts.innerHTML = `
+
+        <div class="catalog-empty">
+
+          <h3>
+            Gagal memuat produk
+          </h3>
+
+          <p>
+            ${escapeHTML(error.message)}
+          </p>
+
+        </div>
+
+      `;
+
+      return;
+    }
+
+    // Simpan data
+
+    products = Array.isArray(data) ? data : [];
+
+    console.log("Produk dari Supabase:", products);
+
+    // Render
+
+    renderProducts();
+  } catch (error) {
+    console.error("Error loading products:", error);
+
+    catalogProducts.innerHTML = `
+
+      <div class="catalog-empty">
+
+        <h3>
+          Terjadi kesalahan
+        </h3>
+
+        <p>
+          ${escapeHTML(error.message)}
+        </p>
+
+      </div>
+
+    `;
+  }
+}
+
+// ==========================================
 // RENDER PRODUCTS
 // ==========================================
 
 function renderProducts() {
-  // Ambil data terbaru dari localStorage
-  products = JSON.parse(localStorage.getItem("kenProducts")) || [];
+  // ========================================
+  // FILTER PRODUK
+  // ========================================
 
-  // Filter produk
   let filteredProducts = products.filter(function (product) {
+    // ======================================
     // SEARCH
+    // ======================================
+
     const searchText = searchInput.value.toLowerCase().trim();
 
     const productName = String(product.name || "").toLowerCase();
 
     const matchSearch = productName.includes(searchText);
 
+    // ======================================
     // CATEGORY
+    // ======================================
+
     const productCategory = normalizeCategory(product.category);
 
     const matchCategory =
       selectedCategory === "all" || productCategory === selectedCategory;
 
+    // ======================================
     // SIZE
+    // ======================================
+
     const productSizes = Array.isArray(product.sizes) ? product.sizes : [];
 
     const matchSize =
       selectedSize === "all" || productSizes.includes(selectedSize);
 
+    // ======================================
     // CONDITION
+    // ======================================
+
     const productCondition = String(product.condition || "").toLowerCase();
 
     const matchCondition =
@@ -111,7 +253,7 @@ function renderProducts() {
 
   if (sortProducts.value === "featured") {
     filteredProducts.sort(function (a, b) {
-      return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+      return new Date(b.created_at || 0) - new Date(a.created_at || 0);
     });
   }
 
@@ -135,7 +277,8 @@ function renderProducts() {
         </h3>
 
         <p>
-          Belum ada produk yang sesuai dengan filter.
+          Belum ada produk yang sesuai
+          dengan filter.
         </p>
 
       </div>
@@ -146,46 +289,72 @@ function renderProducts() {
   }
 
   // ========================================
-  // RENDER
+  // RENDER PRODUCT CARD
   // ========================================
 
   catalogProducts.innerHTML = filteredProducts
+
     .map(function (product) {
-      const imageHTML = product.image
+      // ====================================
+      // IMAGE
+      // ====================================
+
+      const imageHTML = product.image_url
         ? `
+
               <img
-                src="${product.image}"
-                alt="${product.name}"
+                src="${escapeHTML(product.image_url)}"
+                alt="${escapeHTML(product.name)}"
+                loading="lazy"
               />
+
             `
         : `
+
               <div class="image-placeholder">
                 PRODUCT
               </div>
+
             `;
 
-      const sizes = Array.isArray(product.sizes)
-        ? product.sizes.join(" • ")
-        : "-";
+      // ====================================
+      // SIZES
+      // ====================================
+
+      const sizes =
+        Array.isArray(product.sizes) && product.sizes.length > 0
+          ? product.sizes.join(" • ")
+          : "-";
+
+      // ====================================
+      // CONDITION
+      // ====================================
 
       const condition = String(product.condition || "").toLowerCase();
 
       const conditionLabel = condition === "new" ? "NEW" : "PRE-LOVED";
+
+      // ====================================
+      // PRODUCT CARD
+      // ====================================
 
       return `
 
           <article class="catalog-card">
 
             <a
-              href="product.html?id=${product.id}"
+              href="product.html?id=${encodeURIComponent(product.id)}"
               class="catalog-image"
             >
 
               <span
                 class="product-label ${condition === "new" ? "new" : ""}"
               >
+
                 ${conditionLabel}
+
               </span>
+
 
               ${imageHTML}
 
@@ -194,32 +363,48 @@ function renderProducts() {
 
             <div class="catalog-info">
 
+
+              <!-- CATEGORY -->
+
               <p class="catalog-category">
-                ${String(product.category || "").toUpperCase()}
+
+                ${escapeHTML(product.category || "").toUpperCase()}
+
               </p>
 
 
+              <!-- NAME -->
+
               <h3>
-                ${product.name}
+
+                ${escapeHTML(product.name)}
+
               </h3>
 
 
+              <!-- PRICE -->
+
               <p class="catalog-price">
+
                 ${formatRupiah(product.price)}
+
               </p>
 
+
+              <!-- META -->
 
               <div class="catalog-meta">
 
                 <span>
-                  ${sizes}
+                  ${escapeHTML(sizes)}
                 </span>
 
                 <span>
-                  Stok ${product.stock}
+                  Stok ${Number(product.stock) || 0}
                 </span>
 
               </div>
+
 
             </div>
 
@@ -227,6 +412,7 @@ function renderProducts() {
 
         `;
     })
+
     .join("");
 }
 
@@ -242,7 +428,7 @@ categoryButtons.forEach(function (button) {
 
     button.classList.add("active");
 
-    selectedCategory = button.dataset.category;
+    selectedCategory = normalizeCategory(button.dataset.category);
 
     renderProducts();
   });
@@ -260,7 +446,7 @@ sizeButtons.forEach(function (button) {
 
     button.classList.add("active");
 
-    selectedSize = button.dataset.size;
+    selectedSize = button.dataset.size || "all";
 
     renderProducts();
   });
@@ -295,20 +481,33 @@ sortProducts.addEventListener("change", function () {
 // ==========================================
 
 resetFilter.addEventListener("click", function () {
+  // Search
+
   searchInput.value = "";
+
+  // Condition
 
   conditionFilter.value = "all";
 
+  // Category
+
   selectedCategory = "all";
+
+  // Size
+
   selectedSize = "all";
+
+  // Category button
 
   categoryButtons.forEach(function (button) {
     button.classList.remove("active");
 
-    if (button.dataset.category === "all") {
+    if (normalizeCategory(button.dataset.category) === "all") {
       button.classList.add("active");
     }
   });
+
+  // Size button
 
   sizeButtons.forEach(function (button) {
     button.classList.remove("active");
@@ -318,7 +517,11 @@ resetFilter.addEventListener("click", function () {
     }
   });
 
+  // Sort
+
   sortProducts.value = "featured";
+
+  // Render
 
   renderProducts();
 });
@@ -327,4 +530,4 @@ resetFilter.addEventListener("click", function () {
 // INITIAL LOAD
 // ==========================================
 
-renderProducts();
+loadProducts();

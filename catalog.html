@@ -6,18 +6,22 @@
 
     <title>Catalog | KEN KONVEKSI</title>
 
+    <!-- ================= CSS ================= -->
+
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/catalog.css" />
   </head>
 
   <body>
-    <!-- ================= NAVBAR ================= -->
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
 
     <header class="navbar">
       <a href="index.html" class="logo"> KEN<span>KONVEKSI</span> </a>
 
       <nav>
-        <a href="index.html">Home</a>
+        <a href="index.html"> Home </a>
 
         <a href="catalog.html" class="active"> Catalog </a>
 
@@ -27,18 +31,30 @@
       </nav>
 
       <div class="nav-actions">
-        <button class="search-btn" type="button">🔍</button>
+        <button class="search-btn" type="button" aria-label="Search">🔍</button>
 
-        <button class="cart-btn" type="button">
+        <button
+          class="cart-btn"
+          type="button"
+          aria-label="Cart"
+          onclick="window.location.href = 'cart.html'"
+        >
           🛒
-          <span class="cart-count">0</span>
+
+          <span class="cart-count"> 0 </span>
         </button>
       </div>
     </header>
 
-    <!-- ================= CATALOG HEADER ================= -->
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
 
     <main>
+      <!-- ===================================================
+           CATALOG HEADER
+      ==================================================== -->
+
       <section class="catalog-header">
         <div>
           <p class="catalog-label">KEN KONVEKSI COLLECTION</p>
@@ -52,19 +68,27 @@
         </div>
       </section>
 
-      <!-- ================= CATALOG CONTENT ================= -->
+      <!-- ===================================================
+           CATALOG CONTENT
+      ==================================================== -->
 
       <section class="catalog-section">
-        <!-- ================= FILTER SIDEBAR ================= -->
+        <!-- =================================================
+             FILTER SIDEBAR
+        ================================================== -->
 
         <aside class="filter-sidebar">
+          <!-- FILTER TITLE -->
+
           <div class="filter-title">
             <h2>FILTER</h2>
 
             <button id="resetFilter" type="button">Reset</button>
           </div>
 
-          <!-- SEARCH -->
+          <!-- =================================================
+               SEARCH
+          ================================================== -->
 
           <div class="filter-group">
             <label for="searchInput"> SEARCH </label>
@@ -73,15 +97,20 @@
               type="text"
               id="searchInput"
               placeholder="Search clothing..."
+              autocomplete="off"
             />
           </div>
 
-          <!-- CATEGORY -->
+          <!-- =================================================
+               CATEGORY
+          ================================================== -->
 
           <div class="filter-group">
             <label> CATEGORY </label>
 
             <div class="category-list">
+              <!-- ALL -->
+
               <button
                 type="button"
                 class="category-btn active"
@@ -90,17 +119,31 @@
                 All
               </button>
 
+              <!-- T-SHIRT -->
+
               <button type="button" class="category-btn" data-category="tshirt">
                 T-Shirt
               </button>
+
+              <!-- SHIRT -->
+
+              <button type="button" class="category-btn" data-category="shirt">
+                Shirt
+              </button>
+
+              <!-- HOODIE -->
 
               <button type="button" class="category-btn" data-category="hoodie">
                 Hoodie
               </button>
 
+              <!-- JACKET -->
+
               <button type="button" class="category-btn" data-category="jacket">
                 Jacket
               </button>
+
+              <!-- PANTS -->
 
               <button type="button" class="category-btn" data-category="pants">
                 Pants
@@ -108,7 +151,9 @@
             </div>
           </div>
 
-          <!-- SIZE -->
+          <!-- =================================================
+               SIZE
+          ================================================== -->
 
           <div class="filter-group">
             <label> SIZE </label>
@@ -128,7 +173,9 @@
             </div>
           </div>
 
-          <!-- CONDITION -->
+          <!-- =================================================
+               CONDITION
+          ================================================== -->
 
           <div class="filter-group">
             <label for="conditionFilter"> CONDITION </label>
@@ -143,13 +190,17 @@
           </div>
         </aside>
 
-        <!-- ================= PRODUCTS ================= -->
+        <!-- =================================================
+             PRODUCTS
+        ================================================== -->
 
         <div class="catalog-products">
-          <!-- TOP -->
+          <!-- =================================================
+               TOP
+          ================================================== -->
 
           <div class="catalog-top">
-            <p id="productCount">0 produk</p>
+            <p id="productCount">Memuat produk...</p>
 
             <select id="sortProducts">
               <option value="featured">Produk Terbaru</option>
@@ -160,19 +211,29 @@
             </select>
           </div>
 
-          <!-- PRODUCT GRID -->
+          <!-- =================================================
+               PRODUCT GRID
+          ================================================== -->
 
           <div class="catalog-grid" id="catalogProducts">
             <!--
-              Produk dari Admin akan
-              otomatis muncul di sini.
+              Produk dari Supabase
+              akan otomatis muncul di sini.
             -->
+
+            <div class="catalog-empty">
+              <h3>Memuat produk...</h3>
+
+              <p>Silakan tunggu sebentar.</p>
+            </div>
           </div>
         </div>
       </section>
     </main>
 
-    <!-- ================= FOOTER ================= -->
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
 
     <footer>
       <div class="footer-logo">KEN KONVEKSI</div>
@@ -182,8 +243,74 @@
       <p class="copyright">© 2026 KEN KONVEKSI. All rights reserved.</p>
     </footer>
 
-    <!-- ================= JAVASCRIPT ================= -->
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <!-- SUPABASE CDN -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- =====================================================
+         SUPABASE CONFIGURATION
+    ====================================================== -->
+
+    <script>
+      const SUPABASE_URL = "https://zdpkanqgwlmbrkanyrjo.supabase.co";
+
+      /*
+       * MASUKKAN PUBLISHABLE KEY SUPABASE
+       * KAMU DI SINI
+       */
+
+      const SUPABASE_KEY = "sb_publishable_olOOWAKiJRqq--6seYsA5Q_mOjo2CF7";
+
+      /*
+       * Membuat koneksi Supabase
+       */
+
+      const supabaseClient = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY,
+      );
+    </script>
+
+    <!-- =====================================================
+         CATALOG JS
+    ====================================================== -->
 
     <script src="js/catalog.js"></script>
+
+    <!-- =====================================================
+         CART COUNT
+    ====================================================== -->
+
+    <script>
+      /*
+       * Untuk sementara cart menggunakan
+       * sessionStorage agar tidak terkena
+       * masalah quota localStorage.
+       */
+
+      function updateCartCount() {
+        try {
+          const cart = JSON.parse(sessionStorage.getItem("kenCart")) || [];
+
+          const total = cart.reduce(function (sum, item) {
+            return sum + Number(item.quantity || 0);
+          }, 0);
+
+          const cartCount = document.querySelector(".cart-count");
+
+          if (cartCount) {
+            cartCount.textContent = total;
+          }
+        } catch (error) {
+          console.error("Gagal membaca cart:", error);
+        }
+      }
+
+      updateCartCount();
+    </script>
   </body>
 </html>

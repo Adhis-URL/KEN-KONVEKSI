@@ -326,3 +326,32 @@
     text-align: left;
   }
 }
+/* =====================================================
+   FIX UKURAN GAMBAR PRODUK DI PESANAN
+   ===================================================== */
+
+.order-product-image {
+  width: 110px !important;
+  height: 130px !important;
+  min-width: 110px !important;
+  min-height: 130px !important;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+  background: #f5f5f5;
+  border: 1px solid #e5e5e5;
+}
+
+.order-product-image img {
+  width: 100% !important;
+  height: 100% !important;
+
+  max-width: 100% !important;
+  max-height: 100% !important;
+
+  object-fit: contain !important;
+  display: block;
+}

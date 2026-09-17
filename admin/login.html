@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Admin Login | KEN KONVEKSI</title>
+
+    <link rel="stylesheet" href="login.css" />
+  </head>
+
+  <body>
+    <!-- =====================================================
+         LOGIN CONTAINER
+    ====================================================== -->
+
+    <main class="login-page">
+      <div class="login-container">
+        <!-- =================================================
+             LOGO
+        ================================================== -->
+
+        <div class="login-logo">KEN<span>KONVEKSI</span></div>
+
+        <!-- =================================================
+             ADMIN LABEL
+        ================================================== -->
+
+        <p class="login-label">ADMIN PANEL</p>
+
+        <!-- =================================================
+             TITLE
+        ================================================== -->
+
+        <h1>Welcome Back</h1>
+
+        <p class="login-description">
+          Login untuk mengakses dashboard administrator KEN KONVEKSI.
+        </p>
+
+        <!-- =================================================
+             LOGIN FORM
+        ================================================== -->
+
+        <form id="loginForm">
+          <!-- USERNAME -->
+
+          <div class="form-group">
+            <label for="username"> Username </label>
+
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Masukkan username"
+              autocomplete="username"
+              required
+            />
+          </div>
+
+          <!-- PASSWORD -->
+
+          <div class="form-group">
+            <label for="password"> Password </label>
+
+            <div class="password-wrapper">
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Masukkan password"
+                autocomplete="current-password"
+                required
+              />
+
+              <button
+                type="button"
+                id="togglePassword"
+                class="toggle-password"
+                aria-label="Tampilkan password"
+              >
+                SHOW
+              </button>
+            </div>
+          </div>
+
+          <!-- ERROR MESSAGE -->
+
+          <div id="loginError" class="login-error" role="alert" hidden></div>
+
+          <!-- LOGIN BUTTON -->
+
+          <button type="submit" id="loginButton" class="login-button">
+            LOGIN
+          </button>
+        </form>
+
+        <!-- =================================================
+             BACK TO WEBSITE
+        ================================================== -->
+
+        <a href="../index.html" class="back-home"> ← Kembali ke Website </a>
+
+        <!-- =================================================
+             FOOTER
+        ================================================== -->
+
+        <p class="login-footer">© 2026 KEN KONVEKSI</p>
+      </div>
+    </main>
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script src="login.js"></script>
+  </body>
+</html>

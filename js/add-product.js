@@ -1,4 +1,14 @@
-document.addEventListener("DOMContentLoaded", function () {
+// =====================================================
+// KEN KONVEKSI
+// ADMIN - ADD / EDIT PRODUCT
+// SUPABASE VERSION
+// =====================================================
+
+document.addEventListener("DOMContentLoaded", async function () {
+  // =====================================================
+  // FORM
+  // =====================================================
+
   const form = document.getElementById("productForm");
 
   if (!form) {
@@ -11,10 +21,15 @@ document.addEventListener("DOMContentLoaded", function () {
   // =====================================================
 
   const nameInput = document.getElementById("productName");
+
   const priceInput = document.getElementById("productPrice");
+
   const stockInput = document.getElementById("productStock");
+
   const categoryInput = document.getElementById("productCategory");
+
   const conditionInput = document.getElementById("productCondition");
+
   const descriptionInput = document.getElementById("productDescription");
 
   const productImageInput = document.getElementById("productImage");
@@ -34,42 +49,44 @@ document.addEventListener("DOMContentLoaded", function () {
   const saveButton = document.getElementById("saveProductBtn");
 
   // =====================================================
-  // DATA PRODUK
+  // CEK SUPABASE
   // =====================================================
 
-  let products = JSON.parse(localStorage.getItem("kenProducts")) || [];
+  if (typeof supabaseClient === "undefined") {
+    alert(
+      "Supabase belum terhubung.\n\n" +
+        "Pastikan Supabase CDN dan konfigurasi supabaseClient " +
+        "dipasang sebelum add-product.js.",
+    );
+
+    console.error("supabaseClient tidak ditemukan.");
+
+    return;
+  }
 
   // =====================================================
-  // CEK MODE EDIT
+  // URL EDIT
   // =====================================================
 
   const urlParams = new URLSearchParams(window.location.search);
 
   const editId = urlParams.get("edit");
 
+  // =====================================================
+  // DATA EDIT
+  // =====================================================
+
   let editingProduct = null;
 
   // =====================================================
-  // OUTFIT FILE STORAGE
+  // FOTO OUTFIT BARU
   // =====================================================
-
-  /*
-    Array ini digunakan untuk menyimpan
-    semua foto Outfit yang dipilih.
-
-    Jadi kalau:
-    pilih 1 foto
-    lalu pilih 2 foto lagi
-
-    hasilnya:
-    foto 1 + foto 2 + foto 3
-  */
 
   let selectedOutfitFiles = [];
 
-  /*
-    Foto Outfit lama dari produk ketika EDIT
-  */
+  // =====================================================
+  // FOTO OUTFIT LAMA
+  // =====================================================
 
   let existingOutfitImages = [];
 
@@ -78,11 +95,31 @@ document.addEventListener("DOMContentLoaded", function () {
   // =====================================================
 
   if (editId) {
-    editingProduct = products.find(
-      (product) => String(product.id) === String(editId),
-    );
+    pageTitle.textContent = "Edit Produk";
 
-    if (!editingProduct) {
+    saveButton.textContent = "Simpan Perubahan";
+
+    await loadEditingProduct(editId);
+  }
+
+  // =====================================================
+  // LOAD PRODUK UNTUK EDIT
+  // =====================================================
+
+  async function loadEditingProduct(id) {
+    const { data, error } = await supabaseClient
+      .from("products")
+      .select("*")
+      .eq("id", id)
+      .single();
+
+    // ===================================================
+    // ERROR
+    // ===================================================
+
+    if (error) {
+      console.error("Gagal mengambil produk:", error);
+
       alert("Produk yang ingin diedit tidak ditemukan.");
 
       window.location.href = "products.html";
@@ -90,29 +127,23 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    pageTitle.textContent = "Edit Produk";
+    editingProduct = data;
 
-    saveButton.textContent = "Simpan Perubahan";
+    // ===================================================
+    // DATA DASAR
+    // ===================================================
 
-    loadProductData(editingProduct);
-  }
+    nameInput.value = data.name || "";
 
-  // =====================================================
-  // LOAD DATA PRODUK
-  // =====================================================
+    priceInput.value = Number(data.price) || 0;
 
-  function loadProductData(product) {
-    nameInput.value = product.name || "";
+    stockInput.value = Number(data.stock) || 0;
 
-    priceInput.value = Number(product.price) || 0;
+    categoryInput.value = data.category || "";
 
-    stockInput.value = Number(product.stock) || 0;
+    conditionInput.value = data.condition || "";
 
-    categoryInput.value = product.category || "";
-
-    conditionInput.value = product.condition || "";
-
-    descriptionInput.value = product.description || "";
+    descriptionInput.value = data.description || "";
 
     // ===================================================
     // SIZE
@@ -120,30 +151,47 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const sizeInputs = document.querySelectorAll('input[name="size"]');
 
-    sizeInputs.forEach((input) => {
+    sizeInputs.forEach(function (input) {
       input.checked =
-        Array.isArray(product.sizes) && product.sizes.includes(input.value);
+        Array.isArray(data.sizes) && data.sizes.includes(input.value);
     });
 
     // ===================================================
     // GAMBAR UTAMA
     // ===================================================
 
-    if (product.image && imagePreview) {
+    if (data.image_url && imagePreview) {
       imagePreview.innerHTML = `
         <img
-          src="${product.image}"
-          alt="${product.name}"
+          src="${data.image_url}"
+          alt="${escapeHTML(data.name)}"
         />
       `;
     }
 
     // ===================================================
-    // OUTFIT LAMA
+    // AMBIL FOTO OUTFIT
     // ===================================================
 
-    existingOutfitImages = Array.isArray(product.outfits)
-      ? [...product.outfits]
+    const { data: outfits, error: outfitError } = await supabaseClient
+      .from("product_outfits")
+      .select("*")
+      .eq("product_id", id)
+      .order("created_at", {
+        ascending: true,
+      });
+
+    if (outfitError) {
+      console.error("Gagal mengambil Outfit Wear:", outfitError);
+    }
+
+    existingOutfitImages = Array.isArray(outfits)
+      ? outfits.map(function (item) {
+          return {
+            id: item.id,
+            url: item.image_url,
+          };
+        })
       : [];
 
     renderOutfitPreview();
@@ -178,7 +226,7 @@ document.addEventListener("DOMContentLoaded", function () {
       categoryImagePreview.innerHTML = `
         <img
           src="${categoryImages[category]}"
-          alt="${category}"
+          alt="${escapeHTML(category)}"
         />
       `;
     } else {
@@ -193,13 +241,21 @@ document.addEventListener("DOMContentLoaded", function () {
   categoryInput.addEventListener("change", updateCategoryPreview);
 
   // =====================================================
-  // FOTO PRODUK UTAMA
+  // GAMBAR PRODUK UTAMA - PREVIEW
   // =====================================================
 
   productImageInput.addEventListener("change", function () {
     const file = productImageInput.files[0];
 
     if (!file) {
+      return;
+    }
+
+    if (!file.type.startsWith("image/")) {
+      alert("File gambar utama harus berupa gambar.");
+
+      productImageInput.value = "";
+
       return;
     }
 
@@ -218,7 +274,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // =====================================================
-  // FOTO OUTFIT
+  // OUTFIT FILE
   // =====================================================
 
   outfitImagesInput.addEventListener("change", function () {
@@ -228,13 +284,25 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    /*
-        Jumlah total:
+    // =================================================
+    // VALIDASI FILE
+    // =================================================
 
-        Foto lama
-        +
-        Foto baru
-      */
+    const invalidFile = newFiles.find(function (file) {
+      return !file.type.startsWith("image/");
+    });
+
+    if (invalidFile) {
+      alert("Semua file Outfit Wear harus berupa gambar.");
+
+      outfitImagesInput.value = "";
+
+      return;
+    }
+
+    // =================================================
+    // TOTAL FOTO
+    // =================================================
 
     const totalFiles =
       existingOutfitImages.length +
@@ -242,7 +310,7 @@ document.addEventListener("DOMContentLoaded", function () {
       newFiles.length;
 
     // =================================================
-    // CEK MAKSIMAL 10
+    // MAX 10
     // =================================================
 
     if (totalFiles > 10) {
@@ -253,14 +321,13 @@ document.addEventListener("DOMContentLoaded", function () {
           } foto.`,
       );
 
-      // Reset input
       outfitImagesInput.value = "";
 
       return;
     }
 
     // =================================================
-    // TAMBAHKAN FILE BARU
+    // TAMBAHKAN
     // =================================================
 
     selectedOutfitFiles.push(...newFiles);
@@ -269,28 +336,17 @@ document.addEventListener("DOMContentLoaded", function () {
     // RESET INPUT
     // =================================================
 
-    /*
-        Ini penting.
-
-        Setelah memilih foto,
-        input dikosongkan kembali.
-
-        Dengan begitu kamu bisa
-        membuka file picker lagi
-        dan memilih foto tambahan.
-      */
-
     outfitImagesInput.value = "";
 
     // =================================================
-    // UPDATE PREVIEW
+    // PREVIEW
     // =================================================
 
     renderOutfitPreview();
   });
 
   // =====================================================
-  // RENDER OUTFIT PREVIEW
+  // RENDER OUTFIT
   // =====================================================
 
   function renderOutfitPreview() {
@@ -301,7 +357,7 @@ document.addEventListener("DOMContentLoaded", function () {
     outfitPreview.innerHTML = "";
 
     // ===================================================
-    // TOTAL FOTO
+    // TOTAL
     // ===================================================
 
     const totalCount = existingOutfitImages.length + selectedOutfitFiles.length;
@@ -323,14 +379,14 @@ document.addEventListener("DOMContentLoaded", function () {
     // FOTO LAMA
     // ===================================================
 
-    existingOutfitImages.forEach(function (image, index) {
-      const item = document.createElement("div");
+    existingOutfitImages.forEach(function (item, index) {
+      const element = document.createElement("div");
 
-      item.className = "outfit-preview-item";
+      element.className = "outfit-preview-item";
 
-      item.innerHTML = `
+      element.innerHTML = `
           <img
-            src="${image}"
+            src="${item.url}"
             alt="Outfit ${index + 1}"
           />
 
@@ -344,7 +400,7 @@ document.addEventListener("DOMContentLoaded", function () {
           </button>
         `;
 
-      outfitPreview.appendChild(item);
+      outfitPreview.appendChild(element);
     });
 
     // ===================================================
@@ -355,11 +411,11 @@ document.addEventListener("DOMContentLoaded", function () {
       const reader = new FileReader();
 
       reader.onload = function (event) {
-        const item = document.createElement("div");
+        const element = document.createElement("div");
 
-        item.className = "outfit-preview-item";
+        element.className = "outfit-preview-item";
 
-        item.innerHTML = `
+        element.innerHTML = `
               <img
                 src="${event.target.result}"
                 alt="Outfit Baru ${index + 1}"
@@ -375,9 +431,7 @@ document.addEventListener("DOMContentLoaded", function () {
               </button>
             `;
 
-        outfitPreview.appendChild(item);
-
-        updateOutfitMessage();
+        outfitPreview.appendChild(element);
       };
 
       reader.readAsDataURL(file);
@@ -387,7 +441,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // =====================================================
-  // UPDATE OUTFIT MESSAGE
+  // UPDATE MESSAGE
   // =====================================================
 
   function updateOutfitMessage() {
@@ -420,17 +474,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const index = Number(button.dataset.index);
 
-    // =================================================
-    // HAPUS FOTO LAMA
-    // =================================================
+    // ===============================================
+    // FOTO LAMA
+    // ===============================================
 
     if (type === "existing") {
+      const confirmDelete = confirm("Hapus foto Outfit Wear ini?");
+
+      if (!confirmDelete) {
+        return;
+      }
+
       existingOutfitImages.splice(index, 1);
     }
 
-    // =================================================
-    // HAPUS FOTO BARU
-    // =================================================
+    // ===============================================
+    // FOTO BARU
+    // ===============================================
 
     if (type === "new") {
       selectedOutfitFiles.splice(index, 1);
@@ -447,235 +507,398 @@ document.addEventListener("DOMContentLoaded", function () {
     event.preventDefault();
 
     // =================================================
-    // DATA FORM
+    // DISABLE BUTTON
     // =================================================
 
-    const name = nameInput.value.trim();
+    saveButton.disabled = true;
 
-    const price = Number(priceInput.value);
+    saveButton.textContent = "Menyimpan...";
 
-    const stock = Number(stockInput.value);
+    try {
+      // ===============================================
+      // DATA FORM
+      // ===============================================
 
-    const category = categoryInput.value;
+      const name = nameInput.value.trim();
 
-    const condition = conditionInput.value;
+      const price = Number(priceInput.value);
 
-    const description = descriptionInput.value.trim();
+      const stock = Number(stockInput.value);
 
-    // =================================================
-    // VALIDASI NAMA
-    // =================================================
+      const category = categoryInput.value;
 
-    if (!name) {
-      alert("Nama produk wajib diisi.");
+      const condition = conditionInput.value;
 
-      nameInput.focus();
+      const description = descriptionInput.value.trim();
 
-      return;
-    }
+      // ===============================================
+      // VALIDASI
+      // ===============================================
 
-    // =================================================
-    // VALIDASI HARGA
-    // =================================================
+      if (!name) {
+        alert("Nama produk wajib diisi.");
 
-    if (!Number.isFinite(price) || price < 0) {
-      alert("Harga produk tidak valid.");
-
-      priceInput.focus();
-
-      return;
-    }
-
-    // =================================================
-    // VALIDASI STOK
-    // =================================================
-
-    if (!Number.isFinite(stock) || stock < 0) {
-      alert("Stok produk tidak valid.");
-
-      stockInput.focus();
-
-      return;
-    }
-
-    // =================================================
-    // SIZE
-    // =================================================
-
-    const selectedSizes = Array.from(
-      document.querySelectorAll('input[name="size"]:checked'),
-    ).map((input) => input.value);
-
-    if (selectedSizes.length === 0) {
-      alert("Pilih minimal satu ukuran.");
-
-      return;
-    }
-
-    // =================================================
-    // GAMBAR UTAMA
-    // =================================================
-
-    let mainImage = editingProduct?.image || "";
-
-    if (productImageInput.files.length > 0) {
-      mainImage = await fileToBase64(productImageInput.files[0]);
-    }
-
-    // =================================================
-    // OUTFIT
-    // =================================================
-
-    let outfitImages = [...existingOutfitImages];
-
-    // =================================================
-    // KONVERSI FOTO BARU
-    // =================================================
-
-    if (selectedOutfitFiles.length > 0) {
-      const newOutfitImages = await Promise.all(
-        selectedOutfitFiles.map((file) => fileToBase64(file)),
-      );
-
-      outfitImages.push(...newOutfitImages);
-    }
-
-    // =================================================
-    // CEK FINAL MAKSIMAL 10
-    // =================================================
-
-    if (outfitImages.length > 10) {
-      alert("Maksimal 10 foto Outfit Wear.");
-
-      return;
-    }
-
-    // =================================================
-    // UPDATE PRODUK
-    // =================================================
-
-    if (editingProduct) {
-      const index = products.findIndex(
-        (product) => String(product.id) === String(editingProduct.id),
-      );
-
-      if (index === -1) {
-        alert("Produk tidak ditemukan.");
+        nameInput.focus();
 
         return;
       }
 
-      products[index] = {
-        ...products[index],
+      if (!Number.isFinite(price) || price < 0) {
+        alert("Harga produk tidak valid.");
 
-        name: name,
+        priceInput.focus();
 
-        price: price,
+        return;
+      }
 
-        stock: stock,
+      if (!Number.isFinite(stock) || stock < 0) {
+        alert("Stok produk tidak valid.");
 
-        category: category,
+        stockInput.focus();
 
-        condition: condition,
+        return;
+      }
 
-        sizes: selectedSizes,
+      // ===============================================
+      // SIZE
+      // ===============================================
 
-        description: description,
+      const selectedSizes = Array.from(
+        document.querySelectorAll('input[name="size"]:checked'),
+      ).map(function (input) {
+        return input.value;
+      });
 
-        image: mainImage,
+      if (selectedSizes.length === 0) {
+        alert("Pilih minimal satu ukuran.");
 
-        outfits: outfitImages,
-      };
+        return;
+      }
 
-      console.log("PRODUK DIUPDATE:", products[index]);
+      // ===============================================
+      // ID PRODUK
+      // ===============================================
+
+      let productId = editingProduct ? editingProduct.id : null;
+
+      // ===============================================
+      // GAMBAR UTAMA
+      // ===============================================
+
+      let imageUrl = editingProduct?.image_url || null;
+
+      // ===============================================
+      // UPLOAD GAMBAR UTAMA
+      // ===============================================
+
+      if (productImageInput.files.length > 0) {
+        const mainFile = productImageInput.files[0];
+
+        const extension = getFileExtension(mainFile.name);
+
+        const fileName = `main-${Date.now()}-${randomString(8)}.${extension}`;
+
+        const filePath = `${productId || "new"}/${fileName}`;
+
+        console.log("Upload gambar utama:", filePath);
+
+        const { error: uploadError } = await supabaseClient.storage
+          .from("products")
+          .upload(filePath, mainFile, {
+            cacheControl: "3600",
+
+            upsert: false,
+          });
+
+        if (uploadError) {
+          console.error("Upload gambar utama gagal:", uploadError);
+
+          throw new Error("Gagal upload gambar utama: " + uploadError.message);
+        }
+
+        imageUrl = getPublicUrl(filePath);
+
+        console.log("URL gambar utama:", imageUrl);
+      }
+
+      // ===============================================
+      // SIMPAN / UPDATE DATABASE
+      // ===============================================
+
+      let savedProduct;
+
+      // ===============================================
+      // UPDATE
+      // ===============================================
+
+      if (editingProduct) {
+        const { data, error } = await supabaseClient
+          .from("products")
+          .update({
+            name: name,
+
+            price: price,
+
+            stock: stock,
+
+            category: category,
+
+            condition: condition,
+
+            sizes: selectedSizes,
+
+            description: description,
+
+            image_url: imageUrl,
+          })
+          .eq("id", editingProduct.id)
+          .select()
+          .single();
+
+        if (error) {
+          console.error("Update produk gagal:", error);
+
+          throw new Error("Gagal memperbarui produk: " + error.message);
+        }
+
+        savedProduct = data;
+
+        productId = data.id;
+      }
+
+      // ===============================================
+      // TAMBAH BARU
+      // ===============================================
+      else {
+        const { data, error } = await supabaseClient
+          .from("products")
+          .insert({
+            name: name,
+
+            price: price,
+
+            stock: stock,
+
+            category: category,
+
+            condition: condition,
+
+            sizes: selectedSizes,
+
+            description: description,
+
+            image_url: imageUrl,
+          })
+          .select()
+          .single();
+
+        if (error) {
+          console.error("Tambah produk gagal:", error);
+
+          throw new Error("Gagal menambahkan produk: " + error.message);
+        }
+
+        savedProduct = data;
+
+        productId = data.id;
+      }
+
+      // ===============================================
+      // JIKA GAMBAR UTAMA PRODUK BARU
+      // ===============================================
+
+      /*
+          Untuk produk baru:
+          sebelumnya kita upload ke folder "new".
+
+          Supabase sudah memberikan ID setelah insert.
+
+          Kita tidak perlu memindahkan file.
+          URL tetap valid.
+        */
+
+      // ===============================================
+      // FOTO OUTFIT
+      // ===============================================
+
+      // ===============================================
+      // HAPUS DATA OUTFIT LAMA YANG DIHAPUS
+      // ===============================================
+
+      if (editingProduct) {
+        const keptIds = existingOutfitImages.map(function (item) {
+          return item.id;
+        });
+
+        const { data: oldOutfits, error: oldOutfitError } = await supabaseClient
+          .from("product_outfits")
+          .select("id")
+          .eq("product_id", productId);
+
+        if (oldOutfitError) {
+          console.error("Gagal mengambil Outfit lama:", oldOutfitError);
+        } else {
+          const deletedOutfits = oldOutfits.filter(function (item) {
+            return !keptIds.includes(item.id);
+          });
+
+          for (const outfit of deletedOutfits) {
+            const { error: deleteError } = await supabaseClient
+              .from("product_outfits")
+              .delete()
+              .eq("id", outfit.id);
+
+            if (deleteError) {
+              console.error("Gagal menghapus Outfit:", deleteError);
+            }
+          }
+        }
+      }
+
+      // ===============================================
+      // UPLOAD FOTO OUTFIT BARU
+      // ===============================================
+
+      for (const file of selectedOutfitFiles) {
+        const extension = getFileExtension(file.name);
+
+        const fileName = `outfit-${Date.now()}-${randomString(8)}.${extension}`;
+
+        const filePath = `${productId}/${fileName}`;
+
+        console.log("Upload Outfit:", filePath);
+
+        // =============================================
+        // STORAGE
+        // =============================================
+
+        const { error: uploadError } = await supabaseClient.storage
+          .from("products")
+          .upload(filePath, file, {
+            cacheControl: "3600",
+
+            upsert: false,
+          });
+
+        if (uploadError) {
+          console.error("Upload Outfit gagal:", uploadError);
+
+          throw new Error(
+            "Gagal upload foto Outfit Wear: " + uploadError.message,
+          );
+        }
+
+        // =============================================
+        // URL
+        // =============================================
+
+        const outfitUrl = getPublicUrl(filePath);
+
+        // =============================================
+        // DATABASE
+        // =============================================
+
+        const { error: outfitInsertError } = await supabaseClient
+          .from("product_outfits")
+          .insert({
+            product_id: productId,
+
+            image_url: outfitUrl,
+          });
+
+        if (outfitInsertError) {
+          console.error("Gagal menyimpan Outfit:", outfitInsertError);
+
+          throw new Error(
+            "Gagal menyimpan data Outfit Wear: " + outfitInsertError.message,
+          );
+        }
+      }
+
+      // ===============================================
+      // BERHASIL
+      // ===============================================
+
+      console.log("Produk berhasil disimpan:", savedProduct);
+
+      alert(
+        editingProduct
+          ? "Produk berhasil diperbarui!"
+          : "Produk berhasil ditambahkan!",
+      );
+
+      window.location.href = "products.html";
+    } catch (error) {
+      console.error("ERROR:", error);
+
+      alert("Terjadi kesalahan:\n\n" + error.message);
+    } finally {
+      saveButton.disabled = false;
+
+      saveButton.textContent = editingProduct
+        ? "Simpan Perubahan"
+        : "Simpan Produk";
     }
-
-    // =================================================
-    // TAMBAH PRODUK BARU
-    // =================================================
-    else {
-      const newProduct = {
-        id: "product-" + Date.now(),
-
-        name: name,
-
-        price: price,
-
-        stock: stock,
-
-        category: category,
-
-        condition: condition,
-
-        sizes: selectedSizes,
-
-        description: description,
-
-        image: mainImage,
-
-        outfits: outfitImages,
-
-        createdAt: new Date().toISOString(),
-      };
-
-      products.push(newProduct);
-
-      console.log("PRODUK BARU:", newProduct);
-    }
-
-    // =================================================
-    // SIMPAN
-    // =================================================
-
-    localStorage.setItem("kenProducts", JSON.stringify(products));
-
-    // =================================================
-    // VERIFIKASI
-    // =================================================
-
-    const savedProducts = JSON.parse(localStorage.getItem("kenProducts")) || [];
-
-    const savedProduct = savedProducts.find(
-      (product) => String(product.id) === String(editingProduct?.id),
-    );
-
-    if (editingProduct && savedProduct) {
-      console.log("Harga setelah disimpan:", savedProduct.price);
-
-      console.log("Jumlah Outfit:", savedProduct.outfits?.length || 0);
-    }
-
-    // =================================================
-    // SELESAI
-    // =================================================
-
-    alert(
-      editingProduct
-        ? "Produk berhasil diperbarui!"
-        : "Produk berhasil ditambahkan!",
-    );
-
-    window.location.href = "products.html";
   });
 
   // =====================================================
-  // FILE → BASE64
+  // PUBLIC URL
   // =====================================================
 
-  function fileToBase64(file) {
-    return new Promise(function (resolve, reject) {
-      const reader = new FileReader();
+  function getPublicUrl(filePath) {
+    const { data } = supabaseClient.storage
+      .from("products")
+      .getPublicUrl(filePath);
 
-      reader.onload = function () {
-        resolve(reader.result);
-      };
+    return data.publicUrl;
+  }
 
-      reader.onerror = function () {
-        reject(new Error("Gagal membaca file."));
-      };
+  // =====================================================
+  // FILE EXTENSION
+  // =====================================================
 
-      reader.readAsDataURL(file);
-    });
+  function getFileExtension(filename) {
+    const parts = filename.split(".");
+
+    if (parts.length < 2) {
+      return "jpg";
+    }
+
+    return (
+      parts
+        .pop()
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, "") || "jpg"
+    );
+  }
+
+  // =====================================================
+  // RANDOM STRING
+  // =====================================================
+
+  function randomString(length) {
+    const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+
+    let result = "";
+
+    for (let i = 0; i < length; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+
+    return result;
+  }
+
+  // =====================================================
+  // ESCAPE HTML
+  // =====================================================
+
+  function escapeHTML(value) {
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
   }
 
   // =====================================================

@@ -11,7 +11,9 @@
   </head>
 
   <body>
-    <!-- SIDEBAR -->
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
 
     <aside class="sidebar">
       <div class="admin-logo">
@@ -34,10 +36,12 @@
       </div>
     </aside>
 
-    <!-- MAIN -->
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
 
     <main class="admin-main">
-      <!-- TOP -->
+      <!-- HEADER -->
 
       <header class="admin-header">
         <div>
@@ -49,7 +53,9 @@
         <div class="admin-user">Admin</div>
       </header>
 
-      <!-- STATISTICS -->
+      <!-- =====================================================
+           STATISTICS
+      ====================================================== -->
 
       <section class="stats-grid">
         <div class="stat-card">
@@ -77,7 +83,9 @@
         </div>
       </section>
 
-      <!-- RECENT ORDERS -->
+      <!-- =====================================================
+           PESANAN TERBARU
+      ====================================================== -->
 
       <section class="dashboard-section">
         <div class="section-heading">
@@ -90,10 +98,320 @@
           <a href="orders.html"> Lihat Semua → </a>
         </div>
 
-        <div id="recentOrders" class="recent-orders"></div>
+        <div id="recentOrders" class="recent-orders">
+          <div class="admin-empty">Memuat pesanan...</div>
+        </div>
       </section>
     </main>
 
-    <script src="../js/admin.js"></script>
+    <!-- =====================================================
+         SUPABASE
+    ====================================================== -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+      /* =====================================================
+         SUPABASE CONFIG
+      ===================================================== */
+
+      const SUPABASE_URL = "https://zdpkanqgwlmbrkanyrjo.supabase.co";
+
+      const SUPABASE_KEY = "sb_publishable_olOOWAKiJRqq--6seYsA5Q_mOjo2CF7";
+
+      const supabaseClient = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY,
+      );
+
+      /* =====================================================
+         ELEMENT
+      ===================================================== */
+
+      const totalOrders = document.getElementById("totalOrders");
+
+      const waitingOrders = document.getElementById("waitingOrders");
+
+      const processOrders = document.getElementById("processOrders");
+
+      const totalSales = document.getElementById("totalSales");
+
+      const recentOrders = document.getElementById("recentOrders");
+
+      /* =====================================================
+         RUPIAH
+      ===================================================== */
+
+      function formatRupiah(number) {
+        return new Intl.NumberFormat("id-ID", {
+          style: "currency",
+          currency: "IDR",
+          maximumFractionDigits: 0,
+        }).format(Number(number) || 0);
+      }
+
+      /* =====================================================
+         DATE
+      ===================================================== */
+
+      function formatDate(date) {
+        if (!date) {
+          return "-";
+        }
+
+        const d = new Date(date);
+
+        return (
+          d.toLocaleDateString("id-ID", {
+            day: "2-digit",
+            month: "long",
+            year: "numeric",
+          }) +
+          " pukul " +
+          d.toLocaleTimeString("id-ID", {
+            hour: "2-digit",
+            minute: "2-digit",
+          })
+        );
+      }
+
+      /* =====================================================
+         ESCAPE HTML
+      ===================================================== */
+
+      function escapeHTML(value) {
+        return String(value || "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      /* =====================================================
+         STATUS CLASS
+      ===================================================== */
+
+      function statusClass(status) {
+        if (status === "Menunggu Pembayaran") {
+          return "waiting";
+        }
+
+        if (status === "Diproses") {
+          return "process";
+        }
+
+        if (status === "Dikirim") {
+          return "shipped";
+        }
+
+        if (status === "Selesai") {
+          return "complete";
+        }
+
+        if (status === "Dibatalkan") {
+          return "cancel";
+        }
+
+        return "";
+      }
+
+      /* =====================================================
+         LOAD ORDERS
+      ===================================================== */
+
+      async function loadDashboard() {
+        console.log("KEN KONVEKSI Dashboard mulai...");
+
+        recentOrders.innerHTML = `
+          <div class="admin-empty">
+            Memuat pesanan...
+          </div>
+        `;
+
+        try {
+          /* =================================================
+             AMBIL ORDERS DARI SUPABASE
+          ================================================= */
+
+          const result = await supabaseClient
+            .from("orders")
+            .select("*")
+            .order("created_at", {
+              ascending: false,
+            });
+
+          const orders = result.data;
+
+          const error = result.error;
+
+          /* =================================================
+             ERROR
+          ================================================= */
+
+          if (error) {
+            console.error("ERROR SUPABASE:", error);
+
+            recentOrders.innerHTML = `
+              <div class="admin-empty">
+
+                <strong>
+                  Gagal memuat pesanan
+                </strong>
+
+                <br><br>
+
+                ${escapeHTML(error.message)}
+
+              </div>
+            `;
+
+            return;
+          }
+
+          console.log("PESANAN DARI SUPABASE:", orders);
+
+          /* =================================================
+             CEK DATA
+          ================================================= */
+
+          const orderList = Array.isArray(orders) ? orders : [];
+
+          /* =================================================
+             TOTAL PESANAN
+          ================================================= */
+
+          totalOrders.textContent = orderList.length;
+
+          /* =================================================
+             MENUNGGU PEMBAYARAN
+          ================================================= */
+
+          waitingOrders.textContent = orderList.filter(function (order) {
+            return order.status === "Menunggu Pembayaran";
+          }).length;
+
+          /* =================================================
+             DIPROSES
+          ================================================= */
+
+          processOrders.textContent = orderList.filter(function (order) {
+            return order.status === "Diproses";
+          }).length;
+
+          /* =================================================
+             TOTAL PENJUALAN
+          ================================================= */
+
+          let sales = 0;
+
+          orderList.forEach(function (order) {
+            if (order.status !== "Dibatalkan") {
+              sales += Number(order.total) || 0;
+            }
+          });
+
+          totalSales.textContent = formatRupiah(sales);
+
+          /* =================================================
+             JIKA KOSONG
+          ================================================= */
+
+          if (orderList.length === 0) {
+            recentOrders.innerHTML = `
+              <div class="admin-empty">
+                Belum ada pesanan.
+              </div>
+            `;
+
+            return;
+          }
+
+          /* =================================================
+             5 PESANAN TERBARU
+          ================================================= */
+
+          const latestOrders = orderList.slice(0, 5);
+
+          recentOrders.innerHTML = latestOrders
+            .map(function (order) {
+              const id = String(order.id || "");
+
+              const shortId = id.length > 18 ? id.substring(0, 18) + "..." : id;
+
+              const customer = order.customer_name || "Pembeli";
+
+              const status = order.status || "Menunggu Pembayaran";
+
+              const total = formatRupiah(order.total);
+
+              return `
+
+                    <div class="recent-order">
+
+                      <div
+                        class="recent-order-info"
+                      >
+
+                        <strong>
+                          ${escapeHTML(shortId)}
+                        </strong>
+
+                        <span>
+                          ${escapeHTML(customer)}
+                        </span>
+
+                        <small>
+                          ${formatDate(order.created_at)}
+                        </small>
+
+                      </div>
+
+
+                      <span
+                        class="order-status ${statusClass(status)}"
+                      >
+                        ${escapeHTML(status)}
+                      </span>
+
+
+                      <strong
+                        class="recent-order-total"
+                      >
+                        ${total}
+                      </strong>
+
+                    </div>
+
+                  `;
+            })
+            .join("");
+        } catch (error) {
+          console.error("DASHBOARD ERROR:", error);
+
+          recentOrders.innerHTML = `
+
+            <div class="admin-empty">
+
+              <strong>
+                Terjadi kesalahan
+              </strong>
+
+              <br><br>
+
+              ${escapeHTML(error.message)}
+
+            </div>
+
+          `;
+        }
+      }
+
+      /* =====================================================
+         JALANKAN DASHBOARD
+      ===================================================== */
+
+      loadDashboard();
+    </script>
   </body>
 </html>

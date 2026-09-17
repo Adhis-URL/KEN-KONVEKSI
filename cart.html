@@ -30,7 +30,7 @@
         </nav>
 
         <div class="nav-actions">
-          <button class="search-btn">🔍</button>
+          <button class="search-btn" type="button">🔍</button>
 
           <a href="cart.html" class="cart-btn">
             🛒
@@ -44,8 +44,6 @@
     <!-- ================= CART ================= -->
 
     <main class="cart-page">
-      <!-- TITLE -->
-
       <div class="cart-header">
         <span> SHOPPING BAG </span>
 
@@ -54,10 +52,8 @@
         <p>Periksa kembali produk sebelum melanjutkan ke checkout.</p>
       </div>
 
-      <!-- CART CONTENT -->
-
       <div class="cart-layout">
-        <!-- ================= LEFT ================= -->
+        <!-- LEFT -->
 
         <section class="cart-items-section">
           <div class="cart-items-header">
@@ -70,11 +66,7 @@
             <span> Subtotal </span>
           </div>
 
-          <!-- ITEMS AKAN DIISI JAVASCRIPT -->
-
           <div id="cartItems"></div>
-
-          <!-- EMPTY CART -->
 
           <div id="emptyCart" class="empty-cart">
             <div class="empty-icon">🛒</div>
@@ -87,7 +79,7 @@
           </div>
         </section>
 
-        <!-- ================= RIGHT ================= -->
+        <!-- RIGHT -->
 
         <aside class="cart-summary">
           <h2>Ringkasan Belanja</h2>
@@ -118,7 +110,7 @@
             <strong id="grandTotal"> Rp0 </strong>
           </div>
 
-          <button id="checkoutBtn" class="checkout-btn">
+          <button id="checkoutBtn" class="checkout-btn" type="button">
             Lanjut ke Checkout
           </button>
 
@@ -148,6 +140,23 @@
 
       <div class="copyright">© 2026 KEN KONVEKSI</div>
     </footer>
+
+    <!-- ================= SUPABASE ================= -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+      const SUPABASE_URL = "https://zdpkanqgwlmbrkanyrjo.supabase.co";
+
+      const SUPABASE_KEY = "sb_publishable_olOOWAKiJRqq--6seYsA5Q_mOjo2CF7";
+
+      const supabaseClient = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY,
+      );
+    </script>
+
+    <!-- ================= CART JS ================= -->
 
     <script src="js/cart.js"></script>
   </body>

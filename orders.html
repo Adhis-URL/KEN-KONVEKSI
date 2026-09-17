@@ -12,19 +12,17 @@
   </head>
 
   <body>
-    <!-- NAVBAR -->
+    <!-- ================= NAVBAR ================= -->
+
     <header class="navbar">
       <div class="nav-container">
         <a href="index.html" class="logo"> KEN KONVEKSI </a>
 
         <nav class="nav-menu">
-          <a href="index.html"> Home </a>
-
-          <a href="catalog.html"> Catalog </a>
-
-          <a href="#"> Outfit </a>
-
-          <a href="#"> About </a>
+          <a href="index.html">Home</a>
+          <a href="catalog.html">Catalog</a>
+          <a href="#">Outfit</a>
+          <a href="#">About</a>
         </nav>
 
         <div class="nav-actions">
@@ -36,7 +34,8 @@
       </div>
     </header>
 
-    <!-- ORDERS -->
+    <!-- ================= ORDERS ================= -->
+
     <main class="orders-page">
       <div class="orders-header">
         <span>ACCOUNT</span>
@@ -46,31 +45,55 @@
         <p>Lihat semua pesanan kamu di KEN KONVEKSI.</p>
       </div>
 
-      <!-- FILTER -->
+      <!-- ================= FILTER ================= -->
 
       <div class="order-filter">
-        <button class="filter-btn active" data-status="all">Semua</button>
+        <button class="filter-btn active" data-status="all" type="button">
+          Semua
+        </button>
 
-        <button class="filter-btn" data-status="Menunggu Pembayaran">
+        <button
+          class="filter-btn"
+          data-status="Menunggu Pembayaran"
+          type="button"
+        >
           Menunggu Pembayaran
         </button>
 
-        <button class="filter-btn" data-status="Diproses">Diproses</button>
+        <button class="filter-btn" data-status="Diproses" type="button">
+          Diproses
+        </button>
 
-        <button class="filter-btn" data-status="Dikirim">Dikirim</button>
+        <button class="filter-btn" data-status="Dikirim" type="button">
+          Dikirim
+        </button>
 
-        <button class="filter-btn" data-status="Selesai">Selesai</button>
+        <button class="filter-btn" data-status="Selesai" type="button">
+          Selesai
+        </button>
 
-        <button class="filter-btn" data-status="Dibatalkan">Dibatalkan</button>
+        <button class="filter-btn" data-status="Dibatalkan" type="button">
+          Dibatalkan
+        </button>
       </div>
 
-      <!-- LIST PESANAN -->
+      <!-- ================= LIST PESANAN ================= -->
 
       <section id="ordersList" class="orders-list"></section>
 
-      <!-- KOSONG -->
+      <!-- ================= LOADING ================= -->
 
-      <section id="emptyOrders" class="empty-orders">
+      <section id="loadingOrders" class="empty-orders">
+        <div class="empty-order-icon">⏳</div>
+
+        <h2>Memuat pesanan...</h2>
+
+        <p>Tunggu sebentar.</p>
+      </section>
+
+      <!-- ================= KOSONG ================= -->
+
+      <section id="emptyOrders" class="empty-orders" style="display: none">
         <div class="empty-order-icon">📦</div>
 
         <h2>Belum ada pesanan</h2>
@@ -81,7 +104,7 @@
       </section>
     </main>
 
-    <!-- FOOTER -->
+    <!-- ================= FOOTER ================= -->
 
     <footer>
       <div class="footer-container">
@@ -102,6 +125,25 @@
 
       <div class="copyright">© 2026 KEN KONVEKSI</div>
     </footer>
+
+    <!-- ================================================= -->
+    <!-- SUPABASE - CUKUP SATU KALI -->
+    <!-- ================================================= -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+      const SUPABASE_URL = "https://zdpkanqgwlmbrkanyrjo.supabase.co";
+
+      const SUPABASE_KEY = "sb_publishable_olOOWAKiJRqq--6seYsA5Q_mOjo2CF7";
+
+      const supabaseClient = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY,
+      );
+    </script>
+
+    <!-- ================= ORDERS JS ================= -->
 
     <script src="js/orders.js"></script>
   </body>

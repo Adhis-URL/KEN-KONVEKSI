@@ -1,0 +1,367 @@
+/* =====================================================
+   KEN KONVEKSI
+   ADMIN LOGIN
+===================================================== */
+
+/* =====================================================
+   RESET
+===================================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+
+  box-sizing: border-box;
+}
+
+/* =====================================================
+   BODY
+===================================================== */
+
+body {
+  min-height: 100vh;
+
+  font-family: Arial, Helvetica, sans-serif;
+
+  background: linear-gradient(135deg, #111 0%, #222 50%, #111 100%);
+
+  color: #111;
+}
+
+/* =====================================================
+   LOGIN PAGE
+===================================================== */
+
+.login-page {
+  min-height: 100vh;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 30px 20px;
+}
+
+/* =====================================================
+   LOGIN CONTAINER
+===================================================== */
+
+.login-container {
+  width: 100%;
+
+  max-width: 440px;
+
+  padding: 50px 45px;
+
+  background: #fff;
+
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.35);
+}
+
+/* =====================================================
+   LOGO
+===================================================== */
+
+.login-logo {
+  margin-bottom: 18px;
+
+  font-size: 25px;
+
+  font-weight: 800;
+
+  letter-spacing: 2px;
+
+  color: #111;
+}
+
+.login-logo span {
+  font-weight: 400;
+
+  color: #777;
+}
+
+/* =====================================================
+   LABEL
+===================================================== */
+
+.login-label {
+  margin-bottom: 12px;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: 3px;
+
+  color: #999;
+}
+
+/* =====================================================
+   TITLE
+===================================================== */
+
+.login-container h1 {
+  margin-bottom: 12px;
+
+  font-size: 34px;
+
+  font-weight: 700;
+
+  letter-spacing: -1px;
+
+  color: #111;
+}
+
+/* =====================================================
+   DESCRIPTION
+===================================================== */
+
+.login-description {
+  margin-bottom: 35px;
+
+  font-size: 13px;
+
+  line-height: 1.7;
+
+  color: #777;
+}
+
+/* =====================================================
+   FORM GROUP
+===================================================== */
+
+.form-group {
+  margin-bottom: 22px;
+}
+
+/* =====================================================
+   LABEL
+===================================================== */
+
+.form-group label {
+  display: block;
+
+  margin-bottom: 9px;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.5px;
+
+  color: #333;
+}
+
+/* =====================================================
+   INPUT
+===================================================== */
+
+.form-group input {
+  width: 100%;
+
+  height: 50px;
+
+  padding: 0 15px;
+
+  border: 1px solid #ddd;
+
+  outline: none;
+
+  background: #fafafa;
+
+  color: #111;
+
+  font-size: 13px;
+
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease;
+}
+
+.form-group input:focus {
+  border-color: #111;
+
+  background: #fff;
+}
+
+.form-group input::placeholder {
+  color: #aaa;
+}
+
+/* =====================================================
+   PASSWORD WRAPPER
+===================================================== */
+
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper input {
+  padding-right: 65px;
+}
+
+/* =====================================================
+   TOGGLE PASSWORD
+===================================================== */
+
+.toggle-password {
+  position: absolute;
+
+  top: 50%;
+
+  right: 14px;
+
+  transform: translateY(-50%);
+
+  border: none;
+
+  background: transparent;
+
+  color: #777;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: 1px;
+
+  cursor: pointer;
+}
+
+.toggle-password:hover {
+  color: #111;
+}
+
+/* =====================================================
+   ERROR
+===================================================== */
+
+.login-error {
+  margin-bottom: 18px;
+
+  padding: 12px 14px;
+
+  border: 1px solid #e2bcbc;
+
+  background: #fff5f5;
+
+  color: #a33;
+
+  font-size: 11px;
+
+  line-height: 1.5;
+}
+
+.login-error[hidden] {
+  display: none;
+}
+
+/* =====================================================
+   LOGIN BUTTON
+===================================================== */
+
+.login-button {
+  width: 100%;
+
+  height: 52px;
+
+  border: none;
+
+  background: #111;
+
+  color: #fff;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  letter-spacing: 2px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.25s ease,
+    transform 0.25s ease;
+}
+
+.login-button:hover {
+  background: #333;
+
+  transform: translateY(-1px);
+}
+
+.login-button:active {
+  transform: translateY(0);
+}
+
+.login-button:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+/* =====================================================
+   BACK HOME
+===================================================== */
+
+.back-home {
+  display: block;
+
+  margin-top: 28px;
+
+  text-align: center;
+
+  color: #777;
+
+  font-size: 11px;
+
+  text-decoration: none;
+
+  transition: color 0.2s ease;
+}
+
+.back-home:hover {
+  color: #111;
+}
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.login-footer {
+  margin-top: 35px;
+
+  padding-top: 20px;
+
+  border-top: 1px solid #eee;
+
+  text-align: center;
+
+  font-size: 9px;
+
+  letter-spacing: 1px;
+
+  color: #aaa;
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 500px) {
+  .login-page {
+    padding: 20px 15px;
+  }
+
+  .login-container {
+    padding: 40px 25px;
+  }
+
+  .login-container h1 {
+    font-size: 29px;
+  }
+}

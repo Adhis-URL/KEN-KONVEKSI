@@ -42,8 +42,6 @@
     <!-- ================= CHECKOUT ================= -->
 
     <main class="checkout-page">
-      <!-- HEADER -->
-
       <div class="checkout-header">
         <span> ORDER </span>
 
@@ -52,19 +50,15 @@
         <p>Lengkapi informasi untuk menyelesaikan pembelian kamu.</p>
       </div>
 
-      <!-- CHECKOUT LAYOUT -->
-
       <div class="checkout-layout">
-        <!-- ======================================
-             LEFT
-        ======================================= -->
+        <!-- ================= LEFT ================= -->
 
         <section class="checkout-form">
           <!-- DATA PEMBELI -->
 
           <div class="checkout-card">
             <div class="card-title">
-              <span> 01 </span>
+              <span>01</span>
 
               <h2>Data Pembeli</h2>
             </div>
@@ -102,7 +96,7 @@
 
           <div class="checkout-card">
             <div class="card-title">
-              <span> 02 </span>
+              <span>02</span>
 
               <h2>Alamat Pengiriman</h2>
             </div>
@@ -136,7 +130,7 @@
 
           <div class="checkout-card">
             <div class="card-title">
-              <span> 03 </span>
+              <span>03</span>
 
               <h2>Pengiriman</h2>
             </div>
@@ -172,7 +166,7 @@
 
           <div class="checkout-card">
             <div class="card-title">
-              <span> 04 </span>
+              <span>04</span>
 
               <h2>Metode Pembayaran</h2>
             </div>
@@ -211,14 +205,10 @@
           </div>
         </section>
 
-        <!-- ======================================
-             RIGHT - ORDER SUMMARY
-        ======================================= -->
+        <!-- ================= RIGHT ================= -->
 
         <aside class="order-summary">
           <h2>Pesanan Kamu</h2>
-
-          <!-- ITEMS -->
 
           <div id="checkoutItems"></div>
 
@@ -248,7 +238,9 @@
             <strong id="grandTotal"> Rp0 </strong>
           </div>
 
-          <button id="orderBtn" class="order-btn">Buat Pesanan</button>
+          <button id="orderBtn" class="order-btn" type="button">
+            Buat Pesanan
+          </button>
 
           <a href="cart.html" class="back-cart"> ← Kembali ke Keranjang </a>
         </aside>
@@ -276,6 +268,23 @@
 
       <div class="copyright">© 2026 KEN KONVEKSI</div>
     </footer>
+
+    <!-- ================= SUPABASE ================= -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+      const SUPABASE_URL = "https://zdpkanqgwlmbrkanyrjo.supabase.co";
+
+      const SUPABASE_KEY = "sb_publishable_olOOWAKiJRqq--6seYsA5Q_mOjo2CF7";
+
+      const supabaseClient = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY,
+      );
+    </script>
+
+    <!-- ================= CHECKOUT JS ================= -->
 
     <script src="js/checkout.js"></script>
   </body>

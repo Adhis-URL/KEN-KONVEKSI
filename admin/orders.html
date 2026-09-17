@@ -40,8 +40,6 @@
     <!-- ================= MAIN ================= -->
 
     <main class="admin-main">
-      <!-- HEADER -->
-
       <header class="admin-header">
         <div>
           <span> ADMIN PANEL </span>
@@ -74,8 +72,31 @@
 
       <!-- ================= ORDER LIST ================= -->
 
-      <section id="adminOrders"></section>
+      <section id="adminOrders">
+        <div class="admin-orders-empty">Memuat pesanan...</div>
+      </section>
     </main>
+
+    <!-- ================= AUTH ================= -->
+
+    <script src="auth.js"></script>
+
+    <!-- ================= SUPABASE ================= -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+      const SUPABASE_URL = "https://zdpkanqgwlmbrkanyrjo.supabase.co";
+
+      const SUPABASE_KEY = "sb_publishable_olOOWAKiJRqq--6seYsA5Q_mOjo2CF7";
+
+      const supabaseClient = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY,
+      );
+    </script>
+
+    <!-- ================= JS ================= -->
 
     <script src="../js/admin-orders.js"></script>
   </body>

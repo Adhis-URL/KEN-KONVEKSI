@@ -1,18 +1,13 @@
 // =====================================================
-// ADMIN ORDERS
-// =====================================================
-
-// Ambil semua order
-
-let orders = JSON.parse(localStorage.getItem("kenOrders")) || [];
-
-// =====================================================
-// ELEMENT
+// KEN KONVEKSI - ADMIN ORDERS
+// SUPABASE VERSION
 // =====================================================
 
 const adminOrders = document.getElementById("adminOrders");
 
 const filterButtons = document.querySelectorAll(".admin-filter");
+
+let orders = [];
 
 // =====================================================
 // RUPIAH
@@ -23,7 +18,20 @@ function formatRupiah(number) {
     style: "currency",
     currency: "IDR",
     maximumFractionDigits: 0,
-  }).format(number);
+  }).format(Number(number) || 0);
+}
+
+// =====================================================
+// ESCAPE HTML
+// =====================================================
+
+function escapeHTML(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 // =====================================================
@@ -31,12 +39,16 @@ function formatRupiah(number) {
 // =====================================================
 
 function formatDate(dateString) {
-  const date = new Date(dateString);
+  if (!dateString) {
+    return "-";
+  }
 
-  return date.toLocaleDateString("id-ID", {
+  return new Date(dateString).toLocaleDateString("id-ID", {
     day: "2-digit",
     month: "long",
     year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
   });
 }
 
@@ -69,7 +81,144 @@ function getStatusClass(status) {
 }
 
 // =====================================================
-// RENDER ORDERS
+// LOAD ORDERS
+// =====================================================
+
+async function loadOrders() {
+  if (typeof supabaseClient === "undefined") {
+    adminOrders.innerHTML = `
+
+      <div class="admin-orders-empty">
+
+        <h3>
+          Supabase belum terhubung
+        </h3>
+
+        <p>
+          Periksa konfigurasi Supabase.
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+  }
+
+  try {
+    // ==========================================
+    // ORDERS
+    // ==========================================
+
+    const { data: orderData, error: orderError } = await supabaseClient
+      .from("orders")
+      .select("*")
+      .order("created_at", {
+        ascending: false,
+      });
+
+    if (orderError) {
+      throw orderError;
+    }
+
+    orders = Array.isArray(orderData) ? orderData : [];
+
+    if (orders.length === 0) {
+      renderOrders("all");
+
+      return;
+    }
+
+    // ==========================================
+    // ORDER ITEMS
+    // ==========================================
+
+    const orderIds = orders.map((order) => order.id);
+
+    const { data: itemData, error: itemError } = await supabaseClient
+      .from("order_items")
+      .select("*")
+      .in("order_id", orderIds);
+
+    if (itemError) {
+      throw itemError;
+    }
+
+    // ==========================================
+    // PRODUCT IMAGES
+    // ==========================================
+
+    const productIds = [
+      ...new Set(
+        (itemData || []).map((item) => item.product_id).filter(Boolean),
+      ),
+    ];
+
+    let productImages = {};
+
+    if (productIds.length > 0) {
+      const { data: products } = await supabaseClient
+        .from("products")
+        .select("id,image_url")
+        .in("id", productIds);
+
+      (products || []).forEach((product) => {
+        productImages[product.id] = product.image_url || "";
+      });
+    }
+
+    // ==========================================
+    // GROUP ITEMS
+    // ==========================================
+
+    const itemsByOrder = {};
+
+    (itemData || []).forEach((item) => {
+      if (!itemsByOrder[item.order_id]) {
+        itemsByOrder[item.order_id] = [];
+      }
+
+      itemsByOrder[item.order_id].push({
+        ...item,
+
+        image_url: item.image_url || productImages[item.product_id] || "",
+      });
+    });
+
+    // ==========================================
+    // GABUNG
+    // ==========================================
+
+    orders = orders.map((order) => ({
+      ...order,
+
+      items: itemsByOrder[order.id] || [],
+    }));
+
+    renderOrders("all");
+  } catch (error) {
+    console.error("Admin orders error:", error);
+
+    adminOrders.innerHTML = `
+
+      <div class="admin-orders-empty">
+
+        <h3>
+          Gagal memuat pesanan
+        </h3>
+
+        <p>
+          ${escapeHTML(error.message)}
+        </p>
+
+      </div>
+
+    `;
+  }
+}
+
+// =====================================================
+// RENDER
 // =====================================================
 
 function renderOrders(statusFilter = "all") {
@@ -83,87 +232,141 @@ function renderOrders(statusFilter = "all") {
     filteredOrders = orders.filter((order) => order.status === statusFilter);
   }
 
-  // ==============================
+  // ==========================================
   // EMPTY
-  // ==============================
+  // ==========================================
 
   if (filteredOrders.length === 0) {
     adminOrders.innerHTML = `
 
-            <div
-                class="admin-orders-empty">
+      <div class="admin-orders-empty">
 
-                Belum ada pesanan.
+        <h3>
+          Belum ada pesanan
+        </h3>
 
-            </div>
+        <p>
+          Pesanan customer akan muncul di sini.
+        </p>
 
-        `;
+      </div>
+
+    `;
 
     return;
   }
 
-  // Pesanan terbaru di atas
+  // ==========================================
+  // ORDER CARD
+  // ==========================================
 
-  const sortedOrders = [...filteredOrders].reverse();
-
-  sortedOrders.forEach((order) => {
-    // ==========================
-    // PRODUCTS
-    // ==========================
-
+  filteredOrders.forEach((order) => {
     let productsHTML = "";
 
-    order.items.forEach((item) => {
-      const itemTotal = item.price * item.quantity;
+    // ========================================
+    // PRODUCTS
+    // ========================================
 
-      productsHTML += `
+    if (!order.items || order.items.length === 0) {
+      productsHTML = `
 
-                        <div
-                            class="admin-product">
+          <div class="admin-product">
 
-                            <div
-                                class="admin-product-image">
+            <div class="admin-product-info">
 
-                                PRODUCT
+              <h3>
+                Detail produk tidak ditemukan
+              </h3>
 
-                            </div>
+            </div>
 
+          </div>
 
-                            <div
-                                class="admin-product-info">
+        `;
+    } else {
+      order.items.forEach((item) => {
+        const price = Number(item.price) || 0;
 
-                                <h3>
-                                    ${item.name}
-                                </h3>
+        const quantity = Number(item.quantity) || 0;
 
-                                <p>
-                                    Size:
-                                    ${item.size}
-                                </p>
+        const itemTotal = price * quantity;
 
-                                <p>
-                                    Jumlah:
-                                    ${item.quantity}
-                                </p>
+        const image = item.image_url || "";
 
-                            </div>
+        productsHTML += `
 
+              <div
+                class="admin-product"
+              >
 
-                            <div
-                                class="admin-product-price">
+                <div
+                  class="admin-product-image"
+                >
 
-                                ${formatRupiah(itemTotal)}
-
-                            </div>
-
+                  ${
+                    image
+                      ? `
+                        <img
+                          src="${escapeHTML(image)}"
+                          alt="${escapeHTML(item.product_name)}"
+                          onerror="
+                            this.style.display='none';
+                          "
+                        />
+                      `
+                      : `
+                        <div class="image-placeholder">
+                          PRODUCT
                         </div>
+                      `
+                  }
 
-                    `;
-    });
+                </div>
 
-    // ==========================
+
+                <div
+                  class="admin-product-info"
+                >
+
+                  <h3>
+                    ${escapeHTML(item.product_name)}
+                  </h3>
+
+                  <p>
+                    Size:
+                    ${escapeHTML(item.size || "-")}
+                  </p>
+
+                  <p>
+                    Jumlah:
+                    ${quantity}
+                  </p>
+
+                  <p>
+                    Harga:
+                    ${formatRupiah(price)}
+                  </p>
+
+                </div>
+
+
+                <div
+                  class="admin-product-price"
+                >
+
+                  ${formatRupiah(itemTotal)}
+
+                </div>
+
+              </div>
+
+            `;
+      });
+    }
+
+    // ========================================
     // CARD
-    // ==========================
+    // ========================================
 
     const card = document.createElement("article");
 
@@ -171,263 +374,291 @@ function renderOrders(statusFilter = "all") {
 
     card.innerHTML = `
 
-                <div
-                    class="admin-order-header">
+        <div
+          class="admin-order-header"
+        >
 
+          <div>
 
-                    <div>
+            <div
+              class="admin-order-id"
+            >
 
-                        <div
-                            class="admin-order-id">
+              ${escapeHTML(order.id)}
 
-                            ${order.id}
+            </div>
 
-                        </div>
+            <div
+              class="admin-order-date"
+            >
 
-                        <div
-                            class="admin-order-date">
+              ${formatDate(order.created_at)}
 
-                            ${formatDate(order.date)}
+            </div>
 
-                        </div>
+          </div>
 
-                    </div>
 
+          <div
+            class="admin-status
+            ${getStatusClass(order.status)}"
+          >
 
-                    <div
-                        class="admin-status
-                        ${getStatusClass(order.status)}">
+            ${escapeHTML(order.status)}
 
-                        ${order.status}
+          </div>
 
-                    </div>
+        </div>
 
 
-                </div>
+        <div
+          class="admin-order-content"
+        >
 
 
+          <!-- PRODUCTS -->
 
-                <div
-                    class="admin-order-content">
+          <div
+            class="admin-products"
+          >
 
+            ${productsHTML}
 
-                    <!-- PRODUCTS -->
+          </div>
 
-                    <div
-                        class="admin-products">
 
-                        ${productsHTML}
+          <!-- CUSTOMER -->
 
-                    </div>
+          <div
+            class="customer-info"
+          >
 
+            <h3>
+              Informasi Pembeli
+            </h3>
 
 
-                    <!-- CUSTOMER -->
+            <div
+              class="customer-row"
+            >
 
-                    <div
-                        class="customer-info">
+              <span>
+                Nama
+              </span>
 
-                        <h3>
-                            Informasi Pembeli
-                        </h3>
+              <strong>
+                ${escapeHTML(order.customer_name)}
+              </strong>
 
+            </div>
 
-                        <div
-                            class="customer-row">
 
-                            <span>
-                                Nama
-                            </span>
+            <div
+              class="customer-row"
+            >
 
-                            <strong>
-                                ${order.customer.name}
-                            </strong>
+              <span>
+                WhatsApp
+              </span>
 
-                        </div>
+              <strong>
+                ${escapeHTML(order.phone)}
+              </strong>
 
+            </div>
 
-                        <div
-                            class="customer-row">
 
-                            <span>
-                                WhatsApp
-                            </span>
+            <div
+              class="customer-row"
+            >
 
-                            <strong>
-                                ${order.customer.phone}
-                            </strong>
+              <span>
+                Email
+              </span>
 
-                        </div>
+              <strong>
+                ${escapeHTML(order.email || "-")}
+              </strong>
 
+            </div>
 
-                        <div
-                            class="customer-row">
 
-                            <span>
-                                Email
-                            </span>
+            <div
+              class="customer-row"
+            >
 
-                            <strong>
-                                ${order.customer.email || "-"}
-                            </strong>
+              <span>
+                Alamat
+              </span>
 
-                        </div>
+              <strong
+                class="customer-address"
+              >
 
+                ${escapeHTML(order.address)}
 
-                        <div
-                            class="customer-row">
+                <br />
 
-                            <span>
-                                Alamat
-                            </span>
+                ${escapeHTML(order.city || "")}
 
-                            <strong
-                                class="customer-address">
+                <br />
 
-                                ${order.customer.address}
+                ${escapeHTML(order.postal_code || "")}
 
-                                <br>
+              </strong>
 
-                                ${order.customer.city}
+            </div>
 
-                                <br>
 
-                                ${order.customer.postalCode}
+          </div>
 
-                            </strong>
 
-                        </div>
+        </div>
 
-                    </div>
 
+        <!-- FOOTER -->
 
-                </div>
+        <div
+          class="admin-order-footer"
+        >
 
 
+          <div
+            class="status-control"
+          >
 
-                <!-- FOOTER -->
+            <label>
+              Ubah Status
+            </label>
 
-                <div
-                    class="admin-order-footer">
 
+            <select
+              class="status-select"
+              data-id="${escapeHTML(order.id)}"
+            >
 
-                    <div
-                        class="status-control">
+              <option
+                value="Menunggu Pembayaran"
+                ${order.status === "Menunggu Pembayaran" ? "selected" : ""}
+              >
+                Menunggu Pembayaran
+              </option>
 
-                        <label>
-                            Ubah Status
-                        </label>
 
+              <option
+                value="Diproses"
+                ${order.status === "Diproses" ? "selected" : ""}
+              >
+                Diproses
+              </option>
 
-                        <select
-                            class="status-select"
-                            data-id="${order.id}">
 
+              <option
+                value="Dikirim"
+                ${order.status === "Dikirim" ? "selected" : ""}
+              >
+                Dikirim
+              </option>
 
-                            <option
-                                value="Menunggu Pembayaran"
-                                ${order.status === "Menunggu Pembayaran" ? "selected" : ""}>
 
-                                Menunggu Pembayaran
+              <option
+                value="Selesai"
+                ${order.status === "Selesai" ? "selected" : ""}
+              >
+                Selesai
+              </option>
 
-                            </option>
 
+              <option
+                value="Dibatalkan"
+                ${order.status === "Dibatalkan" ? "selected" : ""}
+              >
+                Dibatalkan
+              </option>
 
-                            <option
-                                value="Diproses"
-                                ${order.status === "Diproses" ? "selected" : ""}>
+            </select>
 
-                                Diproses
+          </div>
 
-                            </option>
 
+          <div
+            class="admin-total"
+          >
 
-                            <option
-                                value="Dikirim"
-                                ${order.status === "Dikirim" ? "selected" : ""}>
+            <span>
+              Total Pembayaran
+            </span>
 
-                                Dikirim
+            <strong>
+              ${formatRupiah(order.total)}
+            </strong>
 
-                            </option>
+          </div>
 
 
-                            <option
-                                value="Selesai"
-                                ${order.status === "Selesai" ? "selected" : ""}>
+        </div>
 
-                                Selesai
-
-                            </option>
-
-
-                            <option
-                                value="Dibatalkan"
-                                ${order.status === "Dibatalkan" ? "selected" : ""}>
-
-                                Dibatalkan
-
-                            </option>
-
-
-                        </select>
-
-                    </div>
-
-
-                    <div
-                        class="admin-total">
-
-                        <span>
-                            Total Pembayaran
-                        </span>
-
-                        <strong>
-                            ${formatRupiah(order.total)}
-                        </strong>
-
-                    </div>
-
-
-                </div>
-
-            `;
+      `;
 
     adminOrders.appendChild(card);
   });
 
-  // =================================================
+  // ==========================================
   // STATUS CHANGE
-  // =================================================
+  // ==========================================
 
   const statusSelects = document.querySelectorAll(".status-select");
 
   statusSelects.forEach((select) => {
-    select.addEventListener("change", function () {
+    select.addEventListener("change", async function () {
       const orderId = this.dataset.id;
 
       const newStatus = this.value;
 
-      // Cari order
+      const oldText = this.dataset.oldText || "";
 
-      const orderIndex = orders.findIndex((order) => order.id === orderId);
+      this.disabled = true;
 
-      if (orderIndex === -1) {
-        return;
+      try {
+        const { error } = await supabaseClient
+          .from("orders")
+          .update({
+            status: newStatus,
+          })
+          .eq("id", orderId);
+
+        if (error) {
+          throw error;
+        }
+
+        // Update local data
+
+        const index = orders.findIndex((order) => order.id === orderId);
+
+        if (index !== -1) {
+          orders[index].status = newStatus;
+        }
+
+        renderOrders(getActiveFilter());
+      } catch (error) {
+        console.error("Gagal mengubah status:", error);
+
+        alert("Gagal mengubah status pesanan.\n\n" + error.message);
+
+        this.disabled = false;
       }
-
-      // Update status
-
-      orders[orderIndex].status = newStatus;
-
-      // Simpan
-
-      localStorage.setItem("kenOrders", JSON.stringify(orders));
-
-      // Render ulang
-
-      renderOrders(statusFilter);
     });
   });
+}
+
+// =====================================================
+// ACTIVE FILTER
+// =====================================================
+
+function getActiveFilter() {
+  const active = document.querySelector(".admin-filter.active");
+
+  return active ? active.dataset.status : "all";
 }
 
 // =====================================================
@@ -450,4 +681,4 @@ filterButtons.forEach((button) => {
 // INITIALIZE
 // =====================================================
 
-renderOrders();
+loadOrders();

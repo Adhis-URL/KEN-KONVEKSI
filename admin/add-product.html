@@ -296,6 +296,44 @@
          JAVASCRIPT
     ====================================================== -->
 
+    <!-- ADMIN AUTH -->
+    <script src="auth.js"></script>
+
+    <!-- =====================================================
+         SUPABASE
+    ====================================================== -->
+
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- =====================================================
+         SUPABASE CONFIGURATION
+    ====================================================== -->
+
+    <script>
+      const SUPABASE_URL = "https://zdpkanqgwlmbrkanyrjo.supabase.co";
+
+      /*
+       * GANTI bagian di bawah ini dengan
+       * Publishable Key dari Supabase kamu.
+       */
+
+      const SUPABASE_KEY = "sb_publishable_olOOWAKiJRqq--6seYsA5Q_mOjo2CF7";
+
+      /*
+       * Membuat koneksi Supabase
+       */
+
+      const supabaseClient = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY,
+      );
+    </script>
+
+    <!-- =====================================================
+         ADD PRODUCT SCRIPT
+    ====================================================== -->
+
     <script src="../js/add-product.js"></script>
   </body>
 </html>
