@@ -846,3 +846,515 @@ footer p {
     height: 190px;
   }
 }
+/* =====================================================
+   MOBILE RESPONSIVE
+   KEN KONVEKSI
+===================================================== */
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 1000px) {
+
+  .navbar {
+    height: 70px;
+    padding: 0 5%;
+  }
+
+  .logo {
+    font-size: 20px;
+  }
+
+  nav {
+    gap: 20px;
+  }
+
+  nav a {
+    font-size: 13px;
+  }
+
+  .nav-actions {
+    gap: 10px;
+  }
+
+  /* HERO */
+
+  .hero {
+    min-height: auto;
+
+    grid-template-columns: 1fr;
+
+    padding: 70px 5%;
+
+    gap: 45px;
+  }
+
+  .hero h1 {
+    font-size: clamp(60px, 11vw, 90px);
+  }
+
+  .hero-image {
+    height: 500px;
+  }
+
+  /* CATEGORY */
+
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 15px;
+  }
+
+  .category-image {
+    height: 280px;
+  }
+
+  /* PRODUCTS */
+
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 20px;
+  }
+
+  .product-image {
+    height: 400px;
+  }
+
+  /* SOCIAL */
+
+  .social-grid {
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 18px;
+  }
+
+  .social-image {
+    height: 280px;
+  }
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 700px) {
+
+  body {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+
+  /* ===================================================
+     NAVBAR
+  =================================================== */
+
+  .navbar {
+    height: 64px;
+
+    padding: 0 18px;
+
+    gap: 10px;
+  }
+
+  .logo {
+    font-size: 18px;
+
+    letter-spacing: -0.7px;
+
+    white-space: nowrap;
+  }
+
+  .logo span {
+    margin-left: 3px;
+  }
+
+  nav {
+    display: flex;
+
+    gap: 14px;
+
+    align-items: center;
+
+    overflow: hidden;
+  }
+
+  nav a {
+    font-size: 11px;
+
+    white-space: nowrap;
+  }
+
+  .nav-actions {
+    gap: 7px;
+
+    flex-shrink: 0;
+  }
+
+  .nav-actions button {
+    font-size: 16px;
+  }
+
+  .cart-count {
+    width: 15px;
+    height: 15px;
+
+    font-size: 8px;
+
+    top: -7px;
+    right: -8px;
+  }
+
+
+  /* ===================================================
+     HERO
+  =================================================== */
+
+  .hero {
+    display: flex;
+
+    flex-direction: column;
+
+    padding: 55px 20px 60px;
+
+    gap: 40px;
+
+    align-items: stretch;
+  }
+
+  .hero-subtitle {
+    font-size: 10px;
+
+    letter-spacing: 2px;
+
+    margin-bottom: 20px;
+  }
+
+  .hero h1 {
+    font-size: clamp(52px, 16vw, 75px);
+
+    line-height: 0.9;
+
+    letter-spacing: -4px;
+
+    margin-bottom: 25px;
+  }
+
+  .hero-description {
+    font-size: 14px;
+
+    line-height: 1.7;
+
+    margin-bottom: 28px;
+  }
+
+  .hero-button {
+    padding: 15px 22px;
+
+    font-size: 11px;
+  }
+
+  .hero-image {
+    width: 100%;
+
+    height: 390px;
+  }
+
+  .hero-placeholder span {
+    font-size: 65px;
+
+    letter-spacing: -5px;
+  }
+
+
+  /* ===================================================
+     SECTION
+  =================================================== */
+
+  .categories,
+  .products {
+    padding: 65px 20px;
+  }
+
+  .section-heading {
+    margin-bottom: 30px;
+  }
+
+  .section-heading p {
+    font-size: 9px;
+
+    letter-spacing: 2px;
+  }
+
+  .section-heading h2 {
+    font-size: 32px;
+
+    letter-spacing: -1.5px;
+  }
+
+
+  /* ===================================================
+     CATEGORY
+  =================================================== */
+
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 12px;
+  }
+
+  .category-card {
+    padding-bottom: 15px;
+  }
+
+  .category-image {
+    height: 220px;
+  }
+
+  .category-info {
+    padding: 15px;
+  }
+
+  .category-info h3 {
+    margin-bottom: 7px;
+
+    font-size: 17px;
+  }
+
+  .category-info span {
+    font-size: 10px;
+  }
+
+
+  /* ===================================================
+     PRODUCTS
+  =================================================== */
+
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 14px;
+  }
+
+  .product-image {
+    height: 280px;
+  }
+
+  .product-badge {
+    top: 10px;
+    left: 10px;
+
+    padding: 5px 7px;
+
+    font-size: 8px;
+  }
+
+  .product-info {
+    padding-top: 12px;
+  }
+
+  .product-category {
+    font-size: 8px;
+
+    letter-spacing: 1.5px;
+  }
+
+  .product-info h3 {
+    font-size: 14px;
+
+    margin-bottom: 7px;
+  }
+
+  .product-price {
+    font-size: 13px;
+  }
+
+
+  /* ===================================================
+     SOCIAL / KENALI KAMI
+  =================================================== */
+
+  .social-section {
+    padding: 70px 20px 65px;
+  }
+
+  .social-heading {
+    margin-bottom: 30px;
+  }
+
+  .social-heading span {
+    margin-top: 12px;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+  }
+
+  .social-grid {
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 12px;
+  }
+
+  .social-image {
+    height: 200px;
+  }
+
+  .social-info {
+    padding: 15px;
+  }
+
+  .social-info p {
+    font-size: 8px;
+
+    margin-bottom: 7px;
+  }
+
+  .social-info h3 {
+    font-size: 14px;
+
+    margin-bottom: 8px;
+  }
+
+  .social-info span {
+    font-size: 9px;
+  }
+
+
+  /* ===================================================
+     FOOTER
+  =================================================== */
+
+  footer {
+    padding: 50px 20px;
+  }
+
+  .footer-logo {
+    font-size: 20px;
+  }
+
+  footer p {
+    font-size: 11px;
+  }
+
+  .copyright {
+    margin-top: 25px;
+
+    font-size: 9px !important;
+  }
+
+}
+
+
+/* =====================================================
+   SMALL PHONE
+===================================================== */
+
+@media (max-width: 480px) {
+
+  .navbar {
+    padding: 0 14px;
+  }
+
+  .logo {
+    font-size: 16px;
+  }
+
+  nav {
+    gap: 9px;
+  }
+
+  nav a {
+    font-size: 10px;
+  }
+
+  .nav-actions {
+    gap: 5px;
+  }
+
+  .nav-actions button {
+    font-size: 14px;
+  }
+
+
+  /* HERO */
+
+  .hero {
+    padding: 45px 16px 50px;
+  }
+
+  .hero h1 {
+    font-size: 52px;
+
+    letter-spacing: -3px;
+  }
+
+  .hero-image {
+    height: 330px;
+  }
+
+
+  /* CATEGORY */
+
+  .categories,
+  .products {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .category-grid {
+    gap: 10px;
+  }
+
+  .category-image {
+    height: 190px;
+  }
+
+  .category-info {
+    padding: 12px;
+  }
+
+  .category-info h3 {
+    font-size: 15px;
+  }
+
+
+  /* PRODUCTS */
+
+  .product-grid {
+    gap: 10px;
+  }
+
+  .product-image {
+    height: 230px;
+  }
+
+  .product-info h3 {
+    font-size: 13px;
+  }
+
+  .product-price {
+    font-size: 12px;
+  }
+
+
+  /* SOCIAL */
+
+  .social-section {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .social-grid {
+    gap: 10px;
+  }
+
+  .social-image {
+    height: 170px;
+  }
+
+}

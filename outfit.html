@@ -20,23 +20,17 @@
     ====================================================== -->
 
     <header class="navbar">
-      <!-- LOGO -->
-
       <a href="index.html" class="logo"> KEN<span>KONVEKSI</span> </a>
 
-      <!-- MENU -->
-
       <nav>
-        <a href="index.html"> Home </a>
+        <a href="index.html">Home</a>
 
-        <a href="catalog.html"> Catalog </a>
+        <a href="catalog.html">Catalog</a>
 
-        <a href="outfit.html" class="active"> Outfit </a>
+        <a href="outfit.html" class="active">Outfit</a>
 
-        <a href="#"> About </a>
+        <a href="#">About</a>
       </nav>
-
-      <!-- ACTION -->
 
       <div class="nav-actions">
         <button
@@ -55,8 +49,7 @@
           aria-label="Cart"
         >
           🛒
-
-          <span class="cart-count"> 0 </span>
+          <span class="cart-count" id="cartCount">0</span>
         </button>
       </div>
     </header>
@@ -106,6 +99,12 @@
         </div>
 
         <!-- =================================================
+             LOADING
+        ================================================== -->
+
+        <div id="outfitLoading" class="outfit-loading">Memuat outfit...</div>
+
+        <!-- =================================================
              OUTFIT GRID
         ================================================== -->
 
@@ -143,9 +142,293 @@
     </footer>
 
     <!-- =====================================================
-         JAVASCRIPT
+         SUPABASE
     ====================================================== -->
 
-    <script src="js/outfit.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+      const SUPABASE_URL = "https://zdpkanqgwlmbrkanyrjo.supabase.co";
+
+      const SUPABASE_KEY = "sb_publishable_olOOWAKiJRqq--6seYsA5Q_mOjo2CF7";
+
+      const supabaseClient = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY,
+      );
+    </script>
+
+    <!-- =====================================================
+         OUTFIT SCRIPT
+    ====================================================== -->
+
+    <script>
+      const outfitGrid = document.getElementById("outfitGrid");
+
+      const outfitCount = document.getElementById("outfitCount");
+
+      const outfitEmpty = document.getElementById("outfitEmpty");
+
+      const outfitLoading = document.getElementById("outfitLoading");
+
+      const cartCount = document.getElementById("cartCount");
+
+      /* =====================================================
+         FORMAT RUPIAH
+      ===================================================== */
+
+      function formatRupiah(number) {
+        return new Intl.NumberFormat("id-ID", {
+          style: "currency",
+
+          currency: "IDR",
+
+          minimumFractionDigits: 0,
+        }).format(Number(number) || 0);
+      }
+
+      /* =====================================================
+         ESCAPE HTML
+      ===================================================== */
+
+      function escapeHTML(value) {
+        return String(value || "")
+          .replace(/&/g, "&amp;")
+
+          .replace(/</g, "&lt;")
+
+          .replace(/>/g, "&gt;")
+
+          .replace(/"/g, "&quot;")
+
+          .replace(/'/g, "&#039;");
+      }
+
+      /* =====================================================
+         CART COUNT
+      ===================================================== */
+
+      function updateCartCount() {
+        try {
+          const cart = JSON.parse(sessionStorage.getItem("kenCart")) || [];
+
+          const total = cart.reduce(
+            (sum, item) => sum + (Number(item.quantity) || 0),
+            0,
+          );
+
+          cartCount.textContent = total;
+        } catch (error) {
+          cartCount.textContent = "0";
+        }
+      }
+
+      /* =====================================================
+         LOAD OUTFITS
+      ===================================================== */
+
+      async function loadOutfits() {
+        outfitLoading.hidden = false;
+
+        outfitGrid.innerHTML = "";
+
+        outfitEmpty.hidden = true;
+
+        try {
+          /*
+           * Ambil semua outfit dari Supabase
+           */
+
+          const { data: outfitData, error: outfitError } = await supabaseClient
+
+            .from("product_outfits")
+
+            .select("*")
+
+            .order("created_at", {
+              ascending: false,
+            });
+
+          if (outfitError) {
+            console.error("Gagal mengambil outfit:", outfitError);
+
+            outfitLoading.hidden = true;
+
+            outfitEmpty.hidden = false;
+
+            outfitEmpty.querySelector("h3").textContent =
+              "Gagal Memuat Outfit Wear";
+
+            outfitEmpty.querySelector("p").textContent = outfitError.message;
+
+            return;
+          }
+
+          /*
+           * Kalau belum ada outfit
+           */
+
+          if (!outfitData || outfitData.length === 0) {
+            outfitLoading.hidden = true;
+
+            outfitCount.textContent = "0";
+
+            outfitEmpty.hidden = false;
+
+            return;
+          }
+
+          /*
+           * Ambil ID produk
+           */
+
+          const productIds = [
+            ...new Set(
+              outfitData.map((item) => item.product_id).filter(Boolean),
+            ),
+          ];
+
+          /*
+           * Ambil data produk
+           */
+
+          let products = [];
+
+          if (productIds.length > 0) {
+            const { data: productData, error: productError } =
+              await supabaseClient
+
+                .from("products")
+
+                .select("id,name,price,category")
+
+                .in("id", productIds);
+
+            if (productError) {
+              console.error("Gagal mengambil produk:", productError);
+            } else {
+              products = productData || [];
+            }
+          }
+
+          /*
+           * Buat lookup produk
+           */
+
+          const productMap = new Map();
+
+          products.forEach((product) => {
+            productMap.set(product.id, product);
+          });
+
+          /*
+           * Tampilkan jumlah outfit
+           */
+
+          outfitCount.textContent = outfitData.length;
+
+          /*
+           * Buat kartu outfit
+           */
+
+          outfitGrid.innerHTML = outfitData
+            .map(function (outfit) {
+              const product = productMap.get(outfit.product_id);
+
+              const productName = product?.name || "KEN KONVEKSI";
+
+              const productCategory = product?.category || "OUTFIT";
+
+              const productPrice = product?.price || 0;
+
+              const imageURL = outfit.image_url;
+
+              if (!imageURL) {
+                return "";
+              }
+
+              return `
+
+                  <article
+                    class="outfit-card"
+                  >
+
+                    <a
+                      href="product.html?id=${encodeURIComponent(
+                        outfit.product_id || "",
+                      )}"
+                      class="outfit-image"
+                    >
+
+                      <img
+                        src="${escapeHTML(imageURL)}"
+                        alt="${escapeHTML(productName)}"
+                        loading="lazy"
+                        onerror="this.parentElement.innerHTML='<div class=&quot;image-placeholder&quot;>IMAGE ERROR</div>'"
+                      >
+
+                    </a>
+
+
+                    <div
+                      class="outfit-info"
+                    >
+
+                      <p
+                        class="outfit-category"
+                      >
+                        ${escapeHTML(String(productCategory).toUpperCase())}
+                      </p>
+
+
+                      <h3>
+                        ${escapeHTML(productName)}
+                      </h3>
+
+
+                      <p
+                        class="outfit-price"
+                      >
+                        ${formatRupiah(productPrice)}
+                      </p>
+
+                    </div>
+
+                  </article>
+
+                `;
+            })
+            .join("");
+
+          outfitLoading.hidden = true;
+
+          /*
+           * Jika semua gambar kosong
+           */
+
+          if (outfitGrid.children.length === 0) {
+            outfitEmpty.hidden = false;
+          }
+        } catch (error) {
+          console.error("Error Outfit Wear:", error);
+
+          outfitLoading.hidden = true;
+
+          outfitEmpty.hidden = false;
+
+          outfitEmpty.querySelector("h3").textContent = "Terjadi Kesalahan";
+
+          outfitEmpty.querySelector("p").textContent = error.message;
+        }
+      }
+
+      /* =====================================================
+         JALANKAN
+      ===================================================== */
+
+      updateCartCount();
+
+      loadOutfits();
+    </script>
   </body>
 </html>
