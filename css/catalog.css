@@ -1,6 +1,5 @@
 /* =====================================================
-   KEN KONVEKSI
-   CATALOG PAGE
+   KEN KONVEKSI - CATALOG
    RESPONSIVE DESKTOP + TABLET + MOBILE
 ===================================================== */
 
@@ -10,39 +9,28 @@
 
 .catalog-header {
   padding: 100px 7% 80px;
-
   background: #111;
-
   color: white;
 }
 
 .catalog-label {
   font-size: 11px;
-
   letter-spacing: 3px;
-
   color: #888;
-
   margin-bottom: 20px;
 }
 
 .catalog-header h1 {
   font-size: clamp(60px, 8vw, 110px);
-
   letter-spacing: -6px;
-
   line-height: 0.9;
-
   margin-bottom: 25px;
 }
 
 .catalog-description {
   max-width: 450px;
-
   color: #aaa;
-
   line-height: 1.7;
-
   font-size: 14px;
 }
 
@@ -52,12 +40,13 @@
 
 .catalog-section {
   display: grid;
-
   grid-template-columns: 230px minmax(0, 1fr);
 
   gap: 50px;
 
   padding: 80px 7%;
+
+  width: 100%;
 }
 
 /* =====================================================
@@ -66,44 +55,38 @@
 
 .filter-sidebar {
   position: sticky;
-
   top: 110px;
 
   height: fit-content;
+  min-width: 0;
 }
 
 .filter-title {
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
 
   border-bottom: 1px solid #ddd;
 
   padding-bottom: 18px;
-
   margin-bottom: 25px;
 }
 
 .filter-title h2 {
   font-size: 14px;
-
   letter-spacing: 2px;
 }
 
 .filter-title button {
   border: none;
-
   background: none;
 
   color: #888;
 
   cursor: pointer;
 
+  font-family: inherit;
   font-size: 11px;
-
-  transition: 0.2s ease;
 }
 
 .filter-title button:hover {
@@ -122,7 +105,6 @@
   display: block;
 
   font-size: 10px;
-
   letter-spacing: 2px;
 
   margin-bottom: 15px;
@@ -146,10 +128,9 @@
   outline: none;
 
   font-family: inherit;
-
   font-size: 12px;
 
-  transition: border 0.2s ease;
+  transition: border-color 0.2s ease;
 }
 
 .filter-group input:focus {
@@ -162,7 +143,6 @@
 
 .category-list {
   display: flex;
-
   flex-direction: column;
 
   gap: 4px;
@@ -182,7 +162,6 @@
   background: transparent;
 
   font-family: inherit;
-
   font-size: 14px;
 
   text-align: left;
@@ -198,7 +177,6 @@
 
 .category-list .category-btn:hover {
   color: #111;
-
   padding-left: 5px;
 }
 
@@ -224,7 +202,6 @@
 
 .size-options button {
   width: 38px;
-
   height: 38px;
 
   border: 1px solid #ddd;
@@ -234,13 +211,12 @@
   cursor: pointer;
 
   font-family: inherit;
-
   font-size: 11px;
 
   transition:
     background 0.2s ease,
     color 0.2s ease,
-    border 0.2s ease;
+    border-color 0.2s ease;
 }
 
 .size-options button:hover {
@@ -269,7 +245,6 @@
   background: white;
 
   font-family: inherit;
-
   font-size: 12px;
 
   outline: none;
@@ -289,7 +264,6 @@
   display: flex;
 
   align-items: center;
-
   justify-content: space-between;
 
   gap: 20px;
@@ -298,11 +272,11 @@
 }
 
 .catalog-top p {
+  margin: 0;
+
   font-size: 12px;
 
   color: #777;
-
-  margin: 0;
 }
 
 .catalog-top select {
@@ -313,16 +287,11 @@
   background: white;
 
   font-family: inherit;
-
   font-size: 12px;
 
   outline: none;
 
   cursor: pointer;
-}
-
-.catalog-top select:focus {
-  border-color: #111;
 }
 
 /* =====================================================
@@ -335,6 +304,8 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
 
   gap: 35px 18px;
+
+  width: 100%;
 }
 
 /* =====================================================
@@ -346,9 +317,9 @@
 
   display: block;
 
-  text-decoration: none;
-
   color: inherit;
+
+  text-decoration: none;
 }
 
 /* =====================================================
@@ -356,21 +327,20 @@
 ===================================================== */
 
 .catalog-image {
+  position: relative;
+
   display: flex;
 
   align-items: center;
-
   justify-content: center;
 
   width: 100%;
 
   height: 400px;
 
-  position: relative;
+  background: #f3f3f1;
 
   overflow: hidden;
-
-  background: #f3f3f1;
 }
 
 /* FOTO PRODUK */
@@ -379,7 +349,6 @@
   display: block;
 
   width: 100%;
-
   height: 100%;
 
   object-fit: contain;
@@ -388,8 +357,6 @@
 
   transition: transform 0.5s ease;
 }
-
-/* HOVER */
 
 .catalog-card:hover .catalog-image img {
   transform: scale(1.03);
@@ -403,11 +370,9 @@
   display: flex;
 
   align-items: center;
-
   justify-content: center;
 
   width: 100%;
-
   height: 100%;
 
   background: #e9e9e6;
@@ -417,6 +382,8 @@
   font-size: 18px;
 
   letter-spacing: 4px;
+
+  text-align: center;
 }
 
 /* =====================================================
@@ -427,7 +394,6 @@
   position: absolute;
 
   top: 15px;
-
   left: 15px;
 
   z-index: 5;
@@ -445,7 +411,6 @@
 
 .product-label.new {
   background: white;
-
   color: #111;
 }
 
@@ -458,36 +423,37 @@
 }
 
 .catalog-category {
-  font-size: 9px;
-
-  letter-spacing: 2px;
+  margin-bottom: 7px;
 
   color: #999;
 
-  margin-bottom: 7px;
+  font-size: 9px;
+
+  letter-spacing: 2px;
 }
 
 .catalog-info h3 {
+  margin: 0 0 9px;
+
   font-size: 16px;
 
   font-weight: 500;
 
   line-height: 1.35;
-
-  margin: 0 0 9px;
 }
 
 .catalog-price {
+  margin-bottom: 10px;
+
   font-size: 14px;
 
   font-weight: 600;
-
-  margin-bottom: 10px;
 }
 
 .catalog-meta {
   display: flex;
 
+  align-items: center;
   justify-content: space-between;
 
   gap: 10px;
@@ -506,112 +472,99 @@
 
   padding: 100px 20px;
 
-  text-align: center;
-
   color: #888;
+
+  text-align: center;
 }
 
 /* =====================================================
    TABLET
+   1000px
 ===================================================== */
 
-@media (max-width: 1100px) {
+@media (max-width: 1000px) {
+  .catalog-header {
+    padding: 80px 5% 65px;
+  }
+
   .catalog-section {
     grid-template-columns: 190px minmax(0, 1fr);
 
     gap: 30px;
 
-    padding-left: 5%;
-
-    padding-right: 5%;
+    padding: 65px 5%;
   }
 
   .catalog-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
 
-    gap: 30px 16px;
+    gap: 30px 15px;
   }
 
   .catalog-image {
-    height: 360px;
+    height: 350px;
   }
 }
 
 /* =====================================================
    TABLET KECIL
+   800px
 ===================================================== */
 
 @media (max-width: 800px) {
   .catalog-header {
-    padding: 80px 5% 65px;
+    padding: 70px 5% 60px;
   }
 
   .catalog-header h1 {
     font-size: clamp(55px, 12vw, 85px);
+
+    letter-spacing: -4px;
   }
 
   .catalog-section {
-    display: block;
+    grid-template-columns: 170px minmax(0, 1fr);
+
+    gap: 25px;
 
     padding: 55px 5%;
   }
 
-  .filter-sidebar {
-    position: static;
-
-    margin-bottom: 45px;
-  }
-
-  .filter-title {
-    margin-bottom: 20px;
-  }
-
-  .filter-group {
-    margin-bottom: 25px;
-  }
-
-  .category-list {
-    display: grid;
-
-    grid-template-columns: repeat(2, 1fr);
-
-    gap: 3px 15px;
-  }
-
-  .catalog-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-
-    gap: 28px 14px;
-  }
-
   .catalog-image {
-    height: 330px;
+    height: 320px;
+  }
+
+  .catalog-info h3 {
+    font-size: 15px;
   }
 }
 
 /* =====================================================
    MOBILE
+   700px
 ===================================================== */
 
-@media (max-width: 600px) {
+@media (max-width: 700px) {
   /* HEADER */
 
   .catalog-header {
-    padding: 65px 20px 55px;
+    padding: 60px 5% 55px;
   }
 
   .catalog-label {
-    font-size: 9px;
+    font-size: 10px;
 
-    letter-spacing: 2px;
+    letter-spacing: 2.5px;
 
-    margin-bottom: 15px;
+    margin-bottom: 16px;
   }
 
   .catalog-header h1 {
-    font-size: clamp(50px, 17vw, 72px);
+    font-size: clamp(50px, 15vw, 75px);
 
     letter-spacing: -4px;
+
+    line-height: 0.92;
 
     margin-bottom: 20px;
   }
@@ -624,10 +577,161 @@
     line-height: 1.7;
   }
 
-  /* CATALOG */
+  /* SECTION */
 
   .catalog-section {
-    padding: 45px 18px;
+    display: block;
+
+    padding: 45px 5%;
+  }
+
+  /* FILTER */
+
+  .filter-sidebar {
+    position: static;
+
+    width: 100%;
+
+    margin-bottom: 40px;
+  }
+
+  .filter-title {
+    margin-bottom: 20px;
+  }
+
+  .filter-group {
+    margin-bottom: 25px;
+  }
+
+  .filter-group > label {
+    margin-bottom: 10px;
+  }
+
+  /* CATEGORY */
+
+  .category-list {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 2px 15px;
+  }
+
+  .category-list .category-btn {
+    padding: 9px 0;
+
+    font-size: 13px;
+  }
+
+  /* SIZE */
+
+  .size-options button {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* CATALOG TOP */
+
+  .catalog-top {
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 12px;
+
+    margin-bottom: 20px;
+  }
+
+  .catalog-top select {
+    width: 100%;
+
+    padding: 12px;
+  }
+
+  /* PRODUCT GRID */
+
+  .catalog-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 28px 12px;
+  }
+
+  /* PRODUCT IMAGE */
+
+  .catalog-image {
+    height: auto;
+
+    aspect-ratio: 3 / 4;
+  }
+
+  /* LABEL */
+
+  .product-label {
+    top: 9px;
+    left: 9px;
+
+    padding: 6px 8px;
+
+    font-size: 8px;
+  }
+
+  /* PRODUCT INFO */
+
+  .catalog-info {
+    padding-top: 12px;
+  }
+
+  .catalog-category {
+    margin-bottom: 5px;
+
+    font-size: 8px;
+
+    letter-spacing: 1.5px;
+  }
+
+  .catalog-info h3 {
+    margin-bottom: 7px;
+
+    font-size: 14px;
+
+    line-height: 1.3;
+  }
+
+  .catalog-price {
+    margin-bottom: 7px;
+
+    font-size: 13px;
+  }
+
+  .catalog-meta {
+    font-size: 9px;
+
+    gap: 5px;
+  }
+}
+
+/* =====================================================
+   SMALL MOBILE
+   500px
+===================================================== */
+
+@media (max-width: 500px) {
+  .catalog-header {
+    padding: 55px 5% 50px;
+  }
+
+  .catalog-header h1 {
+    font-size: 55px;
+
+    letter-spacing: -3px;
+  }
+
+  .catalog-description {
+    font-size: 12px;
+  }
+
+  .catalog-section {
+    padding: 40px 5%;
   }
 
   /* FILTER */
@@ -636,105 +740,32 @@
     margin-bottom: 35px;
   }
 
-  .filter-title {
-    padding-bottom: 14px;
-
-    margin-bottom: 20px;
-  }
-
   .filter-title h2 {
-    font-size: 12px;
-
-    letter-spacing: 1.5px;
+    font-size: 13px;
   }
 
   .filter-title button {
     font-size: 10px;
   }
 
-  /* FILTER GROUP */
-
-  .filter-group {
-    margin-bottom: 22px;
-  }
-
-  .filter-group > label {
-    font-size: 9px;
-
-    letter-spacing: 1.5px;
-
-    margin-bottom: 10px;
-  }
-
-  /* SEARCH */
-
-  .filter-group input {
-    padding: 12px;
-
-    font-size: 12px;
-  }
-
   /* CATEGORY */
 
   .category-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(2, 1fr);
 
-    gap: 2px 10px;
+    gap: 0 12px;
   }
 
   .category-list .category-btn {
-    padding: 7px 0;
+    font-size: 12px;
 
-    font-size: 13px;
+    padding: 8px 0;
   }
 
-  /* SIZE */
-
-  .size-options {
-    gap: 6px;
-  }
-
-  .size-options button {
-    width: 36px;
-
-    height: 36px;
-
-    font-size: 10px;
-  }
-
-  /* CONDITION */
-
-  #conditionFilter {
-    padding: 11px;
-
-    font-size: 11px;
-  }
-
-  /* TOP */
-
-  .catalog-top {
-    align-items: flex-start;
-
-    flex-direction: column;
-
-    gap: 12px;
-
-    margin-bottom: 20px;
-  }
-
-  .catalog-top p {
-    font-size: 11px;
-  }
-
-  .catalog-top select {
-    width: 100%;
-
-    padding: 11px;
-
-    font-size: 11px;
-  }
-
-  /* PRODUCT GRID */
+  /* PRODUCT GRID
+     Tetap 2 kolom agar terasa seperti
+     toko online di HP
+  */
 
   .catalog-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -742,92 +773,49 @@
     gap: 25px 10px;
   }
 
-  /* PRODUCT IMAGE */
+  /* IMAGE */
 
   .catalog-image {
-    height: 245px;
+    aspect-ratio: 3 / 4;
   }
 
-  /* LABEL */
-
-  .product-label {
-    top: 9px;
-
-    left: 9px;
-
-    padding: 5px 7px;
-
-    font-size: 7px;
-
-    letter-spacing: 0.7px;
-  }
-
-  /* PRODUCT INFO */
-
-  .catalog-info {
-    padding-top: 11px;
-  }
-
-  .catalog-category {
-    font-size: 7px;
-
-    letter-spacing: 1.3px;
-
-    margin-bottom: 5px;
-  }
+  /* INFO */
 
   .catalog-info h3 {
     font-size: 13px;
-
-    line-height: 1.35;
-
-    margin-bottom: 6px;
   }
 
   .catalog-price {
     font-size: 12px;
-
-    margin-bottom: 7px;
   }
 
   .catalog-meta {
     font-size: 8px;
-
-    gap: 5px;
-  }
-
-  /* EMPTY */
-
-  .no-products {
-    padding: 70px 15px;
-
-    font-size: 13px;
   }
 }
 
 /* =====================================================
-   VERY SMALL PHONE
+   EXTRA SMALL PHONE
+   380px
 ===================================================== */
 
 @media (max-width: 380px) {
-  .catalog-section {
-    padding-left: 14px;
-
-    padding-right: 14px;
+  .catalog-header {
+    padding: 45px 5% 40px;
   }
 
-  .catalog-header {
-    padding-left: 16px;
+  .catalog-header h1 {
+    font-size: 48px;
 
-    padding-right: 16px;
+    letter-spacing: -3px;
+  }
+
+  .catalog-section {
+    padding: 35px 4%;
   }
 
   .catalog-grid {
     gap: 22px 8px;
-  }
-
-  .catalog-image {
-    height: 215px;
   }
 
   .catalog-info h3 {
@@ -839,6 +827,15 @@
   }
 
   .catalog-meta {
+    font-size: 7px;
+  }
+
+  .product-label {
+    top: 7px;
+    left: 7px;
+
+    padding: 5px 6px;
+
     font-size: 7px;
   }
 }
