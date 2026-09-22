@@ -119,11 +119,27 @@
 
       const SUPABASE_KEY = "sb_publishable_olOOWAKiJRqq--6seYsA5Q_mOjo2CF7";
 
+      /* =====================================================
+         CREATE SUPABASE CLIENT
+      ===================================================== */
+
       const supabaseClient = window.supabase.createClient(
         SUPABASE_URL,
         SUPABASE_KEY,
       );
+    </script>
 
+    <!-- =====================================================
+         ADMIN AUTH
+    ===================================================== -->
+
+    <script src="auth.js"></script>
+
+    <!-- =====================================================
+         DASHBOARD SCRIPT
+    ===================================================== -->
+
+    <script>
       /* =====================================================
          ELEMENT
       ===================================================== */
@@ -217,7 +233,7 @@
       }
 
       /* =====================================================
-         LOAD ORDERS
+         LOAD DASHBOARD
       ===================================================== */
 
       async function loadDashboard() {
@@ -234,16 +250,12 @@
              AMBIL ORDERS DARI SUPABASE
           ================================================= */
 
-          const result = await supabaseClient
+          const { data: orders, error } = await supabaseClient
             .from("orders")
             .select("*")
             .order("created_at", {
               ascending: false,
             });
-
-          const orders = result.data;
-
-          const error = result.error;
 
           /* =================================================
              ERROR

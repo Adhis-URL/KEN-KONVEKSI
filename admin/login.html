@@ -17,23 +17,24 @@
 
     <main class="login-page">
       <div class="login-container">
-        <!-- =================================================
-             LOGO
-        ================================================== -->
 
-        <div class="login-logo">KEN<span>KONVEKSI</span></div>
+        <!-- LOGO -->
 
-        <!-- =================================================
-             ADMIN LABEL
-        ================================================== -->
+        <div class="login-logo">
+          KEN<span>KONVEKSI</span>
+        </div>
 
-        <p class="login-label">ADMIN PANEL</p>
+        <!-- ADMIN LABEL -->
 
-        <!-- =================================================
-             TITLE
-        ================================================== -->
+        <p class="login-label">
+          ADMIN PANEL
+        </p>
 
-        <h1>Welcome Back</h1>
+        <!-- TITLE -->
+
+        <h1>
+          Welcome Back
+        </h1>
 
         <p class="login-description">
           Login untuk mengakses dashboard administrator KEN KONVEKSI.
@@ -44,27 +45,37 @@
         ================================================== -->
 
         <form id="loginForm">
-          <!-- USERNAME -->
+
+          <!-- EMAIL -->
 
           <div class="form-group">
-            <label for="username"> Username </label>
+
+            <label for="username">
+              Email
+            </label>
 
             <input
-              type="text"
+              type="email"
               id="username"
               name="username"
-              placeholder="Masukkan username"
+              placeholder="Masukkan email"
               autocomplete="username"
               required
             />
+
           </div>
+
 
           <!-- PASSWORD -->
 
           <div class="form-group">
-            <label for="password"> Password </label>
+
+            <label for="password">
+              Password
+            </label>
 
             <div class="password-wrapper">
+
               <input
                 type="password"
                 id="password"
@@ -82,38 +93,89 @@
               >
                 SHOW
               </button>
+
             </div>
+
           </div>
 
-          <!-- ERROR MESSAGE -->
 
-          <div id="loginError" class="login-error" role="alert" hidden></div>
+          <!-- ERROR -->
+
+          <div
+            id="loginError"
+            class="login-error"
+            role="alert"
+            hidden
+          ></div>
+
 
           <!-- LOGIN BUTTON -->
 
-          <button type="submit" id="loginButton" class="login-button">
+          <button
+            type="submit"
+            id="loginButton"
+            class="login-button"
+          >
             LOGIN
           </button>
+
         </form>
 
-        <!-- =================================================
-             BACK TO WEBSITE
-        ================================================== -->
 
-        <a href="../index.html" class="back-home"> ← Kembali ke Website </a>
+        <!-- BACK TO WEBSITE -->
 
-        <!-- =================================================
-             FOOTER
-        ================================================== -->
+        <a
+          href="../index.html"
+          class="back-home"
+        >
+          ← Kembali ke Website
+        </a>
 
-        <p class="login-footer">© 2026 KEN KONVEKSI</p>
+
+        <!-- FOOTER -->
+
+        <p class="login-footer">
+          © 2026 KEN KONVEKSI
+        </p>
+
       </div>
     </main>
 
+
     <!-- =====================================================
-         JAVASCRIPT
+         SUPABASE
     ====================================================== -->
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+    <script>
+      /* =====================================================
+         SUPABASE CONFIG
+      ====================================================== */
+
+      const SUPABASE_URL =
+        "https://zdpkanqgwlmbrkanyrjo.supabase.co";
+
+      const SUPABASE_KEY =
+        "sb_publishable_olOOWAKiJRqq--6seYsA5Q_mOjo2CF7";
+
+
+      /* =====================================================
+         CREATE SUPABASE CLIENT
+      ====================================================== */
+
+      const supabaseClient =
+        window.supabase.createClient(
+          SUPABASE_URL,
+          SUPABASE_KEY
+        );
+    </script>
+
+
+    <!-- LOGIN JAVASCRIPT -->
+
     <script src="login.js"></script>
+
   </body>
 </html>

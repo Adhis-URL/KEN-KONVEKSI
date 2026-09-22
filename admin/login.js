@@ -1,150 +1,211 @@
-document.addEventListener("DOMContentLoaded", function () {
-  /* =====================================================
-     ADMIN ACCOUNT
-  ====================================================== */
+/* =====================================================
+   KEN KONVEKSI
+   ADMIN LOGIN - SUPABASE AUTH
+===================================================== */
 
-  const ADMIN_USERNAME = "admin";
-  const ADMIN_PASSWORD = "kenkonveksi123";
+/* =====================================================
+   ELEMENT
+===================================================== */
 
-  /* =====================================================
-     ELEMENT
-  ====================================================== */
+const loginForm = document.getElementById("loginForm");
+const usernameInput = document.getElementById("username");
+const passwordInput = document.getElementById("password");
+const loginButton = document.getElementById("loginButton");
+const loginError = document.getElementById("loginError");
+const togglePassword = document.getElementById("togglePassword");
 
-  const loginForm = document.getElementById("loginForm");
+/* =====================================================
+   SHOW ERROR
+===================================================== */
 
-  const usernameInput = document.getElementById("username");
+function showLoginError(message) {
+  loginError.textContent = message;
+  loginError.hidden = false;
+}
 
-  const passwordInput = document.getElementById("password");
+/* =====================================================
+   HIDE ERROR
+===================================================== */
 
-  const loginButton = document.getElementById("loginButton");
+function hideLoginError() {
+  loginError.textContent = "";
+  loginError.hidden = true;
+}
 
-  const loginError = document.getElementById("loginError");
+/* =====================================================
+   CHECK EXISTING SESSION
+===================================================== */
 
-  const togglePassword = document.getElementById("togglePassword");
+async function checkExistingSession() {
+  try {
+    const {
+      data: { session },
+      error,
+    } = await supabaseClient.auth.getSession();
 
-  /* =====================================================
-     JIKA SUDAH LOGIN
-  ====================================================== */
+    if (error) {
+      console.error("SESSION ERROR:", error);
 
-  const isLoggedIn = sessionStorage.getItem("kenAdminLoggedIn");
+      return;
+    }
 
-  if (isLoggedIn === "true") {
-    window.location.href = "index.html";
+    if (session) {
+      console.log("SESSION DITEMUKAN:", session.user.email);
+
+      window.location.replace("index.html");
+    }
+  } catch (error) {
+    console.error("CHECK SESSION ERROR:", error);
+  }
+}
+
+/* =====================================================
+   LOGIN FORM
+===================================================== */
+
+loginForm.addEventListener("submit", async function (event) {
+  event.preventDefault();
+
+  hideLoginError();
+
+  /* =================================================
+       GET INPUT
+    ================================================= */
+
+  const email = usernameInput.value.trim();
+
+  const password = passwordInput.value;
+
+  console.log("================================");
+
+  console.log("KEN KONVEKSI LOGIN");
+
+  console.log("Email:", email);
+
+  console.log("Mencoba login ke Supabase...");
+
+  /* =================================================
+       VALIDATION
+    ================================================= */
+
+  if (!email || !password) {
+    showLoginError("Email dan password wajib diisi.");
 
     return;
   }
 
-  /* =====================================================
-     TOGGLE PASSWORD
-  ====================================================== */
+  /* =================================================
+       LOADING
+    ================================================= */
 
-  togglePassword.addEventListener("click", function () {
-    if (passwordInput.type === "password") {
-      passwordInput.type = "text";
+  loginButton.disabled = true;
 
-      togglePassword.textContent = "HIDE";
+  loginButton.textContent = "LOGIN...";
 
-      togglePassword.setAttribute("aria-label", "Sembunyikan password");
-    } else {
-      passwordInput.type = "password";
+  try {
+    /* ===============================================
+         SUPABASE LOGIN
+      =============================================== */
 
-      togglePassword.textContent = "SHOW";
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+      email: email,
 
-      togglePassword.setAttribute("aria-label", "Tampilkan password");
-    }
-  });
+      password: password,
+    });
 
-  /* =====================================================
-     LOGIN
-  ====================================================== */
+    /* ===============================================
+         TAMPILKAN RESPONSE KE CONSOLE
+      =============================================== */
 
-  loginForm.addEventListener("submit", function (event) {
-    event.preventDefault();
+    console.log("LOGIN DATA:", data);
 
-    const username = usernameInput.value.trim();
+    console.log("LOGIN ERROR:", error);
 
-    const password = passwordInput.value;
+    /* ===============================================
+         ERROR
+      =============================================== */
 
-    /* ================================================
-         RESET ERROR
-      ================================================= */
+    if (error) {
+      console.error("SUPABASE ERROR:", error);
 
-    loginError.hidden = true;
+      /*
+       * Untuk sementara kita tampilkan
+       * error asli dari Supabase.
+       */
 
-    loginError.textContent = "";
+      showLoginError(error.message);
 
-    /* ================================================
-         VALIDASI KOSONG
-      ================================================= */
+      loginButton.disabled = false;
 
-    if (!username) {
-      showError("Username wajib diisi.");
-
-      usernameInput.focus();
+      loginButton.textContent = "LOGIN";
 
       return;
     }
 
-    if (!password) {
-      showError("Password wajib diisi.");
+    /* ===============================================
+         LOGIN BERHASIL
+      =============================================== */
 
-      passwordInput.focus();
+    if (data && data.session) {
+      console.log("================================");
+
+      console.log("LOGIN BERHASIL!");
+
+      console.log("User:", data.user.email);
+
+      console.log("================================");
+
+      loginButton.textContent = "BERHASIL...";
+
+      window.location.replace("index.html");
 
       return;
     }
 
-    /* ================================================
-         DISABLE BUTTON
-      ================================================= */
+    /* ===============================================
+         SESSION TIDAK DITEMUKAN
+      =============================================== */
 
-    loginButton.disabled = true;
+    console.error("Login berhasil tetapi session tidak ditemukan.");
 
-    loginButton.textContent = "CHECKING...";
+    showLoginError("Login gagal. Session tidak ditemukan.");
 
-    /* ================================================
-         CEK USERNAME + PASSWORD
-      ================================================= */
+    loginButton.disabled = false;
 
-    setTimeout(function () {
-      if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-        /* ============================================
-             SIMPAN STATUS LOGIN
-          ============================================= */
+    loginButton.textContent = "LOGIN";
+  } catch (error) {
+    console.error("LOGIN EXCEPTION:", error);
 
-        sessionStorage.setItem("kenAdminLoggedIn", "true");
+    showLoginError(error.message || "Terjadi kesalahan saat login.");
 
-        /* ============================================
-             SIMPAN USERNAME
-          ============================================= */
+    loginButton.disabled = false;
 
-        sessionStorage.setItem("kenAdminUsername", username);
-
-        /* ============================================
-             MASUK DASHBOARD
-          ============================================= */
-
-        window.location.href = "index.html";
-      } else {
-        showError("Username atau password salah.");
-
-        passwordInput.value = "";
-
-        passwordInput.focus();
-
-        loginButton.disabled = false;
-
-        loginButton.textContent = "LOGIN";
-      }
-    }, 400);
-  });
-
-  /* =====================================================
-     SHOW ERROR
-  ====================================================== */
-
-  function showError(message) {
-    loginError.textContent = message;
-
-    loginError.hidden = false;
+    loginButton.textContent = "LOGIN";
   }
 });
+
+/* =====================================================
+   SHOW / HIDE PASSWORD
+===================================================== */
+
+togglePassword.addEventListener("click", function () {
+  if (passwordInput.type === "password") {
+    passwordInput.type = "text";
+
+    togglePassword.textContent = "HIDE";
+
+    togglePassword.setAttribute("aria-label", "Sembunyikan password");
+  } else {
+    passwordInput.type = "password";
+
+    togglePassword.textContent = "SHOW";
+
+    togglePassword.setAttribute("aria-label", "Tampilkan password");
+  }
+});
+
+/* =====================================================
+   START
+===================================================== */
+
+checkExistingSession();
