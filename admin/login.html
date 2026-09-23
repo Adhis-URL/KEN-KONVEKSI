@@ -17,24 +17,17 @@
 
     <main class="login-page">
       <div class="login-container">
-
         <!-- LOGO -->
 
-        <div class="login-logo">
-          KEN<span>KONVEKSI</span>
-        </div>
+        <div class="login-logo">KEN<span>KONVEKSI</span></div>
 
         <!-- ADMIN LABEL -->
 
-        <p class="login-label">
-          ADMIN PANEL
-        </p>
+        <p class="login-label">ADMIN PANEL</p>
 
         <!-- TITLE -->
 
-        <h1>
-          Welcome Back
-        </h1>
+        <h1>Welcome Back</h1>
 
         <p class="login-description">
           Login untuk mengakses dashboard administrator KEN KONVEKSI.
@@ -45,14 +38,10 @@
         ================================================== -->
 
         <form id="loginForm">
-
           <!-- EMAIL -->
 
           <div class="form-group">
-
-            <label for="username">
-              Email
-            </label>
+            <label for="username"> Email </label>
 
             <input
               type="email"
@@ -62,20 +51,14 @@
               autocomplete="username"
               required
             />
-
           </div>
-
 
           <!-- PASSWORD -->
 
           <div class="form-group">
-
-            <label for="password">
-              Password
-            </label>
+            <label for="password"> Password </label>
 
             <div class="password-wrapper">
-
               <input
                 type="password"
                 id="password"
@@ -93,54 +76,29 @@
               >
                 SHOW
               </button>
-
             </div>
-
           </div>
-
 
           <!-- ERROR -->
 
-          <div
-            id="loginError"
-            class="login-error"
-            role="alert"
-            hidden
-          ></div>
-
+          <div id="loginError" class="login-error" role="alert" hidden></div>
 
           <!-- LOGIN BUTTON -->
 
-          <button
-            type="submit"
-            id="loginButton"
-            class="login-button"
-          >
+          <button type="submit" id="loginButton" class="login-button">
             LOGIN
           </button>
-
         </form>
-
 
         <!-- BACK TO WEBSITE -->
 
-        <a
-          href="../index.html"
-          class="back-home"
-        >
-          ← Kembali ke Website
-        </a>
-
+        <a href="../index.html" class="back-home"> ← Kembali ke Website </a>
 
         <!-- FOOTER -->
 
-        <p class="login-footer">
-          © 2026 KEN KONVEKSI
-        </p>
-
+        <p class="login-footer">© 2026 KEN KONVEKSI</p>
       </div>
     </main>
-
 
     <!-- =====================================================
          SUPABASE
@@ -148,34 +106,15 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+    <
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <script>
-      /* =====================================================
-         SUPABASE CONFIG
-      ====================================================== */
+    <script src="supabase-config.js"></script>
 
-      const SUPABASE_URL =
-        "https://zdpkanqgwlmbrkanyrjo.supabase.co";
-
-      const SUPABASE_KEY =
-        "sb_publishable_olOOWAKiJRqq--6seYsA5Q_mOjo2CF7";
-
-
-      /* =====================================================
-         CREATE SUPABASE CLIENT
-      ====================================================== */
-
-      const supabaseClient =
-        window.supabase.createClient(
-          SUPABASE_URL,
-          SUPABASE_KEY
-        );
-    </script>
-
+    <script src="login.js"></script>
 
     <!-- LOGIN JAVASCRIPT -->
 
     <script src="login.js"></script>
-
   </body>
 </html>

@@ -856,7 +856,6 @@ footer p {
 ===================================================== */
 
 @media (max-width: 1000px) {
-
   .navbar {
     height: 70px;
     padding: 0 5%;
@@ -933,21 +932,17 @@ footer p {
   .social-image {
     height: 280px;
   }
-
 }
-
 
 /* =====================================================
    MOBILE
 ===================================================== */
 
 @media (max-width: 700px) {
-
   body {
     width: 100%;
     overflow-x: hidden;
   }
-
 
   /* ===================================================
      NAVBAR
@@ -1009,7 +1004,6 @@ footer p {
     right: -8px;
   }
 
-
   /* ===================================================
      HERO
   =================================================== */
@@ -1070,7 +1064,6 @@ footer p {
     letter-spacing: -5px;
   }
 
-
   /* ===================================================
      SECTION
   =================================================== */
@@ -1095,7 +1088,6 @@ footer p {
 
     letter-spacing: -1.5px;
   }
-
 
   /* ===================================================
      CATEGORY
@@ -1128,7 +1120,6 @@ footer p {
   .category-info span {
     font-size: 10px;
   }
-
 
   /* ===================================================
      PRODUCTS
@@ -1172,7 +1163,6 @@ footer p {
   .product-price {
     font-size: 13px;
   }
-
 
   /* ===================================================
      SOCIAL / KENALI KAMI
@@ -1224,7 +1214,6 @@ footer p {
     font-size: 9px;
   }
 
-
   /* ===================================================
      FOOTER
   =================================================== */
@@ -1246,16 +1235,13 @@ footer p {
 
     font-size: 9px !important;
   }
-
 }
-
 
 /* =====================================================
    SMALL PHONE
 ===================================================== */
 
 @media (max-width: 480px) {
-
   .navbar {
     padding: 0 14px;
   }
@@ -1280,7 +1266,6 @@ footer p {
     font-size: 14px;
   }
 
-
   /* HERO */
 
   .hero {
@@ -1296,7 +1281,6 @@ footer p {
   .hero-image {
     height: 330px;
   }
-
 
   /* CATEGORY */
 
@@ -1322,7 +1306,6 @@ footer p {
     font-size: 15px;
   }
 
-
   /* PRODUCTS */
 
   .product-grid {
@@ -1341,7 +1324,6 @@ footer p {
     font-size: 12px;
   }
 
-
   /* SOCIAL */
 
   .social-section {
@@ -1356,5 +1338,35 @@ footer p {
   .social-image {
     height: 170px;
   }
+}
+.portfolio-heading {
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto 70px;
+}
 
+.portfolio-heading p {
+  margin: 0 0 18px;
+  font-size: 12px;
+  letter-spacing: 6px;
+  color: #999;
+  text-transform: uppercase;
+}
+
+.portfolio-heading h1 {
+  margin: 0 0 22px;
+  font-size: clamp(55px, 8vw, 100px);
+  line-height: 0.95;
+  font-weight: 800;
+  letter-spacing: -5px;
+  color: #111;
+}
+
+.portfolio-heading span {
+  display: block;
+  max-width: 650px;
+  margin: 0 auto;
+  color: #777;
+  font-size: 14px;
+  line-height: 1.8;
 }

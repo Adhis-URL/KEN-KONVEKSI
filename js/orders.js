@@ -1,544 +1,373 @@
-// =====================================================
-// KEN KONVEKSI
-// ORDERS SYSTEM - SUPABASE
-// =====================================================
-
-// =====================================================
-// ELEMENT
-// =====================================================
+// ==========================================
+// KEN KONVEKSI - ORDERS
+// ==========================================
 
 const ordersList = document.getElementById("ordersList");
 
-const emptyOrders = document.getElementById("emptyOrders");
-
 const loadingOrders = document.getElementById("loadingOrders");
+
+const emptyOrders = document.getElementById("emptyOrders");
 
 const cartCount = document.getElementById("cartCount");
 
 const filterButtons = document.querySelectorAll(".filter-btn");
 
-// =====================================================
-// DATA
-// =====================================================
+let allOrders = [];
 
-let orders = [];
+let currentStatus = "all";
 
-// =====================================================
-// RUPIAH
-// =====================================================
+// ==========================================
+// FORMAT RUPIAH
+// ==========================================
 
-function formatRupiah(number) {
+function formatRupiah(value) {
   return new Intl.NumberFormat("id-ID", {
     style: "currency",
-
     currency: "IDR",
-
-    maximumFractionDigits: 0,
-  }).format(Number(number) || 0);
+    minimumFractionDigits: 0,
+  }).format(Number(value) || 0);
 }
 
-// =====================================================
+// ==========================================
 // ESCAPE HTML
-// =====================================================
+// ==========================================
 
 function escapeHTML(value) {
   return String(value ?? "")
     .replace(/&/g, "&amp;")
-
     .replace(/</g, "&lt;")
-
     .replace(/>/g, "&gt;")
-
     .replace(/"/g, "&quot;")
-
     .replace(/'/g, "&#039;");
 }
 
-// =====================================================
-// FORMAT DATE
-// =====================================================
+// ==========================================
+// CART COUNT
+// ==========================================
 
-function formatDate(dateString) {
-  if (!dateString) {
-    return "-";
-  }
+function updateCartCount() {
+  try {
+    const cart = JSON.parse(sessionStorage.getItem("kenCart")) || [];
 
-  const date = new Date(dateString);
+    const total = cart.reduce(function (sum, item) {
+      return sum + Math.max(0, Number(item.quantity) || 0);
+    }, 0);
 
-  if (isNaN(date.getTime())) {
-    return "-";
-  }
-
-  return date.toLocaleDateString("id-ID", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  });
-}
-
-// =====================================================
-// STATUS CLASS
-// =====================================================
-
-function getStatusClass(status) {
-  switch (status) {
-    case "Menunggu Pembayaran":
-      return "status-waiting";
-
-    case "Diproses":
-      return "status-process";
-
-    case "Dikirim":
-      return "status-shipped";
-
-    case "Selesai":
-      return "status-complete";
-
-    case "Dibatalkan":
-      return "status-cancel";
-
-    default:
-      return "";
+    if (cartCount) {
+      cartCount.textContent = total;
+    }
+  } catch (error) {
+    if (cartCount) {
+      cartCount.textContent = "0";
+    }
   }
 }
 
-// =====================================================
-// LOAD ORDERS FROM SUPABASE
-// =====================================================
+// ==========================================
+// GET SAVED ORDER IDS
+// ==========================================
+
+function getSavedOrderIds() {
+  try {
+    const ids = JSON.parse(localStorage.getItem("kenOrderIds")) || [];
+
+    if (!Array.isArray(ids)) {
+      return [];
+    }
+
+    return ids;
+  } catch (error) {
+    return [];
+  }
+}
+
+// ==========================================
+// LOAD ORDERS
+// ==========================================
 
 async function loadOrders() {
-  console.log("Memuat pesanan dari Supabase...");
-
-  // Pastikan Supabase tersedia
-
-  if (typeof supabaseClient === "undefined") {
-    console.error("supabaseClient tidak tersedia.");
-
-    showError("Supabase belum terhubung.");
-
+  if (!ordersList || !loadingOrders || !emptyOrders) {
     return;
   }
 
-  try {
-    // ================================================
-    // AMBIL ORDERS
-    // ================================================
-
-    const { data: orderData, error: orderError } = await supabaseClient
-
-      .from("orders")
-
-      .select("*")
-
-      .order("created_at", {
-        ascending: false,
-      });
-
-    if (orderError) {
-      console.error("Order error:", orderError);
-
-      showError(orderError.message);
-
-      return;
-    }
-
-    orders = Array.isArray(orderData) ? orderData : [];
-
-    console.log("Orders ditemukan:", orders);
-
-    // ================================================
-    // KALAU TIDAK ADA ORDER
-    // ================================================
-
-    if (orders.length === 0) {
-      loadingOrders.style.display = "none";
-
-      emptyOrders.style.display = "block";
-
-      ordersList.innerHTML = "";
-
-      return;
-    }
-
-    // ================================================
-    // AMBIL ORDER ITEMS
-    // ================================================
-
-    const orderIds = orders.map((order) => order.id);
-
-    const { data: itemData, error: itemError } = await supabaseClient
-
-      .from("order_items")
-
-      .select("*")
-
-      .in("order_id", orderIds);
-
-    if (itemError) {
-      console.error("Order items error:", itemError);
-    }
-
-    const items = Array.isArray(itemData) ? itemData : [];
-
-    console.log("Order items ditemukan:", items);
-
-    // ================================================
-    // GABUNGKAN ITEMS KE ORDER
-    // ================================================
-
-    orders = orders.map((order) => {
-      return {
-        ...order,
-
-        items: items.filter((item) => item.order_id === order.id),
-      };
-    });
-
-    // ================================================
-    // SELESAI LOADING
-    // ================================================
-
-    loadingOrders.style.display = "none";
-
-    emptyOrders.style.display = "none";
-
-    renderOrders();
-  } catch (error) {
-    console.error("Load orders error:", error);
-
-    showError(error.message);
-  }
-}
-
-// =====================================================
-// SHOW ERROR
-// =====================================================
-
-function showError(message) {
-  loadingOrders.style.display = "none";
+  loadingOrders.style.display = "block";
 
   emptyOrders.style.display = "none";
 
-  ordersList.innerHTML = `
-
-    <div
-      class="empty-orders"
-      style="display:block;"
-    >
-
-      <div class="empty-order-icon">
-        ⚠️
-      </div>
-
-      <h2>
-        Gagal memuat pesanan
-      </h2>
-
-      <p>
-        ${escapeHTML(message)}
-      </p>
-
-      <button
-        type="button"
-        onclick="loadOrders()"
-        style="
-          margin-top:20px;
-          padding:12px 24px;
-          border:none;
-          background:#111;
-          color:#fff;
-          cursor:pointer;
-        "
-      >
-        Coba Lagi
-      </button>
-
-    </div>
-
-  `;
-}
-
-// =====================================================
-// RENDER ORDERS
-// =====================================================
-
-function renderOrders(statusFilter = "all") {
   ordersList.innerHTML = "";
 
-  // ================================================
-  // FILTER
-  // ================================================
+  const orderIds = getSavedOrderIds();
 
-  let filteredOrders;
+  /*
+   * Kalau belum pernah melakukan
+   * order dari browser ini.
+   */
 
-  if (statusFilter === "all") {
-    filteredOrders = orders;
-  } else {
-    filteredOrders = orders.filter((order) => order.status === statusFilter);
-  }
+  if (!orderIds.length) {
+    loadingOrders.style.display = "none";
 
-  // ================================================
-  // KOSONG
-  // ================================================
-
-  if (filteredOrders.length === 0) {
     emptyOrders.style.display = "block";
 
     return;
   }
 
-  emptyOrders.style.display = "none";
+  try {
+    const { data, error } = await supabaseClient
+      .from("orders")
+      .select(
+        `
+          *,
+          order_items (
+            id,
+            product_id,
+            product_name,
+            price,
+            quantity,
+            size,
+            image_url
+          )
+          `,
+      )
+      .in("id", orderIds)
+      .order("created_at", {
+        ascending: false,
+      });
 
-  // ================================================
-  // ORDER TERBARU DI ATAS
-  // ================================================
+    if (error) {
+      console.error("LOAD ORDERS ERROR:", error);
 
-  const sortedOrders = [...filteredOrders].sort(
-    (a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0),
-  );
-
-  // ================================================
-  // RENDER
-  // ================================================
-
-  sortedOrders.forEach((order) => {
-    const orderCard = document.createElement("article");
-
-    orderCard.className = "order-card";
-
-    // ============================================
-    // PRODUCTS
-    // ============================================
-
-    let productsHTML = "";
-
-    const orderItems = Array.isArray(order.items) ? order.items : [];
-
-    orderItems.forEach((item) => {
-      const subtotal = Number(item.price || 0) * Number(item.quantity || 0);
-
-      const imageUrl = item.image_url || item.image || "";
-
-      let imageHTML;
-
-      if (imageUrl) {
-        imageHTML = `
-
-              <img
-                src="${escapeHTML(imageUrl)}"
-                alt="${escapeHTML(item.product_name || "Produk")}"
-                class="order-product-img"
-                onerror="this.style.display='none'; this.parentElement.innerHTML='<span>PRODUCT</span>';"
-              >
-
-            `;
-      } else {
-        imageHTML = `
-              <span>PRODUCT</span>
-            `;
-      }
-
-      productsHTML += `
-
-            <div class="order-product">
-
-              <div class="order-product-image">
-
-                ${imageHTML}
-
-              </div>
-
-
-              <div class="order-product-info">
-
-                <h3>
-                  ${escapeHTML(item.product_name || item.name || "Produk")}
-                </h3>
-
-
-                <p>
-                  Size:
-                  ${escapeHTML(item.size || "-")}
-                </p>
-
-
-                <p>
-                  Jumlah:
-                  ${Number(item.quantity || 0)}
-                </p>
-
-              </div>
-
-
-              <div class="order-product-price">
-
-                ${formatRupiah(subtotal)}
-
-              </div>
-
-            </div>
-
-          `;
-    });
-
-    // ============================================
-    // KALAU ITEM KOSONG
-    // ============================================
-
-    if (!productsHTML) {
-      productsHTML = `
-
-          <div class="order-product">
-
-            <div class="order-product-info">
-
-              <p>
-                Detail produk tidak ditemukan.
-              </p>
-
-            </div>
-
-          </div>
-
-        `;
+      throw new Error(error.message);
     }
 
-    // ============================================
-    // PAYMENT
-    // ============================================
+    allOrders = Array.isArray(data) ? data : [];
 
-    const payment = order.payment_method || order.payment || "-";
+    loadingOrders.style.display = "none";
 
-    // ============================================
-    // ORDER ID
-    // ============================================
+    renderOrders();
+  } catch (error) {
+    console.error(error);
 
-    const orderNumber = order.order_code || order.id || "-";
+    loadingOrders.style.display = "none";
 
-    // ============================================
-    // HTML CARD
-    // ============================================
+    ordersList.innerHTML = `
+      <div class="empty-orders">
 
-    orderCard.innerHTML = `
-
-        <div class="order-card-header">
-
-          <div>
-
-            <div class="order-number">
-
-              ${escapeHTML(orderNumber)}
-
-            </div>
-
-
-            <div class="order-date">
-
-              ${formatDate(order.created_at)}
-
-            </div>
-
-          </div>
-
-
-          <div
-            class="order-status ${getStatusClass(order.status)}"
-          >
-
-            ${escapeHTML(order.status || "Menunggu Pembayaran")}
-
-          </div>
-
+        <div class="empty-order-icon">
+          ⚠️
         </div>
 
+        <h2>
+          Gagal memuat pesanan
+        </h2>
 
-        <div class="order-products">
+        <p>
+          ${escapeHTML(error.message)}
+        </p>
 
-          ${productsHTML}
+        <button
+          type="button"
+          onclick="loadOrders()"
+        >
+          Coba Lagi
+        </button>
 
-        </div>
-
-
-        <div class="order-card-footer">
-
-          <div class="order-payment">
-
-            Pembayaran:
-
-            <strong>
-              ${escapeHTML(payment)}
-            </strong>
-
-          </div>
-
-
-          <div class="order-total">
-
-            <span>
-              Total Pembayaran
-            </span>
-
-
-            <strong>
-
-              ${formatRupiah(order.total)}
-
-            </strong>
-
-          </div>
-
-        </div>
-
-      `;
-
-    ordersList.appendChild(orderCard);
-  });
+      </div>
+    `;
+  }
 }
 
-// =====================================================
-// FILTER BUTTON
-// =====================================================
+// ==========================================
+// RENDER ORDERS
+// ==========================================
 
-filterButtons.forEach((button) => {
+function renderOrders() {
+  if (!ordersList) {
+    return;
+  }
+
+  let orders = [...allOrders];
+
+  if (currentStatus !== "all") {
+    orders = orders.filter(function (order) {
+      return order.status === currentStatus;
+    });
+  }
+
+  if (!orders.length) {
+    ordersList.innerHTML = `
+      <div class="empty-orders">
+
+        <div class="empty-order-icon">
+          📦
+        </div>
+
+        <h2>
+          Tidak ada pesanan
+        </h2>
+
+        <p>
+          Belum ada pesanan dengan status ini.
+        </p>
+
+      </div>
+    `;
+
+    return;
+  }
+
+  ordersList.innerHTML = orders
+    .map(function (order) {
+      const createdAt = order.created_at
+        ? new Date(order.created_at).toLocaleDateString("id-ID", {
+            day: "2-digit",
+            month: "long",
+            year: "numeric",
+          })
+        : "-";
+
+      const status = order.status || "Menunggu Pembayaran";
+
+      const items = Array.isArray(order.order_items) ? order.order_items : [];
+
+      const itemsHTML = items
+        .map(function (item) {
+          const image = item.image_url || "";
+
+          const price = Number(item.price) || 0;
+
+          const quantity = Number(item.quantity) || 1;
+
+          return `
+                    <div class="order-product">
+
+                      <div class="order-product-image">
+
+                        ${
+                          image
+                            ? `
+                              <img
+                                src="${escapeHTML(image)}"
+                                alt="${escapeHTML(item.product_name)}"
+                              >
+                            `
+                            : `
+                              <div class="image-placeholder">
+                                PRODUCT
+                              </div>
+                            `
+                        }
+
+                      </div>
+
+                      <div class="order-product-info">
+
+                        <h3>
+                          ${escapeHTML(item.product_name)}
+                        </h3>
+
+                        <p>
+                          Size:
+                          ${escapeHTML(item.size || "-")}
+                        </p>
+
+                        <p>
+                          Jumlah:
+                          ${quantity}
+                        </p>
+
+                      </div>
+
+                      <strong class="order-product-price">
+                        ${formatRupiah(price * quantity)}
+                      </strong>
+
+                    </div>
+                  `;
+        })
+        .join("");
+
+      return `
+            <article class="order-card">
+
+              <div class="order-card-header">
+
+                <div>
+
+                  <strong>
+                    ${escapeHTML(order.id)}
+                  </strong>
+
+                  <p>
+                    ${createdAt}
+                  </p>
+
+                </div>
+
+                <span class="order-status">
+                  ${escapeHTML(status)}
+                </span>
+
+              </div>
+
+              <div class="order-card-body">
+
+                ${
+                  itemsHTML ||
+                  `
+                    <p>
+                      Tidak ada detail produk.
+                    </p>
+                  `
+                }
+
+              </div>
+
+              <div class="order-card-footer">
+
+                <span>
+                  Total Pembayaran
+                </span>
+
+                <strong>
+                  ${formatRupiah(order.total)}
+                </strong>
+
+              </div>
+
+            </article>
+          `;
+    })
+    .join("");
+}
+
+// ==========================================
+// FILTER
+// ==========================================
+
+filterButtons.forEach(function (button) {
   button.addEventListener("click", function () {
-    filterButtons.forEach((btn) => btn.classList.remove("active"));
+    filterButtons.forEach(function (item) {
+      item.classList.remove("active");
+    });
 
-    this.classList.add("active");
+    button.classList.add("active");
 
-    const status = this.dataset.status;
+    currentStatus = button.dataset.status || "all";
 
-    renderOrders(status);
+    renderOrders();
   });
 });
 
-// =====================================================
-// CART COUNT
-// =====================================================
-
-function updateCartCount() {
-  let cart = [];
-
-  try {
-    cart = JSON.parse(sessionStorage.getItem("kenCart")) || [];
-  } catch (error) {
-    cart = [];
-  }
-
-  let total = 0;
-
-  cart.forEach((item) => {
-    total += Number(item.quantity) || 0;
-  });
-
-  if (cartCount) {
-    cartCount.textContent = total;
-  }
-}
-
-// =====================================================
-// INITIALIZE
-// =====================================================
+// ==========================================
+// INITIAL
+// ==========================================
 
 updateCartCount();
 
 loadOrders();
+
+window.addEventListener("pageshow", function () {
+  updateCartCount();
+
+  loadOrders();
+});

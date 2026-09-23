@@ -13,7 +13,7 @@
   </head>
 
   <body>
-    <!-- ================= NAVBAR ================= -->
+    <!-- NAVBAR -->
 
     <header class="navbar">
       <div class="nav-container">
@@ -24,9 +24,9 @@
 
           <a href="catalog.html"> Catalog </a>
 
-          <a href="#"> Outfit </a>
+          <a href="outfit.html"> Outfit </a>
 
-          <a href="#"> About </a>
+          <a href="orders.html"> Pesanan Saya </a>
         </nav>
 
         <div class="nav-actions">
@@ -41,7 +41,7 @@
       </div>
     </header>
 
-    <!-- ================= CART ================= -->
+    <!-- CART -->
 
     <main class="cart-page">
       <div class="cart-header">
@@ -68,7 +68,7 @@
 
           <div id="cartItems"></div>
 
-          <div id="emptyCart" class="empty-cart">
+          <div id="emptyCart" class="empty-cart" style="display: none">
             <div class="empty-icon">🛒</div>
 
             <h2>Keranjang masih kosong</h2>
@@ -99,13 +99,13 @@
           <div class="summary-row">
             <span> Ongkir </span>
 
-            <strong id="shipping"> Rp0 </strong>
+            <strong id="shipping"> Mengikuti Jarak Lokasi </strong>
           </div>
 
           <div class="summary-divider"></div>
 
           <div class="summary-total">
-            <span> Total </span>
+            <span> Total Produk </span>
 
             <strong id="grandTotal"> Rp0 </strong>
           </div>
@@ -119,7 +119,7 @@
       </div>
     </main>
 
-    <!-- ================= FOOTER ================= -->
+    <!-- FOOTER -->
 
     <footer>
       <div class="footer-container">
@@ -135,13 +135,15 @@
           <a href="index.html"> Home </a>
 
           <a href="catalog.html"> Catalog </a>
+
+          <a href="orders.html"> Pesanan Saya </a>
         </div>
       </div>
 
       <div class="copyright">© 2026 KEN KONVEKSI</div>
     </footer>
 
-    <!-- ================= SUPABASE ================= -->
+    <!-- SUPABASE -->
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -156,7 +158,7 @@
       );
     </script>
 
-    <!-- ================= CART JS ================= -->
+    <!-- CART JS -->
 
     <script src="js/cart.js"></script>
   </body>

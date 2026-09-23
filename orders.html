@@ -8,44 +8,49 @@
     <title>Pesanan Saya | KEN KONVEKSI</title>
 
     <link rel="stylesheet" href="css/style.css" />
+
     <link rel="stylesheet" href="css/orders.css" />
   </head>
 
   <body>
-    <!-- ================= NAVBAR ================= -->
+    <!-- NAVBAR -->
 
     <header class="navbar">
       <div class="nav-container">
         <a href="index.html" class="logo"> KEN KONVEKSI </a>
 
         <nav class="nav-menu">
-          <a href="index.html">Home</a>
-          <a href="catalog.html">Catalog</a>
-          <a href="#">Outfit</a>
-          <a href="#">About</a>
+          <a href="index.html"> Home </a>
+
+          <a href="catalog.html"> Catalog </a>
+
+          <a href="outfit.html"> Outfit </a>
+
+          <a href="orders.html" class="active"> Pesanan Saya </a>
         </nav>
 
         <div class="nav-actions">
           <a href="cart.html" class="cart-btn">
             🛒
-            <span id="cartCount">0</span>
+
+            <span id="cartCount"> 0 </span>
           </a>
         </div>
       </div>
     </header>
 
-    <!-- ================= ORDERS ================= -->
+    <!-- ORDERS -->
 
     <main class="orders-page">
       <div class="orders-header">
-        <span>ACCOUNT</span>
+        <span> ACCOUNT </span>
 
         <h1>Pesanan Saya</h1>
 
         <p>Lihat semua pesanan kamu di KEN KONVEKSI.</p>
       </div>
 
-      <!-- ================= FILTER ================= -->
+      <!-- FILTER -->
 
       <div class="order-filter">
         <button class="filter-btn active" data-status="all" type="button">
@@ -77,11 +82,11 @@
         </button>
       </div>
 
-      <!-- ================= LIST PESANAN ================= -->
+      <!-- ORDERS -->
 
       <section id="ordersList" class="orders-list"></section>
 
-      <!-- ================= LOADING ================= -->
+      <!-- LOADING -->
 
       <section id="loadingOrders" class="empty-orders">
         <div class="empty-order-icon">⏳</div>
@@ -91,20 +96,20 @@
         <p>Tunggu sebentar.</p>
       </section>
 
-      <!-- ================= KOSONG ================= -->
+      <!-- EMPTY -->
 
       <section id="emptyOrders" class="empty-orders" style="display: none">
         <div class="empty-order-icon">📦</div>
 
         <h2>Belum ada pesanan</h2>
 
-        <p>Kamu belum melakukan pembelian.</p>
+        <p>Kamu belum melakukan pembelian dari perangkat ini.</p>
 
         <a href="catalog.html"> Mulai Belanja </a>
       </section>
     </main>
 
-    <!-- ================= FOOTER ================= -->
+    <!-- FOOTER -->
 
     <footer>
       <div class="footer-container">
@@ -120,15 +125,15 @@
           <a href="index.html"> Home </a>
 
           <a href="catalog.html"> Catalog </a>
+
+          <a href="orders.html"> Pesanan Saya </a>
         </div>
       </div>
 
       <div class="copyright">© 2026 KEN KONVEKSI</div>
     </footer>
 
-    <!-- ================================================= -->
-    <!-- SUPABASE - CUKUP SATU KALI -->
-    <!-- ================================================= -->
+    <!-- SUPABASE -->
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -143,7 +148,7 @@
       );
     </script>
 
-    <!-- ================= ORDERS JS ================= -->
+    <!-- ORDERS JS -->
 
     <script src="js/orders.js"></script>
   </body>

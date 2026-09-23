@@ -1,25 +1,30 @@
 /* =====================================================
-   KEN KONVEKSI - ADMIN ORDERS
-   ===================================================== */
+   ADMIN ORDERS
+   KEN KONVEKSI
+===================================================== */
 
-/* ================= FILTER ================= */
+/* =====================================================
+   FILTER
+===================================================== */
 
 .admin-order-filter {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
-  overflow-x: auto;
-  margin-bottom: 22px;
-  padding-bottom: 3px;
+  margin-bottom: 26px;
 }
 
 .admin-filter {
-  background: #fff;
   border: 1px solid #ddd;
-  padding: 10px 17px;
+  background: #fff;
+  color: #111;
+  padding: 12px 18px;
+  font-size: 14px;
   cursor: pointer;
-  font-size: 12px;
-  white-space: nowrap;
-  transition: 0.2s ease;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .admin-filter:hover {
@@ -28,385 +33,604 @@
 
 .admin-filter.active {
   background: #111;
-  color: #fff;
   border-color: #111;
+  color: #fff;
 }
 
-/* ================= ORDER CARD ================= */
+/* =====================================================
+   ORDER CARD
+===================================================== */
 
 .admin-order-card {
   background: #fff;
-  border: 1px solid #ddd;
-  margin-bottom: 16px;
+  border: 1px solid #e4e4e4;
+  margin-bottom: 20px;
+  overflow: hidden;
 }
 
-/* ================= HEADER ================= */
+/* =====================================================
+   ORDER HEADER
+===================================================== */
 
 .admin-order-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 17px 22px;
+  gap: 20px;
+  padding: 18px 22px;
   border-bottom: 1px solid #eee;
 }
 
-.admin-order-id {
+.admin-order-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.admin-order-header-left strong {
+  font-size: 15px;
+}
+
+.admin-order-header-left span {
+  color: #666;
   font-size: 14px;
-  font-weight: 700;
-  color: #111;
 }
 
-.admin-order-date {
-  font-size: 11px;
-  color: #888;
-  margin-top: 4px;
+/* =====================================================
+   STATUS
+===================================================== */
+
+.admin-order-status {
+  min-width: 190px;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  background: #fff;
+  font-size: 14px;
+  cursor: pointer;
 }
 
-/* ================= CONTENT ================= */
+.admin-order-status:focus {
+  outline: none;
+  border-color: #111;
+}
 
-.admin-order-content {
+/* =====================================================
+   BUYER
+===================================================== */
+
+.admin-order-buyer {
+  padding: 22px;
+  border-bottom: 1px solid #eee;
+}
+
+.admin-order-buyer h2 {
+  margin: 0 0 18px;
+  font-size: 19px;
+}
+
+.buyer-info-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 280px;
-  gap: 24px;
-  padding: 20px 22px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 15px 30px;
 }
 
-/* ================= PRODUCTS ================= */
-
-.admin-products {
-  border-right: 1px solid #eee;
-  padding-right: 24px;
+.buyer-info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.admin-product {
+.buyer-info-item span {
+  font-size: 12px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.buyer-info-item strong {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.buyer-address {
+  grid-column: 1 / -1;
+}
+
+/* =====================================================
+   PRODUCTS
+===================================================== */
+
+.admin-order-products {
+  padding: 22px;
+}
+
+.admin-order-products-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 16px;
+}
+
+.admin-order-products-title h2 {
+  margin: 0;
+  font-size: 19px;
+}
+
+.admin-order-products-title span {
+  font-size: 13px;
+  color: #777;
+}
+
+/* =====================================================
+   PRODUCT LIST
+===================================================== */
+
+.admin-order-product-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* =====================================================
+   PRODUCT
+===================================================== */
+
+.admin-order-product {
   display: flex;
   align-items: center;
   gap: 18px;
-  padding: 10px 0;
+  width: 100%;
+  min-height: 120px;
+  padding: 16px 0;
+  border-top: 1px solid #eee;
+  box-sizing: border-box;
 }
 
-.admin-product:first-child {
-  padding-top: 0;
+.admin-order-product:first-child {
+  border-top: none;
 }
 
-.admin-product:last-child {
-  padding-bottom: 0;
-  border-bottom: none;
-}
+/* =====================================================
+   PRODUCT IMAGE
+===================================================== */
 
-/* ================= GAMBAR PRODUK ================= */
+/*
+  UKURAN GAMBAR DI ADMIN
+  --------------------------------
+  Desktop : 96 x 96 px
+  Tablet  : 85 x 85 px
+  Mobile  : 75 x 75 px
+*/
 
-.admin-product-image,
-.order-product-image {
-  width: 120px !important;
-  height: 120px !important;
-  min-width: 120px !important;
-  min-height: 120px !important;
+.admin-order-product-image-wrapper {
+  width: 96px !important;
+  height: 96px !important;
 
-  background: #f7f7f7;
+  min-width: 96px !important;
+  min-height: 96px !important;
+
+  max-width: 96px !important;
+  max-height: 96px !important;
+
+  flex: 0 0 96px;
+
+  background: #f4f4f4;
+  overflow: hidden;
+
   border: 1px solid #e5e5e5;
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/*
+  INI PENTING:
+  Memaksa gambar apapun agar tidak membesar.
+*/
+
+.admin-order-product-image-wrapper img,
+.admin-order-product-image,
+.admin-order-product img {
+  display: block;
+
+  width: 100% !important;
+  height: 100% !important;
+
+  min-width: 0 !important;
+  min-height: 0 !important;
+
+  max-width: 100% !important;
+  max-height: 100% !important;
+
+  object-fit: cover !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  box-sizing: border-box;
+}
+
+/* =====================================================
+   IMAGE PLACEHOLDER
+===================================================== */
+
+.admin-order-product-placeholder {
+  width: 100%;
+  height: 100%;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  overflow: hidden;
+  font-size: 28px;
+  color: #999;
 }
 
-/* gambar tidak dipotong */
-.admin-product-image img,
-.order-product-image img {
-  width: 100% !important;
-  height: 100% !important;
+/* =====================================================
+   PRODUCT INFO
+===================================================== */
 
-  max-width: 100%;
-  max-height: 100%;
-
-  object-fit: contain !important;
-  object-position: center;
-
-  display: block;
-}
-
-/* ================= INFORMASI PRODUK ================= */
-
-.admin-product-info {
-  flex: 1;
+.admin-order-product-info {
+  flex: 1 1 auto;
   min-width: 0;
 }
 
-.admin-product-info h3 {
+.admin-order-product-info h3 {
   margin: 0 0 8px;
-
-  font-size: 18px;
-  line-height: 1.35;
-
-  font-weight: 700;
+  font-size: 16px;
   color: #111;
+  line-height: 1.4;
 }
 
-.admin-product-info p {
-  margin: 4px 0;
+.admin-order-product-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 7px;
+}
 
+.admin-order-product-meta span {
   color: #777;
   font-size: 13px;
-  line-height: 1.5;
 }
 
-.admin-product-price {
-  margin-top: 8px;
-
-  font-size: 14px;
-  font-weight: 700;
-
+.admin-order-product-meta strong {
   color: #111;
 }
 
-/* ================= CUSTOMER ================= */
-
-.customer-info {
-  padding-left: 0;
+.admin-order-product-unit-price {
+  font-size: 13px;
+  color: #777;
 }
 
-.customer-info h3 {
-  font-size: 14px;
-  margin: 0 0 16px;
+/* =====================================================
+   PRODUCT SUBTOTAL
+===================================================== */
+
+.admin-order-product-subtotal {
+  flex: 0 0 auto;
+
   font-weight: 700;
+  font-size: 15px;
+
+  white-space: nowrap;
+
+  margin-left: auto;
 }
 
-.customer-row {
-  margin-bottom: 10px;
+/* =====================================================
+   NO ITEMS
+===================================================== */
+
+.admin-order-no-items {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 0;
+  color: #777;
 }
 
-.customer-row span {
-  display: block;
-
-  font-size: 9px;
-  color: #999;
-
-  text-transform: uppercase;
-  letter-spacing: 1px;
-
-  margin-bottom: 3px;
+.admin-order-no-items span {
+  font-size: 28px;
 }
 
-.customer-row strong {
-  display: block;
-
-  font-size: 12px;
-  line-height: 1.45;
-
-  font-weight: 500;
-  color: #111;
-}
-
-.customer-address {
-  line-height: 1.45;
-}
-
-/* ================= FOOTER ================= */
+/* =====================================================
+   ORDER FOOTER
+===================================================== */
 
 .admin-order-footer {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  gap: 20px;
 
-  padding: 15px 22px;
+  padding: 18px 22px;
 
   border-top: 1px solid #eee;
+
+  background: #fafafa;
 }
 
-.admin-payment {
-  font-size: 11px;
-  color: #777;
+.admin-order-footer span {
+  font-size: 14px;
+  color: #555;
 }
 
-.admin-payment strong {
+.admin-order-footer strong {
+  font-size: 18px;
   color: #111;
 }
 
-/* ================= TOTAL ================= */
-
-.admin-total {
-  text-align: right;
-}
-
-.admin-total span {
-  display: block;
-
-  font-size: 10px;
-  color: #888;
-
-  margin-bottom: 3px;
-}
-
-.admin-total strong {
-  font-size: 17px;
-  color: #111;
-}
-
-/* ================= STATUS ================= */
-
-.admin-status {
-  display: inline-block;
-
-  padding: 7px 11px;
-
-  font-size: 10px;
-  font-weight: 500;
-}
-
-/* STATUS COLORS */
-
-.admin-status.waiting {
-  background: #fff5ce;
-  color: #806000;
-}
-
-.admin-status.process {
-  background: #e9f5ff;
-  color: #155c91;
-}
-
-.admin-status.shipped {
-  background: #f3ebff;
-  color: #5d3c8f;
-}
-
-.admin-status.complete {
-  background: #e9f8ed;
-  color: #276b3c;
-}
-
-.admin-status.cancel {
-  background: #ffeded;
-  color: #8a2d2d;
-}
-
-/* ================= STATUS CONTROL ================= */
-
-.status-control {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-}
-
-.status-control label {
-  font-size: 11px;
-  color: #888;
-}
-
-.status-control select {
-  padding: 8px 11px;
-
-  border: 1px solid #ccc;
-  background: #fff;
-
-  font-size: 11px;
-  color: #111;
-
-  cursor: pointer;
-
-  outline: none;
-}
-
-.status-control select:hover {
-  border-color: #111;
-}
-
-.status-control select:focus {
-  border-color: #111;
-}
-
-/* ================= EMPTY ================= */
+/* =====================================================
+   EMPTY / LOADING
+===================================================== */
 
 .admin-orders-empty {
-  background: #fff;
-
-  border: 1px solid #ddd;
-
-  padding: 60px 20px;
+  padding: 70px 20px;
 
   text-align: center;
 
-  color: #888;
-}
-
-/* ================= LOADING ================= */
-
-.admin-orders-loading {
   background: #fff;
-  border: 1px solid #ddd;
 
-  padding: 60px 20px;
-
-  text-align: center;
-  color: #888;
+  border: 1px solid #e4e4e4;
 }
 
-/* ================= RESPONSIVE ================= */
+.admin-orders-empty h2 {
+  margin: 12px 0 6px;
+  font-size: 20px;
+}
 
-@media (max-width: 1000px) {
-  .admin-order-content {
+.admin-orders-empty p {
+  margin: 0;
+  color: #777;
+  font-size: 14px;
+}
+
+.admin-orders-loading-icon {
+  font-size: 36px;
+}
+
+/* =====================================================
+   ERROR
+===================================================== */
+
+.admin-orders-empty.error {
+  border-color: #e5e5e5;
+}
+
+.admin-orders-empty.error p {
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 900px) {
+  .buyer-info-grid {
     grid-template-columns: 1fr;
   }
 
-  .admin-products {
-    border-right: none;
-    border-bottom: 1px solid #eee;
-
-    padding-right: 0;
-    padding-bottom: 18px;
-  }
-
-  .customer-info {
-    padding-top: 2px;
+  .buyer-address {
+    grid-column: auto;
   }
 }
 
-@media (max-width: 600px) {
+/* =====================================================
+   TABLET / MOBILE
+===================================================== */
+
+@media (max-width: 700px) {
+  .admin-order-filter {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 5px;
+  }
+
+  .admin-filter {
+    flex-shrink: 0;
+  }
+
   .admin-order-header {
     align-items: flex-start;
     flex-direction: column;
-    gap: 10px;
   }
 
-  .admin-product {
+  .admin-order-status {
+    width: 100%;
+  }
+
+  /* PRODUCT */
+
+  .admin-order-product {
     align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
   }
 
-  .admin-product-image,
-  .order-product-image {
-    width: 90px !important;
-    height: 90px !important;
+  /* IMAGE */
 
-    min-width: 90px !important;
-    min-height: 90px !important;
+  .admin-order-product-image-wrapper {
+    width: 75px !important;
+    height: 75px !important;
+
+    min-width: 75px !important;
+    min-height: 75px !important;
+
+    max-width: 75px !important;
+    max-height: 75px !important;
+
+    flex: 0 0 75px;
   }
 
-  .admin-product-info h3 {
-    font-size: 15px;
+  /* INFO */
+
+  .admin-order-product-info {
+    width: calc(100% - 90px);
+    flex: 1 1 calc(100% - 90px);
   }
 
-  .admin-product-info p {
-    font-size: 11px;
+  /* SUBTOTAL */
+
+  .admin-order-product-subtotal {
+    width: 100%;
+    padding-left: 87px;
+    margin-left: 0;
+    box-sizing: border-box;
   }
+
+  /* FOOTER */
 
   .admin-order-footer {
     align-items: flex-start;
     flex-direction: column;
-    gap: 15px;
+    gap: 6px;
+  }
+}
+
+/* =====================================================
+   SMALL MOBILE
+===================================================== */
+
+@media (max-width: 480px) {
+  .admin-order-buyer,
+  .admin-order-products {
+    padding: 16px;
   }
 
-  .admin-total {
-    text-align: left;
+  .admin-order-header {
+    padding: 16px;
   }
 
-  .status-control {
-    width: 100%;
+  .admin-order-footer {
+    padding: 16px;
   }
 
-  .status-control select {
-    flex: 1;
+  .admin-order-product {
+    gap: 10px;
+  }
+
+  .admin-order-product-image-wrapper {
+    width: 70px !important;
+    height: 70px !important;
+
+    min-width: 70px !important;
+    min-height: 70px !important;
+
+    max-width: 70px !important;
+    max-height: 70px !important;
+
+    flex-basis: 70px;
+  }
+
+  .admin-order-product-info {
+    width: calc(100% - 82px);
+    flex-basis: calc(100% - 82px);
+  }
+
+  .admin-order-product-subtotal {
+    padding-left: 80px;
+  }
+}
+/* =====================================================
+   FIX UKURAN FOTO PRODUK ADMIN
+   Paksa semua gambar di dalam pesanan menjadi thumbnail
+===================================================== */
+
+#adminOrders img {
+  width: 100px !important;
+  height: 100px !important;
+
+  min-width: 100px !important;
+  min-height: 100px !important;
+
+  max-width: 100px !important;
+  max-height: 100px !important;
+
+  object-fit: cover !important;
+
+  display: block !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  border: 1px solid #e5e5e5;
+
+  box-sizing: border-box !important;
+}
+
+/* Kalau gambar berada di dalam elemen produk */
+#adminOrders .admin-order-product img {
+  width: 100px !important;
+  height: 100px !important;
+
+  max-width: 100px !important;
+  max-height: 100px !important;
+
+  object-fit: cover !important;
+}
+
+/* Wrapper foto */
+#adminOrders .admin-order-product-image-wrapper {
+  width: 100px !important;
+  height: 100px !important;
+
+  min-width: 100px !important;
+  min-height: 100px !important;
+
+  max-width: 100px !important;
+  max-height: 100px !important;
+
+  flex: 0 0 100px !important;
+
+  overflow: hidden !important;
+
+  background: #f4f4f4;
+
+  box-sizing: border-box !important;
+}
+
+/* Desktop */
+@media (min-width: 901px) {
+  #adminOrders img {
+    width: 100px !important;
+    height: 100px !important;
+
+    max-width: 100px !important;
+    max-height: 100px !important;
+  }
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  #adminOrders img {
+    width: 85px !important;
+    height: 85px !important;
+
+    min-width: 85px !important;
+    min-height: 85px !important;
+
+    max-width: 85px !important;
+    max-height: 85px !important;
+  }
+}
+
+/* HP */
+@media (max-width: 600px) {
+  #adminOrders img {
+    width: 75px !important;
+    height: 75px !important;
+
+    min-width: 75px !important;
+    min-height: 75px !important;
+
+    max-width: 75px !important;
+    max-height: 75px !important;
   }
 }

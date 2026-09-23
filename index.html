@@ -2,25 +2,16 @@
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>KEN KONVEKSI | Clothing Store</title>
 
-    <!-- =====================================================
-         CSS UTAMA
-    ====================================================== -->
-
     <link rel="stylesheet" href="css/style.css" />
-
-    <!-- =====================================================
-         STYLE KHUSUS INDEX
-    ====================================================== -->
 
     <style>
       /* =====================================================
-         NEW ARRIVALS - GAMBAR PRODUK
-      ====================================================== */
+       NEW ARRIVALS
+    ===================================================== */
 
       .product-image {
         position: relative;
@@ -51,8 +42,8 @@
       }
 
       /* =====================================================
-         CATEGORY IMAGE
-      ====================================================== */
+       CATEGORY
+    ===================================================== */
 
       .category-image {
         overflow: hidden;
@@ -72,8 +63,8 @@
       }
 
       /* =====================================================
-         EMPTY NEW ARRIVALS
-      ====================================================== */
+       EMPTY PRODUCTS
+    ===================================================== */
 
       .empty-products {
         grid-column: 1 / -1;
@@ -87,8 +78,142 @@
       }
 
       /* =====================================================
-         KENALI KAMI
-      ====================================================== */
+       PORTFOLIO / OUR WORK
+    ===================================================== */
+
+      .portfolio-section {
+        background: #f7f7f5;
+        padding: 110px 7% 120px;
+      }
+
+      .portfolio-container {
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      .portfolio-heading {
+        text-align: center;
+        max-width: 900px;
+        margin: 0 auto 70px;
+      }
+
+      .portfolio-heading p {
+        margin: 0 0 18px;
+        font-size: 11px;
+        letter-spacing: 6px;
+        color: #999;
+        text-transform: uppercase;
+      }
+
+      .portfolio-heading h2 {
+        margin: 0 0 25px;
+        font-size: clamp(55px, 8vw, 105px);
+        line-height: 0.95;
+        font-weight: 800;
+        letter-spacing: -5px;
+        color: #111;
+      }
+
+      .portfolio-heading span {
+        display: block;
+        max-width: 650px;
+        margin: 0 auto;
+        color: #777;
+        font-size: 14px;
+        line-height: 1.8;
+      }
+
+      /* =====================================================
+       PORTFOLIO GRID
+    ===================================================== */
+
+      .home-portfolio-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 24px;
+      }
+
+      .home-portfolio-card {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+        background: #fff;
+        overflow: hidden;
+        transition:
+          transform 0.35s ease,
+          box-shadow 0.35s ease;
+      }
+
+      .home-portfolio-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+      }
+
+      .home-portfolio-image {
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        overflow: hidden;
+        background: #e9e9e6;
+      }
+
+      .home-portfolio-image img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+      }
+
+      .home-portfolio-card:hover .home-portfolio-image img {
+        transform: scale(1.05);
+      }
+
+      .home-portfolio-info {
+        padding: 22px;
+      }
+
+      .home-portfolio-category {
+        margin: 0 0 8px;
+        font-size: 10px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #999;
+      }
+
+      .home-portfolio-info h3 {
+        margin: 0 0 8px;
+        font-size: 20px;
+        font-weight: 600;
+        color: #111;
+      }
+
+      .home-portfolio-info p {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.7;
+        color: #777;
+      }
+
+      .portfolio-empty {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 70px 20px;
+        color: #888;
+      }
+
+      .portfolio-empty p {
+        margin: 0 0 8px;
+        font-size: 16px;
+      }
+
+      .portfolio-empty span {
+        font-size: 13px;
+        color: #aaa;
+      }
+
+      /* =====================================================
+       KENALI KAMI
+    ===================================================== */
 
       .social-section {
         padding: 90px 7% 100px;
@@ -119,8 +244,8 @@
       }
 
       /* =====================================================
-         SOCIAL GRID
-      ====================================================== */
+       SOCIAL GRID
+    ===================================================== */
 
       .social-grid {
         max-width: 1000px;
@@ -186,8 +311,8 @@
       }
 
       /* =====================================================
-         FOOTER
-      ====================================================== */
+       FOOTER
+    ===================================================== */
 
       footer {
         background: #0b0b0b;
@@ -217,12 +342,57 @@
       }
 
       /* =====================================================
-         RESPONSIVE SOCIAL
-      ====================================================== */
+       CART COUNT
+    ===================================================== */
+
+      .cart-count {
+        min-width: 18px;
+        height: 18px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        font-weight: 700;
+        line-height: 1;
+      }
+
+      /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+      @media (max-width: 900px) {
+        .home-portfolio-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
 
       @media (max-width: 800px) {
         .social-grid {
           grid-template-columns: repeat(2, 1fr);
+        }
+
+        .portfolio-section {
+          padding: 80px 5% 90px;
+        }
+
+        .portfolio-heading {
+          margin-bottom: 50px;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .home-portfolio-grid {
+          grid-template-columns: 1fr;
+          gap: 18px;
+        }
+
+        .portfolio-heading h2 {
+          font-size: 55px;
+          letter-spacing: -3px;
+        }
+
+        .portfolio-heading span {
+          font-size: 13px;
         }
       }
 
@@ -253,19 +423,16 @@
 
   <body>
     <!-- =====================================================
-         NAVBAR
-    ====================================================== -->
+       NAVBAR
+  ===================================================== -->
 
     <header class="navbar">
       <div class="logo">KEN<span>KONVEKSI</span></div>
 
       <nav>
         <a href="index.html" class="active">Home</a>
-
         <a href="catalog.html">Catalog</a>
-
         <a href="outfit.html">Outfit</a>
-
         <a href="#">About</a>
       </nav>
 
@@ -278,15 +445,14 @@
           onclick="window.location.href = 'cart.html'"
         >
           🛒
-
-          <span class="cart-count">0</span>
+          <span class="cart-count" id="homeCartCount">0</span>
         </button>
       </div>
     </header>
 
     <!-- =====================================================
-         HERO
-    ====================================================== -->
+       HERO
+  ===================================================== -->
 
     <main>
       <section class="hero">
@@ -309,14 +475,14 @@
         <div class="hero-image">
           <div class="hero-placeholder">
             <span>KEN</span>
-            <small>COLLECTION</small>
+            <small> COLLECTION </small>
           </div>
         </div>
       </section>
 
       <!-- =====================================================
-           SHOP BY CATEGORY
-      ====================================================== -->
+         SHOP BY CATEGORY
+    ===================================================== -->
 
       <section class="categories">
         <div class="section-heading">
@@ -333,8 +499,7 @@
             </div>
 
             <h3>T-Shirt</h3>
-
-            <span>Explore Collection →</span>
+            <span> Explore Collection → </span>
           </a>
 
           <!-- SHIRT -->
@@ -345,8 +510,7 @@
             </div>
 
             <h3>Shirt</h3>
-
-            <span>Explore Collection →</span>
+            <span> Explore Collection → </span>
           </a>
 
           <!-- HOODIE -->
@@ -357,8 +521,7 @@
             </div>
 
             <h3>Hoodie</h3>
-
-            <span>Explore Collection →</span>
+            <span> Explore Collection → </span>
           </a>
 
           <!-- JACKET -->
@@ -369,8 +532,7 @@
             </div>
 
             <h3>Jacket</h3>
-
-            <span>Explore Collection →</span>
+            <span> Explore Collection → </span>
           </a>
 
           <!-- PANTS -->
@@ -381,16 +543,14 @@
             </div>
 
             <h3>Pants</h3>
-
-            <span>Explore Collection →</span>
+            <span> Explore Collection → </span>
           </a>
         </div>
       </section>
 
       <!-- =====================================================
-           NEW ARRIVALS
-           DARI SUPABASE
-      ====================================================== -->
+         NEW ARRIVALS
+    ===================================================== -->
 
       <section class="products">
         <div class="section-heading">
@@ -402,8 +562,37 @@
       </section>
 
       <!-- =====================================================
-           KENALI KAMI
-      ====================================================== -->
+         OUR WORK / PORTFOLIO
+    ===================================================== -->
+
+      <section class="portfolio-section">
+        <div class="portfolio-container">
+          <div class="portfolio-heading">
+            <p>PORTFOLIO</p>
+
+            <h2>OUR WORK</h2>
+
+            <span>
+              Beberapa hasil produksi pakaian yang telah kami buat dengan
+              mengutamakan kualitas, detail, dan karakter pada setiap desain.
+            </span>
+          </div>
+
+          <!-- PORTFOLIO DARI SUPABASE -->
+
+          <div id="homePortfolioGrid" class="home-portfolio-grid">
+            <div class="portfolio-empty">
+              <p>Memuat hasil produksi...</p>
+
+              <span> Mohon tunggu sebentar. </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+         KENALI KAMI
+    ===================================================== -->
 
       <section class="social-section">
         <div class="social-heading">
@@ -432,7 +621,8 @@
 
             <div class="social-info">
               <h3>WhatsApp</h3>
-              <span>081338220515</span>
+
+              <span> 081338220515 </span>
             </div>
           </a>
 
@@ -450,14 +640,15 @@
 
             <div class="social-info">
               <h3>Facebook</h3>
-              <span>KEN KONVEKSI</span>
+
+              <span> KEN KONVEKSI </span>
             </div>
           </a>
 
           <!-- INSTAGRAM -->
 
           <a
-            href="https://www.instagram.com/kenkonveksi?utm_source=ig_web_button_share_sheet&stkn=ZDNlZDc0MzIxNw=="
+            href="https://www.instagram.com/kenkonveksi"
             target="_blank"
             rel="noopener noreferrer"
             class="social-card"
@@ -468,7 +659,8 @@
 
             <div class="social-info">
               <h3>Instagram</h3>
-              <span>@kenkonveksi</span>
+
+              <span> @kenkonveksi </span>
             </div>
           </a>
 
@@ -481,7 +673,8 @@
 
             <div class="social-info">
               <h3>TikTok</h3>
-              <span>Coming Soon</span>
+
+              <span> Coming Soon </span>
             </div>
           </a>
         </div>
@@ -489,8 +682,8 @@
     </main>
 
     <!-- =====================================================
-         FOOTER
-    ====================================================== -->
+       FOOTER
+  ===================================================== -->
 
     <footer>
       <div class="footer-logo">KEN KONVEKSI</div>
@@ -501,21 +694,17 @@
     </footer>
 
     <!-- =====================================================
-         SUPABASE
-    ====================================================== -->
+       SUPABASE
+  ===================================================== -->
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
-      // =====================================================
-      // SUPABASE CONNECTION
-      // =====================================================
+      /* =====================================================
+       SUPABASE CONNECTION
+    ===================================================== */
 
       const SUPABASE_URL = "https://zdpkanqgwlmbrkanyrjo.supabase.co";
-
-      // =====================================================
-      // MASUKKAN PUBLISHABLE / ANON KEY DI SINI
-      // =====================================================
 
       const SUPABASE_KEY = "sb_publishable_olOOWAKiJRqq--6seYsA5Q_mOjo2CF7";
 
@@ -524,28 +713,49 @@
         SUPABASE_KEY,
       );
 
-      // =====================================================
-      // NEW ARRIVALS
-      // =====================================================
+      /* =====================================================
+       ESCAPE HTML
+    ===================================================== */
 
-      document.addEventListener("DOMContentLoaded", async function () {
+      function escapeHTML(value) {
+        return String(value ?? "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      /* =====================================================
+       FORMAT RUPIAH
+    ===================================================== */
+
+      function formatRupiah(price) {
+        return new Intl.NumberFormat("id-ID", {
+          style: "currency",
+          currency: "IDR",
+          minimumFractionDigits: 0,
+        }).format(Number(price) || 0);
+      }
+
+      /* =====================================================
+       NEW ARRIVALS
+    ===================================================== */
+
+      async function loadNewArrivals() {
         const container = document.getElementById("newArrivals");
 
         if (!container) {
           return;
         }
 
-        // Loading
-
         container.innerHTML = `
-            <div class="empty-products">
-              <p>Memuat koleksi terbaru...</p>
-            </div>
-          `;
-
-        // =================================================
-        // AMBIL 4 PRODUK TERBARU DARI SUPABASE
-        // =================================================
+        <div class="empty-products">
+          <p>
+            Memuat koleksi terbaru...
+          </p>
+        </div>
+      `;
 
         const { data, error } = await supabaseClient
           .from("products")
@@ -555,163 +765,343 @@
           })
           .limit(4);
 
-        // =================================================
-        // ERROR
-        // =================================================
-
         if (error) {
-          console.error("Supabase Error:", error);
+          console.error("Supabase Product Error:", error);
 
           container.innerHTML = `
-              <div class="empty-products">
+          <div class="empty-products">
+            <p>
+              Gagal mengambil produk.
+            </p>
 
-                <p>
-                  Gagal mengambil produk.
-                </p>
-
-                <span>
-                  Periksa koneksi Supabase.
-                </span>
-
-              </div>
-            `;
+            <span>
+              Periksa koneksi Supabase.
+            </span>
+          </div>
+        `;
 
           return;
         }
-
-        // =================================================
-        // BELUM ADA PRODUK
-        // =================================================
 
         if (!data || data.length === 0) {
           container.innerHTML = `
-              <div class="empty-products">
+          <div class="empty-products">
+            <p>
+              Belum ada produk terbaru.
+            </p>
 
-                <p>
-                  Belum ada produk terbaru.
-                </p>
-
-                <span>
-                  Tambahkan produk melalui Admin Panel.
-                </span>
-
-              </div>
-            `;
+            <span>
+              Tambahkan produk melalui Admin Panel.
+            </span>
+          </div>
+        `;
 
           return;
         }
 
-        // =================================================
-        // FORMAT RUPIAH
-        // =================================================
-
-        function formatRupiah(price) {
-          return new Intl.NumberFormat("id-ID", {
-            style: "currency",
-            currency: "IDR",
-            minimumFractionDigits: 0,
-          }).format(Number(price) || 0);
-        }
-
-        // =================================================
-        // TAMPILKAN PRODUK
-        // =================================================
-
         container.innerHTML = data
           .map(function (product) {
-            // ===============================
-            // GAMBAR
-            // ===============================
+            const productName = product.name || "Produk KEN KONVEKSI";
 
             const image = product.image_url
               ? `
-                      <img
-                        src="${product.image_url}"
-                        alt="${escapeHTML(product.name)}"
-                      />
-                    `
+              <img
+                src="${escapeHTML(product.image_url)}"
+                alt="${escapeHTML(productName)}"
+                loading="lazy"
+              />
+            `
               : `
-                      <div class="image-placeholder">
-                        PRODUCT
-                      </div>
-                    `;
-
-            // ===============================
-            // STATUS NEW
-            // ===============================
+              <div class="image-placeholder">
+                PRODUCT
+              </div>
+            `;
 
             const isNew =
               String(product.condition || "").toLowerCase() === "new";
 
-            // ===============================
-            // CARD
-            // ===============================
-
             return `
-                  <a
-                    href="product.html?id=${encodeURIComponent(product.id)}"
-                    class="product-card-link"
-                  >
+            <a
+              href="product.html?id=${encodeURIComponent(product.id)}"
+              class="product-card-link"
+            >
 
-                    <article class="product-card">
+              <article class="product-card">
 
-                      <div class="product-image">
+                <div class="product-image">
 
-                        ${
-                          isNew
-                            ? `
-                              <span class="product-badge">
-                                NEW
-                              </span>
-                            `
-                            : ""
-                        }
+                  ${
+                    isNew
+                      ? `
+                        <span class="product-badge">
+                          NEW
+                        </span>
+                      `
+                      : ""
+                  }
 
-                        ${image}
+                  ${image}
 
-                      </div>
+                </div>
 
-                      <div class="product-info">
 
-                        <p class="product-category">
-                          ${escapeHTML(product.category || "CLOTHING")}
-                        </p>
+                <div class="product-info">
 
-                        <h3>
-                          ${escapeHTML(product.name)}
-                        </h3>
+                  <p class="product-category">
+                    ${escapeHTML(product.category || "CLOTHING")}
+                  </p>
 
-                        <p class="product-price">
-                          ${formatRupiah(product.price)}
-                        </p>
+                  <h3>
+                    ${escapeHTML(productName)}
+                  </h3>
 
-                      </div>
+                  <p class="product-price">
+                    ${formatRupiah(product.price)}
+                  </p>
 
-                    </article>
+                </div>
 
-                  </a>
-                `;
+              </article>
+
+            </a>
+          `;
           })
           .join("");
+      }
+
+      /* =====================================================
+       LOAD PORTFOLIO / OUR WORK
+    ===================================================== */
+
+      async function loadHomePortfolio() {
+        const container = document.getElementById("homePortfolioGrid");
+
+        if (!container) {
+          return;
+        }
+
+        container.innerHTML = `
+        <div class="portfolio-empty">
+
+          <p>
+            Memuat hasil produksi...
+          </p>
+
+          <span>
+            Mohon tunggu sebentar.
+          </span>
+
+        </div>
+      `;
+
+        try {
+          const { data, error } = await supabaseClient
+
+            .from("portfolio")
+
+            .select(
+              "id, title, category, description, image_url, is_visible, created_at",
+            )
+
+            .eq("is_visible", true)
+
+            .order("created_at", {
+              ascending: false,
+            })
+
+            .limit(6);
+
+          if (error) {
+            console.error("Supabase Portfolio Error:", error);
+
+            container.innerHTML = `
+            <div class="portfolio-empty">
+
+              <p>
+                Portfolio belum dapat dimuat.
+              </p>
+
+              <span>
+                Periksa koneksi Supabase.
+              </span>
+
+            </div>
+          `;
+
+            return;
+          }
+
+          if (!data || data.length === 0) {
+            container.innerHTML = `
+            <div class="portfolio-empty">
+
+              <p>
+                Belum ada portfolio.
+              </p>
+
+              <span>
+                Portfolio yang dipublikasikan
+                akan muncul di sini.
+              </span>
+
+            </div>
+          `;
+
+            return;
+          }
+
+          container.innerHTML = data
+            .map(function (portfolio) {
+              const title = portfolio.title || "Project KEN KONVEKSI";
+
+              const category = portfolio.category || "PROJECT";
+
+              const description =
+                portfolio.description || "Hasil produksi KEN KONVEKSI.";
+
+              const image = portfolio.image_url;
+
+              return `
+              <a
+                href="portfolio.html"
+                class="home-portfolio-card"
+              >
+
+                <div class="home-portfolio-image">
+
+                  ${
+                    image
+                      ? `
+                        <img
+                          src="${escapeHTML(image)}"
+                          alt="${escapeHTML(title)}"
+                          loading="lazy"
+                        />
+                      `
+                      : `
+                        <div
+                          style="
+                            width:100%;
+                            height:100%;
+                            display:flex;
+                            align-items:center;
+                            justify-content:center;
+                            color:#999;
+                            font-size:12px;
+                            letter-spacing:2px;
+                          "
+                        >
+                          KEN KONVEKSI
+                        </div>
+                      `
+                  }
+
+                </div>
+
+
+                <div class="home-portfolio-info">
+
+                  <p class="home-portfolio-category">
+                    ${escapeHTML(category)}
+                  </p>
+
+
+                  <h3>
+                    ${escapeHTML(title)}
+                  </h3>
+
+
+                  <p>
+                    ${escapeHTML(description)}
+                  </p>
+
+                </div>
+
+              </a>
+            `;
+            })
+            .join("");
+        } catch (error) {
+          console.error("Portfolio Error:", error);
+
+          container.innerHTML = `
+          <div class="portfolio-empty">
+
+            <p>
+              Terjadi kesalahan.
+            </p>
+
+            <span>
+              Silakan coba lagi nanti.
+            </span>
+
+          </div>
+        `;
+        }
+      }
+
+      /* =====================================================
+       CART COUNT
+    ===================================================== */
+
+      function updateHomeCartCount() {
+        const cartCountElement = document.getElementById("homeCartCount");
+
+        if (!cartCountElement) {
+          return;
+        }
+
+        let cart = [];
+
+        try {
+          cart = JSON.parse(sessionStorage.getItem("kenCart")) || [];
+        } catch (error) {
+          console.error("Gagal membaca keranjang:", error);
+
+          cart = [];
+        }
+
+        const totalQuantity = cart.reduce(function (total, item) {
+          return total + (Number(item.quantity) || 0);
+        }, 0);
+
+        cartCountElement.textContent = totalQuantity;
+      }
+
+      /* =====================================================
+       DOM READY
+    ===================================================== */
+
+      document.addEventListener("DOMContentLoaded", function () {
+        loadNewArrivals();
+
+        loadHomePortfolio();
+
+        updateHomeCartCount();
       });
 
-      // =====================================================
-      // ESCAPE HTML
-      // =====================================================
+      /* =====================================================
+       UPDATE CART
+    ===================================================== */
 
-      function escapeHTML(value) {
-        return String(value)
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;")
-          .replace(/'/g, "&#039;");
-      }
+      window.addEventListener("pageshow", function () {
+        updateHomeCartCount();
+      });
+
+      window.addEventListener("focus", function () {
+        updateHomeCartCount();
+      });
+
+      window.addEventListener("storage", function (event) {
+        if (event.key === "kenCart") {
+          updateHomeCartCount();
+        }
+      });
     </script>
 
     <!-- =====================================================
-         JAVASCRIPT UTAMA
-    ====================================================== -->
+       JAVASCRIPT UTAMA
+  ===================================================== -->
 
     <script src="js/main.js"></script>
   </body>

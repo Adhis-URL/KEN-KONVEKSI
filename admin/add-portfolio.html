@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Tambah Portfolio | KEN KONVEKSI</title>
+
+    <link rel="stylesheet" href="../css/admin.css" />
+
+    <style>
+      .portfolio-form-container {
+        max-width: 900px;
+        margin: 30px auto;
+        padding: 30px;
+        background: #fff;
+        border-radius: 16px;
+      }
+
+      .form-group {
+        margin-bottom: 22px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+      }
+
+      .form-group input,
+      .form-group textarea,
+      .form-group select {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 15px;
+        box-sizing: border-box;
+      }
+
+      .form-group textarea {
+        resize: vertical;
+      }
+
+      .upload-description {
+        font-size: 13px;
+        color: #777;
+        margin-bottom: 10px;
+      }
+
+      .image-preview {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 15px;
+        margin-top: 15px;
+      }
+
+      .preview-item {
+        position: relative;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid #ddd;
+        aspect-ratio: 1 / 1;
+      }
+
+      .preview-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .preview-number {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        background: #000;
+        color: #fff;
+        padding: 4px 8px;
+        border-radius: 5px;
+        font-size: 12px;
+      }
+
+      .form-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 30px;
+      }
+
+      .btn-submit,
+      .btn-cancel {
+        padding: 12px 22px;
+        border-radius: 8px;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        font-size: 15px;
+      }
+
+      .btn-submit {
+        background: #111;
+        color: #fff;
+      }
+
+      .btn-submit:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .btn-cancel {
+        background: #eee;
+        color: #111;
+      }
+
+      .status-message {
+        margin-top: 15px;
+        padding: 12px;
+        border-radius: 8px;
+        display: none;
+      }
+
+      .status-message.show {
+        display: block;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- SIDEBAR ADMIN -->
+
+    <aside class="sidebar">
+      <div class="admin-logo">
+        KEN
+        <span>KONVEKSI</span>
+      </div>
+
+      <nav>
+        <a href="index.html">Dashboard</a>
+
+        <a href="orders.html">Pesanan</a>
+
+        <a href="products.html">Produk</a>
+
+        <a href="portfolio.html" class="active"> Yang Pernah Kami Buat </a>
+
+        <a href="add-product.html"> + Tambah Produk </a>
+
+        <a href="add-portfolio.html" class="active"> + Tambah Portfolio </a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <a href="../index.html"> ← Lihat Website </a>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+
+    <main class="admin-main">
+      <header class="admin-header">
+        <div>
+          <span>ADMIN PANEL</span>
+
+          <h1>Tambah Portfolio</h1>
+        </div>
+
+        <div class="admin-user">Admin</div>
+      </header>
+
+      <section class="portfolio-form-container">
+        <form id="portfolioForm">
+          <!-- JUDUL -->
+
+          <div class="form-group">
+            <label for="portfolioTitle"> Judul Portfolio </label>
+
+            <input
+              type="text"
+              id="portfolioTitle"
+              placeholder="Contoh: Seragam Karyawan PT ABC"
+              required
+            />
+          </div>
+
+          <!-- KATEGORI -->
+
+          <div class="form-group">
+            <label for="portfolioCategory"> Kategori </label>
+
+            <select id="portfolioCategory" required>
+              <option value="">Pilih Kategori</option>
+
+              <option value="Seragam">Seragam</option>
+
+              <option value="Kaos">Kaos</option>
+
+              <option value="Jaket">Jaket</option>
+
+              <option value="Hoodie">Hoodie</option>
+
+              <option value="Kemeja">Kemeja</option>
+
+              <option value="Konveksi">Konveksi</option>
+
+              <option value="Lainnya">Lainnya</option>
+            </select>
+          </div>
+
+          <!-- DESKRIPSI -->
+
+          <div class="form-group">
+            <label for="portfolioDescription"> Deskripsi </label>
+
+            <textarea
+              id="portfolioDescription"
+              rows="6"
+              placeholder="Jelaskan project yang pernah dikerjakan..."
+              required
+            ></textarea>
+          </div>
+
+          <!-- FOTO -->
+
+          <div class="form-group">
+            <label for="portfolioImages"> Foto Portfolio </label>
+
+            <p class="upload-description">
+              Upload maksimal 10 foto. Foto pertama akan digunakan sebagai foto
+              utama.
+            </p>
+
+            <input
+              type="file"
+              id="portfolioImages"
+              accept="image/jpeg,image/png,image/webp"
+              multiple
+              required
+            />
+
+            <div id="imagePreview" class="image-preview"></div>
+          </div>
+
+          <!-- VISIBILITY -->
+
+          <div class="form-group">
+            <label>
+              <input type="checkbox" id="portfolioVisible" checked />
+
+              Tampilkan di website
+            </label>
+          </div>
+
+          <!-- BUTTON -->
+
+          <div class="form-actions">
+            <a href="portfolio.html" class="btn-cancel"> Batal </a>
+
+            <button type="submit" class="btn-submit" id="savePortfolioBtn">
+              Simpan Portfolio
+            </button>
+          </div>
+
+          <div id="statusMessage" class="status-message"></div>
+        </form>
+      </section>
+    </main>
+
+    <!-- SUPABASE -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+      const SUPABASE_URL = "https://zdpkanqgwlmbrkanyrjo.supabase.co";
+
+      const SUPABASE_KEY = "sb_publishable_olOOWAKiJRqq--6seYsA5Q_mOjo2CF7";
+
+      const supabaseClient = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY,
+      );
+    </script>
+
+    <!-- AUTH ADMIN -->
+
+    <script src="auth.js"></script>
+
+    <!-- SCRIPT PORTFOLIO -->
+
+    <script src="js/portfolio-admin.js"></script>
+  </body>
+</html>

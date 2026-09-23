@@ -13,7 +13,7 @@
   </head>
 
   <body>
-    <!-- ================= NAVBAR ================= -->
+    <!-- NAVBAR -->
 
     <header class="navbar">
       <div class="nav-container">
@@ -24,9 +24,9 @@
 
           <a href="catalog.html"> Catalog </a>
 
-          <a href="#"> Outfit </a>
+          <a href="outfit.html"> Outfit </a>
 
-          <a href="#"> About </a>
+          <a href="orders.html"> Pesanan Saya </a>
         </nav>
 
         <div class="nav-actions">
@@ -39,7 +39,7 @@
       </div>
     </header>
 
-    <!-- ================= CHECKOUT ================= -->
+    <!-- CHECKOUT -->
 
     <main class="checkout-page">
       <div class="checkout-header">
@@ -47,18 +47,18 @@
 
         <h1>Checkout</h1>
 
-        <p>Lengkapi informasi untuk menyelesaikan pembelian kamu.</p>
+        <p>Lengkapi informasi untuk melanjutkan pemesanan kamu.</p>
       </div>
 
       <div class="checkout-layout">
-        <!-- ================= LEFT ================= -->
+        <!-- LEFT -->
 
         <section class="checkout-form">
           <!-- DATA PEMBELI -->
 
           <div class="checkout-card">
             <div class="card-title">
-              <span>01</span>
+              <span> 01 </span>
 
               <h2>Data Pembeli</h2>
             </div>
@@ -96,7 +96,7 @@
 
           <div class="checkout-card">
             <div class="card-title">
-              <span>02</span>
+              <span> 02 </span>
 
               <h2>Alamat Pengiriman</h2>
             </div>
@@ -115,13 +115,13 @@
               <div class="form-group">
                 <label for="city"> Kota / Kabupaten </label>
 
-                <input type="text" id="city" placeholder="Contoh: Surabaya" />
+                <input type="text" id="city" placeholder="Contoh: Ponorogo" />
               </div>
 
               <div class="form-group">
                 <label for="postalCode"> Kode Pos </label>
 
-                <input type="text" id="postalCode" placeholder="601xx" />
+                <input type="text" id="postalCode" placeholder="634xx" />
               </div>
             </div>
           </div>
@@ -130,43 +130,36 @@
 
           <div class="checkout-card">
             <div class="card-title">
-              <span>03</span>
+              <span> 03 </span>
 
               <h2>Pengiriman</h2>
             </div>
 
             <div class="shipping-options">
               <label class="shipping-option">
-                <input type="radio" name="shipping" value="15000" checked />
+                <input type="radio" name="shipping" value="distance" checked />
 
                 <div>
-                  <strong> Reguler </strong>
+                  <strong> Biaya Pengiriman </strong>
 
-                  <p>Estimasi 2–5 hari</p>
+                  <p>Mengikuti Jarak Lokasi</p>
                 </div>
 
-                <span> Rp15.000 </span>
-              </label>
-
-              <label class="shipping-option">
-                <input type="radio" name="shipping" value="25000" />
-
-                <div>
-                  <strong> Express </strong>
-
-                  <p>Estimasi 1–2 hari</p>
-                </div>
-
-                <span> Rp25.000 </span>
+                <span> Mengikuti Jarak Lokasi </span>
               </label>
             </div>
+
+            <p class="shipping-note">
+              Biaya pengiriman akan disesuaikan berdasarkan lokasi pengiriman
+              dan akan dikonfirmasi oleh admin melalui WhatsApp.
+            </p>
           </div>
 
           <!-- PEMBAYARAN -->
 
           <div class="checkout-card">
             <div class="card-title">
-              <span>04</span>
+              <span> 04 </span>
 
               <h2>Metode Pembayaran</h2>
             </div>
@@ -202,10 +195,15 @@
                 </div>
               </label>
             </div>
+
+            <p class="payment-note">
+              Detail pembayaran akan dikonfirmasi oleh admin melalui WhatsApp
+              setelah pesanan dibuat.
+            </p>
           </div>
         </section>
 
-        <!-- ================= RIGHT ================= -->
+        <!-- RIGHT -->
 
         <aside class="order-summary">
           <h2>Pesanan Kamu</h2>
@@ -227,16 +225,21 @@
           <div class="summary-line">
             <span> Pengiriman </span>
 
-            <strong id="shippingPrice"> Rp15.000 </strong>
+            <strong id="shippingPrice"> Mengikuti Jarak Lokasi </strong>
           </div>
 
           <div class="summary-divider"></div>
 
           <div class="summary-total">
-            <span> Total Pembayaran </span>
+            <span> Total Produk </span>
 
             <strong id="grandTotal"> Rp0 </strong>
           </div>
+
+          <p class="summary-note">
+            * Biaya pengiriman akan ditentukan berdasarkan jarak lokasi dan
+            dikonfirmasi oleh admin.
+          </p>
 
           <button id="orderBtn" class="order-btn" type="button">
             Buat Pesanan
@@ -247,7 +250,7 @@
       </div>
     </main>
 
-    <!-- ================= FOOTER ================= -->
+    <!-- FOOTER -->
 
     <footer>
       <div class="footer-container">
@@ -263,13 +266,15 @@
           <a href="index.html"> Home </a>
 
           <a href="catalog.html"> Catalog </a>
+
+          <a href="orders.html"> Pesanan Saya </a>
         </div>
       </div>
 
       <div class="copyright">© 2026 KEN KONVEKSI</div>
     </footer>
 
-    <!-- ================= SUPABASE ================= -->
+    <!-- SUPABASE -->
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -284,7 +289,7 @@
       );
     </script>
 
-    <!-- ================= CHECKOUT JS ================= -->
+    <!-- CHECKOUT JS -->
 
     <script src="js/checkout.js"></script>
   </body>

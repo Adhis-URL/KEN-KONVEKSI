@@ -16,8 +16,8 @@
 
   <body>
     <!-- =====================================================
-         SIDEBAR
-    ====================================================== -->
+       SIDEBAR
+  ====================================================== -->
 
     <aside class="sidebar">
       <div class="admin-logo">
@@ -32,7 +32,9 @@
 
         <a href="products.html">Produk</a>
 
-        <a href="add-product.html" class="active"> + Tambah Produk </a>
+        <a href="add-product.html" class="active">+ Tambah Produk</a>
+
+        <a href="portfolio.html">Our Work</a>
       </nav>
 
       <div class="sidebar-bottom">
@@ -41,17 +43,15 @@
     </aside>
 
     <!-- =====================================================
-         MAIN
-    ====================================================== -->
+       MAIN
+  ====================================================== -->
 
     <main class="admin-main">
-      <!-- ===================================================
-           HEADER
-      ==================================================== -->
+      <!-- HEADER -->
 
       <header class="admin-header">
         <div>
-          <span>ADMIN PANEL</span>
+          <span> ADMIN PANEL </span>
 
           <h1 id="pageTitle">Tambah Produk</h1>
         </div>
@@ -60,14 +60,14 @@
       </header>
 
       <!-- ===================================================
-           FORM PRODUK
-      ==================================================== -->
+         FORM
+    ==================================================== -->
 
       <section class="product-form-container">
         <form id="productForm" enctype="multipart/form-data">
           <!-- =================================================
-               NAMA PRODUK
-          ================================================== -->
+             NAMA PRODUK
+        ================================================== -->
 
           <div class="form-group">
             <label for="productName"> Nama Produk </label>
@@ -81,12 +81,10 @@
           </div>
 
           <!-- =================================================
-               HARGA + STOK
-          ================================================== -->
+             HARGA + STOK
+        ================================================== -->
 
           <div class="form-row">
-            <!-- HARGA -->
-
             <div class="form-group">
               <label for="productPrice"> Harga </label>
 
@@ -98,8 +96,6 @@
                 required
               />
             </div>
-
-            <!-- STOK -->
 
             <div class="form-group">
               <label for="productStock"> Stok </label>
@@ -115,12 +111,10 @@
           </div>
 
           <!-- =================================================
-               KATEGORI + KONDISI
-          ================================================== -->
+             KATEGORI + KONDISI
+        ================================================== -->
 
           <div class="form-row">
-            <!-- KATEGORI -->
-
             <div class="form-group">
               <label for="productCategory"> Kategori </label>
 
@@ -139,8 +133,6 @@
               </select>
             </div>
 
-            <!-- KONDISI -->
-
             <div class="form-group">
               <label for="productCondition"> Kondisi </label>
 
@@ -155,15 +147,15 @@
           </div>
 
           <!-- =================================================
-               PREVIEW KATEGORI
-          ================================================== -->
+             PREVIEW KATEGORI
+        ================================================== -->
 
           <div class="form-group">
             <label> Preview Kategori </label>
 
             <p class="upload-description">
               Gambar kategori akan digunakan sebagai gambar default apabila kamu
-              tidak mengupload foto produk utama.
+              tidak mengupload foto utama.
             </p>
 
             <div id="categoryImagePreview" class="category-image-preview">
@@ -172,8 +164,8 @@
           </div>
 
           <!-- =================================================
-               UKURAN
-          ================================================== -->
+             UKURAN
+        ================================================== -->
 
           <div class="form-group">
             <label> Ukuran Tersedia </label>
@@ -181,33 +173,29 @@
             <div class="size-checkboxes">
               <label>
                 <input type="checkbox" name="size" value="S" />
-
-                <span> S </span>
+                <span>S</span>
               </label>
 
               <label>
                 <input type="checkbox" name="size" value="M" />
-
-                <span> M </span>
+                <span>M</span>
               </label>
 
               <label>
                 <input type="checkbox" name="size" value="L" />
-
-                <span> L </span>
+                <span>L</span>
               </label>
 
               <label>
                 <input type="checkbox" name="size" value="XL" />
-
-                <span> XL </span>
+                <span>XL</span>
               </label>
             </div>
           </div>
 
           <!-- =================================================
-               DESKRIPSI
-          ================================================== -->
+             DESKRIPSI
+        ================================================== -->
 
           <div class="form-group">
             <label for="productDescription"> Deskripsi Produk </label>
@@ -221,8 +209,8 @@
           </div>
 
           <!-- =================================================
-               FOTO PRODUK UTAMA
-          ================================================== -->
+             FOTO PRODUK UTAMA
+        ================================================== -->
 
           <div class="form-group">
             <label for="productImage"> Foto Produk Utama </label>
@@ -244,8 +232,8 @@
           </div>
 
           <!-- =================================================
-               OUTFIT WEAR
-          ================================================== -->
+             OUTFIT WEAR
+        ================================================== -->
 
           <div class="form-group">
             <label for="outfitImages"> Foto Outfit Wear </label>
@@ -256,8 +244,6 @@
               Produk.
             </p>
 
-            <!-- FILE INPUT -->
-
             <input
               type="file"
               id="outfitImages"
@@ -266,20 +252,16 @@
               data-max-files="10"
             />
 
-            <!-- JUMLAH FOTO -->
-
             <p id="outfitFileMessage" class="upload-message">
               Belum ada foto yang dipilih. Maksimal 10 foto.
             </p>
-
-            <!-- PREVIEW FOTO -->
 
             <div id="outfitPreview" class="outfit-preview"></div>
           </div>
 
           <!-- =================================================
-               BUTTON
-          ================================================== -->
+             BUTTON
+        ================================================== -->
 
           <div class="form-actions">
             <a href="products.html" class="btn-cancel"> Batal </a>
@@ -293,21 +275,13 @@
     </main>
 
     <!-- =====================================================
-         JAVASCRIPT
-    ====================================================== -->
+       JAVASCRIPT
+  ====================================================== -->
 
-    <!-- ADMIN AUTH -->
-    <!-- =====================================================
-     SUPABASE
-===================================================== -->
-
-    <!-- Supabase CDN -->
+    <!-- 1. SUPABASE CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <!-- =====================================================
-     SUPABASE CONFIGURATION
-===================================================== -->
-
+    <!-- 2. SUPABASE CONFIG -->
     <script>
       const SUPABASE_URL = "https://zdpkanqgwlmbrkanyrjo.supabase.co";
 
@@ -319,16 +293,10 @@
       );
     </script>
 
-    <!-- =====================================================
-     ADMIN AUTH
-===================================================== -->
-
+    <!-- 3. AUTH -->
     <script src="auth.js"></script>
 
-    <!-- =====================================================
-     ADD PRODUCT
-===================================================== -->
-
+    <!-- 4. ADD PRODUCT -->
     <script src="../js/add-product.js"></script>
   </body>
 </html>

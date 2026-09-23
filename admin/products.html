@@ -7,9 +7,7 @@
 
     <title>Produk | Admin KEN KONVEKSI</title>
 
-    <!-- =====================================================
-         CSS
-         ===================================================== -->
+    <!-- CSS -->
 
     <link rel="stylesheet" href="../css/admin.css" />
 
@@ -18,8 +16,8 @@
 
   <body>
     <!-- =====================================================
-         SIDEBAR
-         ===================================================== -->
+       SIDEBAR
+  ====================================================== -->
 
     <aside class="sidebar">
       <div class="admin-logo">
@@ -44,14 +42,10 @@
     </aside>
 
     <!-- =====================================================
-         MAIN
-         ===================================================== -->
+       MAIN
+  ====================================================== -->
 
     <main class="admin-main">
-      <!-- ===================================================
-           HEADER
-           =================================================== -->
-
       <header class="admin-header">
         <div>
           <span> ADMIN PANEL </span>
@@ -63,8 +57,8 @@
       </header>
 
       <!-- ===================================================
-           PRODUCT TOP
-           =================================================== -->
+         PRODUCT TOP
+    ==================================================== -->
 
       <div class="products-top">
         <div>
@@ -77,54 +71,29 @@
       </div>
 
       <!-- ===================================================
-           PRODUCT LIST
-           =================================================== -->
+         PRODUCT LIST
+    ==================================================== -->
 
       <section id="adminProducts" class="admin-products-grid">
-        <!-- Produk akan dimuat oleh admin-products.js -->
+        <div class="admin-empty">Memuat produk...</div>
       </section>
     </main>
 
     <!-- =====================================================
-         SUPABASE
-         ===================================================== -->
+       SUPABASE
+  ====================================================== -->
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <script>
-      // ===================================================
-      // SUPABASE CONFIGURATION
-      // ===================================================
+    <!-- SHARED CONFIG -->
 
-      const SUPABASE_URL = "https://zdpkanqgwlmbrkanyrjo.supabase.co";
+    <script src="supabase-config.js"></script>
 
-      const SUPABASE_KEY = "sb_publishable_olOOWAKiJRqq--6seYsA5Q_mOjo2CF7";
-
-      // ===================================================
-      // CREATE SUPABASE CLIENT
-      // ===================================================
-
-      window.supabaseClient = window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY,
-      );
-
-      // ===================================================
-      // CEK SUPABASE
-      // ===================================================
-
-      console.log("Supabase Client:", window.supabaseClient);
-    </script>
-
-    <!-- =====================================================
-         ADMIN AUTH
-         ===================================================== -->
+    <!-- AUTH -->
 
     <script src="auth.js"></script>
 
-    <!-- =====================================================
-         ADMIN PRODUCTS
-         ===================================================== -->
+    <!-- PRODUCTS -->
 
     <script src="../js/admin-products.js"></script>
   </body>

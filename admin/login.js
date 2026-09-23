@@ -1,25 +1,41 @@
 /* =====================================================
    KEN KONVEKSI
-   ADMIN LOGIN - SUPABASE AUTH
+   ADMIN LOGIN
 ===================================================== */
+
+"use strict";
+
+/* =====================================================
+   SUPABASE
+===================================================== */
+
+const supabaseClient = window.supabaseClient;
 
 /* =====================================================
    ELEMENT
 ===================================================== */
 
 const loginForm = document.getElementById("loginForm");
-const usernameInput = document.getElementById("username");
-const passwordInput = document.getElementById("password");
+
 const loginButton = document.getElementById("loginButton");
+
 const loginError = document.getElementById("loginError");
+
+const passwordInput = document.getElementById("password");
+
 const togglePassword = document.getElementById("togglePassword");
 
 /* =====================================================
-   SHOW ERROR
+   ERROR
 ===================================================== */
 
-function showLoginError(message) {
+function showError(message) {
+  if (!loginError) {
+    return;
+  }
+
   loginError.textContent = message;
+
   loginError.hidden = false;
 }
 
@@ -27,185 +43,108 @@ function showLoginError(message) {
    HIDE ERROR
 ===================================================== */
 
-function hideLoginError() {
+function hideError() {
+  if (!loginError) {
+    return;
+  }
+
   loginError.textContent = "";
+
   loginError.hidden = true;
 }
 
 /* =====================================================
-   CHECK EXISTING SESSION
+   TOGGLE PASSWORD
 ===================================================== */
 
-async function checkExistingSession() {
-  try {
-    const {
-      data: { session },
-      error,
-    } = await supabaseClient.auth.getSession();
+if (togglePassword) {
+  togglePassword.addEventListener("click", function () {
+    if (passwordInput.type === "password") {
+      passwordInput.type = "text";
 
-    if (error) {
-      console.error("SESSION ERROR:", error);
+      togglePassword.textContent = "HIDE";
+    } else {
+      passwordInput.type = "password";
 
-      return;
+      togglePassword.textContent = "SHOW";
     }
-
-    if (session) {
-      console.log("SESSION DITEMUKAN:", session.user.email);
-
-      window.location.replace("index.html");
-    }
-  } catch (error) {
-    console.error("CHECK SESSION ERROR:", error);
-  }
+  });
 }
 
 /* =====================================================
-   LOGIN FORM
+   LOGIN
 ===================================================== */
 
-loginForm.addEventListener("submit", async function (event) {
-  event.preventDefault();
+if (loginForm) {
+  loginForm.addEventListener("submit", async function (event) {
+    event.preventDefault();
 
-  hideLoginError();
+    hideError();
 
-  /* =================================================
-       GET INPUT
-    ================================================= */
+    /* ================================================
+         CEK SUPABASE
+      ================================================= */
 
-  const email = usernameInput.value.trim();
+    if (!supabaseClient) {
+      showError("Supabase belum terhubung.");
 
-  const password = passwordInput.value;
+      return;
+    }
 
-  console.log("================================");
+    /* ================================================
+         AMBIL INPUT
+      ================================================= */
 
-  console.log("KEN KONVEKSI LOGIN");
+    const email = document.getElementById("username").value.trim();
 
-  console.log("Email:", email);
+    const password = passwordInput.value;
 
-  console.log("Mencoba login ke Supabase...");
+    /* ================================================
+         BUTTON
+      ================================================= */
 
-  /* =================================================
-       VALIDATION
-    ================================================= */
+    loginButton.disabled = true;
 
-  if (!email || !password) {
-    showLoginError("Email dan password wajib diisi.");
+    loginButton.textContent = "LOGIN...";
 
-    return;
-  }
+    try {
+      /* ==============================================
+           LOGIN SUPABASE
+        =============================================== */
 
-  /* =================================================
-       LOADING
-    ================================================= */
+      const { data, error } = await supabaseClient.auth.signInWithPassword({
+        email: email,
 
-  loginButton.disabled = true;
+        password: password,
+      });
 
-  loginButton.textContent = "LOGIN...";
+      /* ==============================================
+           ERROR
+        =============================================== */
 
-  try {
-    /* ===============================================
-         SUPABASE LOGIN
-      =============================================== */
+      if (error) {
+        console.error("LOGIN ERROR:", error);
 
-    const { data, error } = await supabaseClient.auth.signInWithPassword({
-      email: email,
+        showError(error.message || "Email atau password salah.");
 
-      password: password,
-    });
+        return;
+      }
 
-    /* ===============================================
-         TAMPILKAN RESPONSE KE CONSOLE
-      =============================================== */
+      /* ==============================================
+           BERHASIL
+        =============================================== */
 
-    console.log("LOGIN DATA:", data);
+      console.log("Login berhasil:", data.user.email);
 
-    console.log("LOGIN ERROR:", error);
+      window.location.href = "index.html";
+    } catch (error) {
+      console.error("LOGIN EXCEPTION:", error);
 
-    /* ===============================================
-         ERROR
-      =============================================== */
-
-    if (error) {
-      console.error("SUPABASE ERROR:", error);
-
-      /*
-       * Untuk sementara kita tampilkan
-       * error asli dari Supabase.
-       */
-
-      showLoginError(error.message);
-
+      showError(error.message || "Terjadi kesalahan saat login.");
+    } finally {
       loginButton.disabled = false;
 
       loginButton.textContent = "LOGIN";
-
-      return;
     }
-
-    /* ===============================================
-         LOGIN BERHASIL
-      =============================================== */
-
-    if (data && data.session) {
-      console.log("================================");
-
-      console.log("LOGIN BERHASIL!");
-
-      console.log("User:", data.user.email);
-
-      console.log("================================");
-
-      loginButton.textContent = "BERHASIL...";
-
-      window.location.replace("index.html");
-
-      return;
-    }
-
-    /* ===============================================
-         SESSION TIDAK DITEMUKAN
-      =============================================== */
-
-    console.error("Login berhasil tetapi session tidak ditemukan.");
-
-    showLoginError("Login gagal. Session tidak ditemukan.");
-
-    loginButton.disabled = false;
-
-    loginButton.textContent = "LOGIN";
-  } catch (error) {
-    console.error("LOGIN EXCEPTION:", error);
-
-    showLoginError(error.message || "Terjadi kesalahan saat login.");
-
-    loginButton.disabled = false;
-
-    loginButton.textContent = "LOGIN";
-  }
-});
-
-/* =====================================================
-   SHOW / HIDE PASSWORD
-===================================================== */
-
-togglePassword.addEventListener("click", function () {
-  if (passwordInput.type === "password") {
-    passwordInput.type = "text";
-
-    togglePassword.textContent = "HIDE";
-
-    togglePassword.setAttribute("aria-label", "Sembunyikan password");
-  } else {
-    passwordInput.type = "password";
-
-    togglePassword.textContent = "SHOW";
-
-    togglePassword.setAttribute("aria-label", "Tampilkan password");
-  }
-});
-
-/* =====================================================
-   START
-===================================================== */
-
-checkExistingSession();
+  });
+}

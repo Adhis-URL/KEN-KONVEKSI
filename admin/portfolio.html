@@ -1,0 +1,817 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Our Work | KEN KONVEKSI</title>
+
+    <link rel="stylesheet" href="../css/admin.css" />
+
+    <style>
+      .portfolio-page {
+        padding: 30px;
+      }
+
+      .portfolio-header {
+        margin-bottom: 30px;
+      }
+
+      .portfolio-header h2 {
+        margin: 0;
+      }
+
+      .portfolio-header p {
+        margin-top: 8px;
+        color: #777;
+      }
+
+      .project-form {
+        background: #fff;
+        padding: 30px;
+        border: 1px solid #e5e5e5;
+        margin-bottom: 40px;
+      }
+
+      .project-form h3 {
+        margin-top: 0;
+        margin-bottom: 8px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+
+      .form-group input,
+      .form-group textarea,
+      .form-group select {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 12px;
+        border: 1px solid #ddd;
+        background: #fff;
+        font-family: inherit;
+        font-size: 14px;
+      }
+
+      .form-group textarea {
+        min-height: 130px;
+        resize: vertical;
+      }
+
+      .image-preview {
+        width: 260px;
+        height: 190px;
+        margin-top: 15px;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        color: #999;
+      }
+
+      .image-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .form-actions {
+        display: flex;
+        gap: 10px;
+      }
+
+      .btn-save {
+        border: none;
+        background: #111;
+        color: #fff;
+        padding: 13px 25px;
+        cursor: pointer;
+        font-weight: 600;
+      }
+
+      .btn-save:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      .btn-reset {
+        border: 1px solid #ddd;
+        background: #fff;
+        padding: 13px 25px;
+        cursor: pointer;
+      }
+
+      .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+      }
+
+      .project-card {
+        border: 1px solid #e5e5e5;
+        background: #fff;
+        overflow: hidden;
+      }
+
+      .project-image {
+        width: 100%;
+        height: 230px;
+        background: #f3f3f3;
+        overflow: hidden;
+      }
+
+      .project-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .project-no-image {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #999;
+        font-size: 13px;
+      }
+
+      .project-content {
+        padding: 18px;
+      }
+
+      .project-category {
+        font-size: 11px;
+        letter-spacing: 1.5px;
+        color: #888;
+        text-transform: uppercase;
+      }
+
+      .project-content h3 {
+        margin: 8px 0;
+        font-size: 18px;
+      }
+
+      .project-content p {
+        color: #666;
+        font-size: 14px;
+        line-height: 1.6;
+        margin: 0;
+      }
+
+      .project-status {
+        display: inline-block;
+        padding: 5px 10px;
+        font-size: 12px;
+        margin-top: 12px;
+      }
+
+      .status-visible {
+        background: #e7f7ed;
+        color: #18733a;
+      }
+
+      .status-hidden {
+        background: #f5eaea;
+        color: #9b3030;
+      }
+
+      .project-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 15px;
+      }
+
+      .btn-delete {
+        border: 1px solid #ddd;
+        background: #fff;
+        padding: 8px 12px;
+        cursor: pointer;
+      }
+
+      .btn-delete:hover {
+        background: #111;
+        color: #fff;
+        border-color: #111;
+      }
+
+      .empty-project {
+        grid-column: 1 / -1;
+        padding: 60px 20px;
+        text-align: center;
+        background: #f8f8f8;
+        color: #777;
+        border: 1px solid #eee;
+      }
+
+      @media (max-width: 1000px) {
+        .projects-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 650px) {
+        .portfolio-page {
+          padding: 20px;
+        }
+
+        .projects-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .project-form {
+          padding: 20px;
+        }
+
+        .image-preview {
+          width: 100%;
+          max-width: 260px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+      <div class="admin-logo">
+        KEN
+        <span>KONVEKSI</span>
+      </div>
+
+      <nav>
+        <a href="index.html"> Dashboard </a>
+
+        <a href="orders.html"> Pesanan </a>
+
+        <a href="products.html"> Produk </a>
+
+        <a href="add-product.html"> + Tambah Produk </a>
+
+        <a href="portfolio.html" class="active"> Our Work </a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <a href="../index.html"> ← Lihat Website </a>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+
+    <main class="admin-main">
+      <header class="admin-header">
+        <div>
+          <span>ADMIN PANEL</span>
+          <h1>Our Work</h1>
+        </div>
+
+        <div class="admin-user">Admin</div>
+      </header>
+
+      <section class="portfolio-page">
+        <!-- HEADER -->
+
+        <div class="portfolio-header">
+          <h2>Selected Projects</h2>
+
+          <p>Kelola hasil pekerjaan yang ditampilkan pada website utama.</p>
+        </div>
+
+        <!-- FORM -->
+
+        <div class="project-form">
+          <h3>Tambah Project Baru</h3>
+
+          <p style="color: #777">Tambahkan foto hasil produksi KEN KONVEKSI.</p>
+
+          <form id="portfolioForm">
+            <!-- TITLE -->
+
+            <div class="form-group">
+              <label for="projectTitle"> Judul Project </label>
+
+              <input
+                type="text"
+                id="projectTitle"
+                placeholder="Contoh: Custom T-Shirt Production"
+                required
+              />
+            </div>
+
+            <!-- CATEGORY -->
+
+            <div class="form-group">
+              <label for="projectCategory"> Kategori </label>
+
+              <select id="projectCategory" required>
+                <option value="">Pilih Kategori</option>
+
+                <option value="T-Shirt">T-Shirt</option>
+
+                <option value="Uniform">Uniform</option>
+
+                <option value="Hoodie">Hoodie</option>
+
+                <option value="Jacket">Jacket</option>
+
+                <option value="Custom Apparel">Custom Apparel</option>
+
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <!-- DESCRIPTION -->
+
+            <div class="form-group">
+              <label for="projectDescription"> Deskripsi </label>
+
+              <textarea
+                id="projectDescription"
+                placeholder="Deskripsikan project ini..."
+                required
+              ></textarea>
+            </div>
+
+            <!-- IMAGE -->
+
+            <div class="form-group">
+              <label for="projectImage"> Foto Project </label>
+
+              <input
+                type="file"
+                id="projectImage"
+                accept="image/jpeg,image/png,image/webp"
+                required
+              />
+
+              <div id="imagePreview" class="image-preview">
+                <span> Belum ada foto </span>
+              </div>
+            </div>
+
+            <!-- VISIBILITY -->
+
+            <div class="form-group">
+              <label for="projectVisibility"> Status </label>
+
+              <select id="projectVisibility">
+                <option value="true">Tampilkan di Website</option>
+
+                <option value="false">Sembunyikan</option>
+              </select>
+            </div>
+
+            <!-- BUTTON -->
+
+            <div class="form-actions">
+              <button type="submit" class="btn-save" id="saveProjectBtn">
+                Simpan Project
+              </button>
+
+              <button type="reset" class="btn-reset">Reset</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- PROJECT LIST -->
+
+        <div>
+          <h2>Semua Project</h2>
+
+          <div id="projectsContainer" class="projects-grid">
+            <div class="empty-project">Memuat project...</div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- SUPABASE -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+      const SUPABASE_URL = "https://zdpkanqgwlmbrkanyrjo.supabase.co";
+
+      const SUPABASE_KEY = "sb_publishable_olOOWAKiJRqq--6seYsA5Q_mOjo2CF7";
+
+      const supabaseClient = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY,
+      );
+
+      // =====================================================
+      // ELEMENT
+      // =====================================================
+
+      const form = document.getElementById("portfolioForm");
+
+      const imageInput = document.getElementById("projectImage");
+
+      const imagePreview = document.getElementById("imagePreview");
+
+      const projectsContainer = document.getElementById("projectsContainer");
+
+      const saveButton = document.getElementById("saveProjectBtn");
+
+      // =====================================================
+      // ESCAPE HTML
+      // =====================================================
+
+      function escapeHTML(value) {
+        return String(value ?? "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      // =====================================================
+      // PREVIEW IMAGE
+      // =====================================================
+
+      imageInput.addEventListener("change", function () {
+        const file = this.files[0];
+
+        if (!file) {
+          imagePreview.innerHTML = "<span>Belum ada foto</span>";
+
+          return;
+        }
+
+        if (!file.type.startsWith("image/")) {
+          alert("File harus berupa gambar.");
+
+          this.value = "";
+
+          return;
+        }
+
+        const imageURL = URL.createObjectURL(file);
+
+        imagePreview.innerHTML = `
+          <img
+            src="${imageURL}"
+            alt="Preview Project"
+          >
+        `;
+      });
+
+      // =====================================================
+      // LOAD PROJECTS
+      // =====================================================
+
+      async function loadProjects() {
+        projectsContainer.innerHTML = `
+        <div class="empty-project">
+          Memuat project...
+        </div>
+      `;
+
+        const { data, error } = await supabaseClient
+
+          .from("portfolio")
+
+          .select(
+            "id,title,category,description,image_url,is_visible,created_at",
+          )
+
+          .order("created_at", {
+            ascending: false,
+          });
+
+        if (error) {
+          console.error("LOAD PORTFOLIO ERROR:", error);
+
+          projectsContainer.innerHTML = `
+          <div class="empty-project">
+            <strong>Gagal memuat project.</strong>
+            <br><br>
+            ${escapeHTML(error.message)}
+          </div>
+        `;
+
+          return;
+        }
+
+        if (!data || data.length === 0) {
+          projectsContainer.innerHTML = `
+          <div class="empty-project">
+            Belum ada project.
+            <br>
+            Tambahkan project pertama kamu di atas.
+          </div>
+        `;
+
+          return;
+        }
+
+        projectsContainer.innerHTML = data
+          .map(function (project) {
+            const image = project.image_url || "";
+
+            return `
+
+              <article class="project-card">
+
+                <div class="project-image">
+
+                  ${
+                    image
+                      ? `
+                        <img
+                          src="${escapeHTML(image)}"
+                          alt="${escapeHTML(project.title)}"
+                        >
+                      `
+                      : `
+                        <div class="project-no-image">
+                          Tidak ada foto
+                        </div>
+                      `
+                  }
+
+                </div>
+
+
+                <div class="project-content">
+
+                  <div class="project-category">
+                    ${escapeHTML(project.category || "Project")}
+                  </div>
+
+
+                  <h3>
+                    ${escapeHTML(project.title || "Tanpa Judul")}
+                  </h3>
+
+
+                  <p>
+                    ${escapeHTML(project.description || "")}
+                  </p>
+
+
+                  ${
+                    project.is_visible
+                      ? `
+                        <span
+                          class="
+                            project-status
+                            status-visible
+                          "
+                        >
+                          Tampil di Website
+                        </span>
+                      `
+                      : `
+                        <span
+                          class="
+                            project-status
+                            status-hidden
+                          "
+                        >
+                          Disembunyikan
+                        </span>
+                      `
+                  }
+
+
+                  <div class="project-actions">
+
+                    <button
+                      type="button"
+                      class="btn-delete"
+                      onclick="
+                        deleteProject(
+                          '${project.id}',
+                          '${String(project.image_url || "").replace(
+                            /'/g,
+                            "\\'",
+                          )}'
+                        )
+                      "
+                    >
+                      Hapus
+                    </button>
+
+                  </div>
+
+                </div>
+
+              </article>
+
+            `;
+          })
+          .join("");
+      }
+
+      // =====================================================
+      // SAVE PROJECT
+      // =====================================================
+
+      form.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        const title = document.getElementById("projectTitle").value.trim();
+
+        const category = document.getElementById("projectCategory").value;
+
+        const description = document
+          .getElementById("projectDescription")
+          .value.trim();
+
+        const visibility =
+          document.getElementById("projectVisibility").value === "true";
+
+        const file = imageInput.files[0];
+
+        if (!file) {
+          alert("Silakan pilih foto project.");
+
+          return;
+        }
+
+        saveButton.disabled = true;
+
+        saveButton.textContent = "Menyimpan...";
+
+        let uploadedPath = null;
+
+        try {
+          // =================================================
+          // 1. NAMA FILE
+          // =================================================
+
+          const extension = file.name.split(".").pop().toLowerCase();
+
+          const fileName = `${crypto.randomUUID()}.${extension}`;
+
+          uploadedPath = `projects/${fileName}`;
+
+          // =================================================
+          // 2. UPLOAD STORAGE
+          // =================================================
+
+          const { error: uploadError } = await supabaseClient.storage
+
+            .from("portfolio")
+
+            .upload(uploadedPath, file, {
+              cacheControl: "3600",
+              upsert: false,
+              contentType: file.type,
+            });
+
+          if (uploadError) {
+            throw uploadError;
+          }
+
+          // =================================================
+          // 3. PUBLIC URL
+          // =================================================
+
+          const { data: publicData } = supabaseClient.storage
+
+            .from("portfolio")
+
+            .getPublicUrl(uploadedPath);
+
+          const imageURL = publicData.publicUrl;
+
+          // =================================================
+          // 4. INSERT DATABASE
+          // =================================================
+
+          const { error: insertError } = await supabaseClient
+
+            .from("portfolio")
+
+            .insert({
+              title: title,
+
+              category: category,
+
+              description: description,
+
+              image_url: imageURL,
+
+              is_visible: visibility,
+            });
+
+          if (insertError) {
+            // Kalau database gagal,
+            // hapus file yang sudah diupload.
+
+            await supabaseClient.storage
+
+              .from("portfolio")
+
+              .remove([uploadedPath]);
+
+            throw insertError;
+          }
+
+          // =================================================
+          // BERHASIL
+          // =================================================
+
+          alert("Project berhasil ditambahkan!");
+
+          form.reset();
+
+          imagePreview.innerHTML = "<span>Belum ada foto</span>";
+
+          await loadProjects();
+        } catch (error) {
+          console.error("SAVE PORTFOLIO ERROR:", error);
+
+          alert("Gagal menyimpan project:\n\n" + error.message);
+        } finally {
+          saveButton.disabled = false;
+
+          saveButton.textContent = "Simpan Project";
+        }
+      });
+
+      // =====================================================
+      // DELETE PROJECT
+      // =====================================================
+
+      async function deleteProject(id, imageURL) {
+        const confirmed = confirm("Yakin ingin menghapus project ini?");
+
+        if (!confirmed) {
+          return;
+        }
+
+        try {
+          // =================================================
+          // 1. DELETE DATABASE
+          // =================================================
+
+          const { error } = await supabaseClient
+
+            .from("portfolio")
+
+            .delete()
+
+            .eq("id", id);
+
+          if (error) {
+            throw error;
+          }
+
+          // =================================================
+          // 2. DELETE STORAGE
+          // =================================================
+
+          if (imageURL) {
+            const marker = "/storage/v1/object/public/portfolio/";
+
+            const index = imageURL.indexOf(marker);
+
+            if (index !== -1) {
+              const filePath = imageURL.substring(index + marker.length);
+
+              await supabaseClient.storage
+
+                .from("portfolio")
+
+                .remove([filePath]);
+            }
+          }
+
+          alert("Project berhasil dihapus.");
+
+          await loadProjects();
+        } catch (error) {
+          console.error("DELETE PORTFOLIO ERROR:", error);
+
+          alert("Gagal menghapus project:\n\n" + error.message);
+        }
+      }
+
+      // =====================================================
+      // INITIAL LOAD
+      // =====================================================
+
+      loadProjects();
+    </script>
+
+    <!-- AUTH -->
+
+    <script src="auth.js"></script>
+  </body>
+</html>

@@ -1,0 +1,159 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #fff;
+  color: #111;
+}
+
+.portfolio-section {
+  padding: 80px 20px;
+}
+
+.portfolio-container {
+  max-width: 1200px;
+  margin: auto;
+}
+
+.portfolio-heading {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.portfolio-heading span {
+  font-size: 13px;
+  letter-spacing: 3px;
+  color: #777;
+}
+
+.portfolio-heading h1 {
+  margin: 10px 0;
+  font-size: 38px;
+}
+
+.portfolio-heading p {
+  color: #777;
+  max-width: 600px;
+  margin: auto;
+  line-height: 1.6;
+}
+
+.portfolio-grid {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 25px;
+}
+
+.portfolio-card {
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+
+  border: 1px solid #eee;
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.portfolio-card:hover {
+  transform: translateY(-5px);
+
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+}
+
+.portfolio-image {
+  width: 100%;
+  height: 280px;
+  overflow: hidden;
+}
+
+.portfolio-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+  transition: transform 0.4s ease;
+}
+
+.portfolio-card:hover .portfolio-image img {
+  transform: scale(1.05);
+}
+
+.portfolio-info {
+  padding: 20px;
+}
+
+.portfolio-category {
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #888;
+}
+
+.portfolio-info h3 {
+  margin: 8px 0;
+  font-size: 21px;
+}
+
+.portfolio-info p {
+  color: #666;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+@media (max-width: 800px) {
+  .portfolio-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 550px) {
+  .portfolio-section {
+    padding: 50px 15px;
+  }
+
+  .portfolio-heading h1 {
+    font-size: 28px;
+  }
+
+  .portfolio-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.portfolio-heading {
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto 70px;
+}
+
+.portfolio-heading p {
+  margin: 0 0 18px;
+  font-size: 12px;
+  letter-spacing: 6px;
+  color: #999;
+  text-transform: uppercase;
+}
+
+.portfolio-heading h1 {
+  margin: 0 0 22px;
+  font-size: clamp(55px, 8vw, 100px);
+  line-height: 0.95;
+  font-weight: 800;
+  letter-spacing: -5px;
+  color: #111;
+}
+
+.portfolio-heading span {
+  display: block;
+  max-width: 650px;
+  margin: 0 auto;
+  color: #777;
+  font-size: 14px;
+  line-height: 1.8;
+}
